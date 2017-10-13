@@ -1,0 +1,4 @@
+module CYaml {
+    umbrella header "/Users/xero/Documents/Handsome/Projects/UnityBuildKit/.build/checkouts/Yams.git-8068124914099325722/Sources/CYaml/include/CYaml.h"
+    export *
+}
