@@ -42,7 +42,7 @@ class UnityProject {
 
     func create() -> Result {
         guard UBKit.validatePath(unityAppPath, isDirectory: false) else {
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(unityAppPath))
         }
 
         let unityFolderResult = createUnityFolder()
@@ -104,7 +104,7 @@ private extension UnityProject {
             if statusCode == 0 {
                 return .success
             } else {
-                return .failure(UBKitError.shellCommand)
+                return .failure(UBKitError.shellCommand("Generate Unity Project"))
             }
         case .timedOut:
             return .failure(UBKitError.waitTimedOut)
@@ -114,8 +114,7 @@ private extension UnityProject {
     func createUnityEditorScripts() -> Result {
         let assetsFilePath = workingPath.appending(projectName).appending("/Assets/")
         guard UBKit.validatePath(assetsFilePath, isDirectory: true) else {
-
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(assetsFilePath))
         }
         let editorFilePath = assetsFilePath.appending("Editor/")
         let scenesFilePath = assetsFilePath.appending("Scenes/")

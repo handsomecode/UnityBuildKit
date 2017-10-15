@@ -112,7 +112,8 @@ private extension FileCopier {
             let pathStrings = try fileManager.contentsOfDirectory(atPath: xcodeProjectPath)
             for pathString in pathStrings {
                 let path = Path("../".appending(pathString))
-                if (getBuildPhaseForPath(path) == .sources || getBuildPhaseForPath(path) == .headers) && pathString.hasPrefix("Unity") {
+                if (getBuildPhaseForPath(path) == .sources || getBuildPhaseForPath(path) == .headers) &&
+                    pathString.hasPrefix("Unity") {
                     guard let source = generateSourceFile(path: path, in: targetGroup, name: pathString) else {
                         return .failure(UBKitError.unableToCreateFile(path.string))
                     }
@@ -197,7 +198,7 @@ private extension FileCopier {
                     let path = Path(pathString)
                     if getBuildPhaseForPath(path) == nil {
                         guard let group = generateGroup(path.string) else {
-                            return .failure(UBKitError.unableToCreateXcodeProjectGroup)
+                            return .failure(UBKitError.unableToCreateXcodeProjectGroup(path.string))
                         }
                         group.path = path.string
                         parentGroup.children.append(group.reference)

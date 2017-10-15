@@ -73,7 +73,7 @@ private extension ProjectRefresher {
             if statusCode == 0 {
                 return .success
             } else {
-                return .failure(UBKitError.shellCommand)
+                return .failure(UBKitError.shellCommand("Initialize Unity Project"))
             }
         case .timedOut:
             return .failure(UBKitError.waitTimedOut)

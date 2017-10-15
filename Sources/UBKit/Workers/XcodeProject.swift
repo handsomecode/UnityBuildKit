@@ -97,7 +97,7 @@ private extension XcodeProject {
 
     func createSpecFile() -> Result {
         guard UBKit.validatePath(workingPath, isDirectory: true) else {
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(workingPath))
         }
 
         let contents = File.specFile(
@@ -128,7 +128,7 @@ private extension XcodeProject {
 
     func createSourceFiles() -> Result {
         guard UBKit.validatePath(projectPath, isDirectory: true) else {
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(projectPath))
         }
 
         guard fileManager.createFile(
@@ -171,7 +171,7 @@ private extension XcodeProject {
 
     func createAssetCatalog() -> Result {
         guard UBKit.validatePath(projectPath, isDirectory: true) else {
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(projectPath))
         }
 
         let assetsFilePath = projectPath.appending("Assets.xcassets/")

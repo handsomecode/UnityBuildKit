@@ -25,7 +25,7 @@ public final class UBKit {
 
             }
         } catch {
-            completion(UBKitError.invalidFolder)
+            completion(UBKitError.invalidFolder(workingPath.appending("/ubconfig.json")))
         }
 
         let taskResult = kitManager.performTasks()
