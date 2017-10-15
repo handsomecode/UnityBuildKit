@@ -19,6 +19,7 @@ xcuserdata/
 .DS_Store
 iOS/
 Unity/
+ubconfig.json
 
 ## Other
 *.moved-aside

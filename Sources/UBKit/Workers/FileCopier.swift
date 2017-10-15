@@ -17,7 +17,7 @@ class FileCopier {
         let buildFile: PBXBuildFile
     }
 
-    private let projectName: String
+    private let config: Config
     private let workingPath: String
     private let xcodeProjectPath: String
     private let xcodeProjectFilePath: String
@@ -30,11 +30,11 @@ class FileCopier {
     private var classesGroup: PBXGroup?
     private var libsGroup: PBXGroup?
 
-    init(projectName: String, workingPath: String, xcodeProjectPath: String) {
-        self.projectName = projectName
+    init(config: Config, workingPath: String, xcodeProjectPath: String) {
+        self.config = config
         self.workingPath = workingPath
         self.xcodeProjectPath = xcodeProjectPath
-        self.xcodeProjectFilePath = String(format: "%@%@%@", xcodeProjectPath, projectName, ".xcodeproj")
+        self.xcodeProjectFilePath = String(format: "%@%@%@", xcodeProjectPath, config.projectName, ".xcodeproj")
     }
 
     func copyFiles() -> Result {
@@ -54,7 +54,7 @@ class FileCopier {
         }
 
         print("Adding Unity files to Xcode project")
-        let classesPath = workingPath.appending(projectName).appending("/ios_build/Classes/")
+        let classesPath = workingPath.appending(config.relativeUnityClassesPath)
         guard let classesGroup = classesGroup else {
             return .failure(UBKitError.invalidUnityProject)
         }
@@ -63,7 +63,7 @@ class FileCopier {
             return addClassesFilesResult
         }
 
-        let librariesPath = workingPath.appending(projectName).appending("/ios_build/Libraries/")
+        let librariesPath = workingPath.appending(config.relativeUnityLibrariesPath)
         guard let libsGroup = libsGroup else {
             return .failure(UBKitError.invalidUnityProject)
         }
@@ -90,8 +90,7 @@ private extension FileCopier {
             project = try XcodeProj(path: projectPath)
             return .success
         } catch {
-            print("Failure: \(error.localizedDescription)")
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(error)
         }
     }
 
@@ -105,8 +104,8 @@ private extension FileCopier {
             return .failure(UBKitError.invalidXcodeProject)
         }
 
-        guard let targetGroup = project.pbxproj.groups.filter({ $0.path == projectName }).first else {
-            return .failure(UBKitError.missingGroup(projectName))
+        guard let targetGroup = project.pbxproj.groups.filter({ $0.path == config.projectName }).first else {
+            return .failure(UBKitError.missingGroup(config.projectName))
         }
 
         do {
@@ -142,14 +141,14 @@ private extension FileCopier {
         }
 
         if let classesGroup = generateGroup("Classes", sourceTree: .absolute) {
-            classesGroup.path = workingPath.appending(projectName).appending("/ios_build/Classes")
+            classesGroup.path = workingPath.appending(config.relativeUnityClassesPath)
             project.pbxproj.addObject(classesGroup)
             self.classesGroup = classesGroup
             unityGroup.children.append(classesGroup.reference)
         }
 
         if let librariesGroup = generateGroup("Libraries", sourceTree: .absolute) {
-            librariesGroup.path = workingPath.appending(projectName).appending("/ios_build/Libraries")
+            librariesGroup.path = workingPath.appending(config.relativeUnityLibrariesPath)
             project.pbxproj.addObject(librariesGroup)
             self.libsGroup = librariesGroup
             unityGroup.children.append(librariesGroup.reference)
@@ -177,10 +176,14 @@ private extension FileCopier {
             return .failure(UBKitError.invalidXcodeProject)
         }
 
-        let frameworksBuildPhases = project.pbxproj.frameworksBuildPhases
-        guard frameworksBuildPhases.count == 1, let frameworksBuildPhase = frameworksBuildPhases.first else {
-            return .failure(UBKitError.invalidXcodeProject)
+        let frameworksBuildPhase = PBXFrameworksBuildPhase(reference: generateUUID(PBXFrameworksBuildPhase.self,
+                                                                                   "frameworks".appending(nameSalt)))
+        if let mainTarget = project.pbxproj.nativeTargets.filter({ $0.name == config.projectName }).first,
+            parentGroup.name == "Libraries" {
+            mainTarget.buildPhases.append(frameworksBuildPhase.reference)
+            print("Adding to main target")
         }
+        project.pbxproj.addObject(frameworksBuildPhase)
 
         @discardableResult
         func add(toPath: String, parentGroup: PBXGroup) -> Result {
@@ -363,7 +366,7 @@ private extension FileCopier {
     }
 
     func generateSourceFile(path: Path, in group: PBXGroup, name: String) -> SourceFile? {
-        let referencePath = Path(xcodeProjectPath.appending(projectName).appending("/").appending(projectName))
+        let referencePath = Path(xcodeProjectPath.appending(config.projectName).appending("/").appending(config.projectName))
         guard let fileReference = getFileReference(path: path, inPath: referencePath, name: name) else {
             return nil
         }

@@ -17,12 +17,12 @@ class ProjectRefresher {
     private let refreshScriptName: String
     private let unitySceneName: String
 
-    init(projectName: String, workingPath: String) {
+    init(projectName: String, workingPath: String, sceneName: String) {
         self.projectName = projectName
         self.workingPath = workingPath
 
         self.refreshScriptName = "refreshProjects.swift"
-        self.unitySceneName = "MainScene"
+        self.unitySceneName = sceneName
     }
 
     func refresh() -> Result {

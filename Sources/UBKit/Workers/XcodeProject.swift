@@ -12,6 +12,7 @@ class XcodeProject {
     private let projectName: String
     private let bundleIdentifier: String
     private let workingPath: String
+    private let unityVersion: String
 
     private let fileManager = FileManager()
     private let projectPath: String
@@ -19,10 +20,11 @@ class XcodeProject {
     private let specFileName: String
     private var error: Error?
 
-    init(projectName: String, bundleIdentifier: String, workingPath: String) {
+    init(projectName: String, bundleIdentifier: String, workingPath: String, unityVersion: String) {
         self.projectName = projectName
         self.bundleIdentifier = bundleIdentifier
         self.workingPath = workingPath
+        self.unityVersion = unityVersion
 
         self.projectPath = workingPath.appending(projectName).appending("/")
         self.vendorFolderPath = workingPath.appending("Vendor/Unity/")
@@ -98,7 +100,11 @@ private extension XcodeProject {
             return .failure(UBKitError.invalidFolder)
         }
 
-        let contents = File.specFile(projectName: projectName, bundleIdentifier: bundleIdentifier)
+        let contents = File.specFile(
+            projectName: projectName,
+            bundleIdentifier: bundleIdentifier,
+            unityVersion: unityVersion
+        )
         let success = fileManager.createFile(
             atPath: workingPath.appending(specFileName),
             contents: contents,

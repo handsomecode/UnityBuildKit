@@ -33,11 +33,11 @@ class UnityProject {
     private lazy var shell = Shell()
     private let unityAppPath: String
 
-    init(projectName: String, workingPath: String) {
+    init(projectName: String, workingPath: String, unityAppPath: String) {
         self.projectName = projectName
         self.workingPath = workingPath
 
-        self.unityAppPath = "/Applications/Unity/Unity.app/Contents/MacOS/Unity"
+        self.unityAppPath = unityAppPath
     }
 
     func create() -> Result {

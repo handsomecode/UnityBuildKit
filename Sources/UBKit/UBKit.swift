@@ -1,21 +1,33 @@
 import Foundation
 
 public final class UBKit {
+
     private let arguments: [String]
-    private let kitManager: UBKitManager
+    private var kitManager: UBKitManager!
+
+    private let fileManager = FileManager.default
 
     public init(arguments: [String] = CommandLine.arguments) {
         self.arguments = arguments
-        guard arguments.count == 3 else {
-            print("FAILURE: Invalid number of arguments.")
-            exit(1)
-        }
-        let projectName = arguments[1]
-        let iOSBundleIdentifier = arguments[2]
-        kitManager = UBKitManager(projectName: projectName, bundleIdentifier: iOSBundleIdentifier)
     }
 
     public func run(_ completion: @escaping ((Error?) -> Void)) {
+        let workingPath = fileManager.currentDirectoryPath
+        do {
+            if let fileData = fileManager.contents(atPath: workingPath.appending("/ubconfig.json")) {
+                if let configJSON = try JSONSerialization.jsonObject(with: fileData, options: .allowFragments) as? [String : String] {
+                    guard let config = Config(json: configJSON) else {
+                            completion(UBKitError.invalidConfigFile)
+                            return
+                    }
+                    kitManager = UBKitManager(config: config)
+                }
+
+            }
+        } catch {
+            completion(UBKitError.invalidFolder)
+        }
+
         let taskResult = kitManager.performTasks()
         guard taskResult == .success else {
             completion(taskResult.error)
