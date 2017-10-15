@@ -72,6 +72,11 @@ class FileCopier {
             return addLibrariesFilesResult
         }
 
+        let copyDataResult = copyUnityDataFolder()
+        guard copyDataResult == .success else {
+            return copyDataResult
+        }
+
         print("Saving Xcode project")
         let saveResult = saveProject()
         guard saveResult == .success else {
@@ -182,7 +187,6 @@ private extension FileCopier {
         if let mainTarget = project.pbxproj.nativeTargets.filter({ $0.name == config.projectName }).first,
             parentGroup.name == "Libraries" {
             mainTarget.buildPhases.append(frameworksBuildPhase.reference)
-            print("Adding to main target")
         }
         project.pbxproj.addObject(frameworksBuildPhase)
 
@@ -241,6 +245,36 @@ private extension FileCopier {
             }
         }
         return add(toPath: workingPath, parentGroup: parentGroup)
+    }
+
+    func copyUnityDataFolder() -> Result {
+        guard let project = project else {
+            return .failure(UBKitError.invalidXcodeProject)
+        }
+
+        guard let unityGroup = project.pbxproj.groups.filter({ $0.path == "Unity" }).first else {
+            return .failure(UBKitError.invalidXcodeProject)
+        }
+
+        let resourcesBuildPhases = project.pbxproj.resourcesBuildPhases
+        guard resourcesBuildPhases.count == 1, let resourcesBuildPhase = resourcesBuildPhases.first else {
+            return .failure(UBKitError.invalidXcodeProject)
+        }
+
+        let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, "data".appending(nameSalt)),
+                                                                sourceTree: .absolute)
+        fileReference.name = "Data"
+        fileReference.path = workingPath.appending(config.relativeUnityDataPath)
+        fileReference.lastKnownFileType = "folder"
+        unityGroup.children.append(fileReference.reference)
+        project.pbxproj.addObject(fileReference)
+
+        let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, "data".appending(nameSalt)),
+                                     fileRef: fileReference.reference)
+        project.pbxproj.addObject(buildFile)
+        resourcesBuildPhase.files.append(buildFile.reference)
+
+        return .success
     }
 
     func saveProject() -> Result {

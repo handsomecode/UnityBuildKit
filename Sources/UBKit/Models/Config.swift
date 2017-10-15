@@ -25,6 +25,7 @@ struct Config {
     let relativeIOSBuildPath: String
     let relativeUnityClassesPath: String
     let relativeUnityLibrariesPath: String
+    let relativeUnityDataPath: String
 
     init?(json: [String : String]) {
         guard let projectName = json[Keys.projectName],
@@ -57,5 +58,6 @@ struct Config {
         self.relativeIOSBuildPath = self.projectName.appending("/ios_build/")
         self.relativeUnityClassesPath = self.projectName.appending("/ios_build/Classes/")
         self.relativeUnityLibrariesPath = self.projectName.appending("/ios_build/Libraries/")
+        self.relativeUnityDataPath = self.projectName.appending("/ios_build/Data/")
     }
 }

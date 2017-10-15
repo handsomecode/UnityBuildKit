@@ -468,6 +468,8 @@
 
 /* Begin PBXFileReference section */
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D450F1BA1F94230600D5283B /* ubconfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ubconfig.json; sourceTree = "<group>"; };
+		D450F1BB1F94230700D5283B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D4A53F081F9238BE00FF33E0 /* UBKitError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKitError.swift; sourceTree = "<group>"; };
 		D4A53F0A1F9385D500FF33E0 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1015,6 +1017,8 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				D450F1BB1F94230700D5283B /* README.md */,
+				D450F1BA1F94230600D5283B /* ubconfig.json */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_39 /* Tests */,
