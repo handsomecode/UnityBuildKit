@@ -7,7 +7,7 @@
 
 # UnityBuildKit
 
-`UnityBuildKit` is a command line tool that generates an iOS application with an embedded Unity scene.
+UnityBuildKit is a command line tool that generates an iOS application with an embedded Unity scene.
 
 ## Installation
 `UnityBuildKit` requires Xcode 9 and Swift 4
@@ -39,8 +39,21 @@ cd ExampleProject
 }
 ```
 
-3. Run `UnityBuildKit` in Terminal
+3. Run 
+```
+$ UnityBuildKit generate
+```
 
+### To refresh the Xcode project
+1. Navigate to top-level folder
+```
+cd ExampleProject
+```
+
+2. Run
+```
+$ UnityBuildKit refresh
+```
 
 
 ## Known Unity Version Compatibility
