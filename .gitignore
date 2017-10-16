@@ -19,6 +19,8 @@ xcuserdata/
 .DS_Store
 iOS/
 Unity/
+ubconfig.json
+refreshprojects.swift
 
 ## Other
 *.moved-aside

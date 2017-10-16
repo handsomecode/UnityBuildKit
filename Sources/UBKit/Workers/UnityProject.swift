@@ -1,9 +1,25 @@
 //
 //  UnityProject.swift
-//  UEKit
 //
-//  Created by Eric Miller on 10/11/17.
+//  Copyright (c) 2017 Handsome
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 
 import Foundation
 
@@ -33,16 +49,16 @@ class UnityProject {
     private lazy var shell = Shell()
     private let unityAppPath: String
 
-    init(projectName: String, workingPath: String) {
+    init(projectName: String, workingPath: String, unityAppPath: String) {
         self.projectName = projectName
         self.workingPath = workingPath
 
-        self.unityAppPath = "/Applications/Unity/Unity.app/Contents/MacOS/Unity"
+        self.unityAppPath = unityAppPath
     }
 
     func create() -> Result {
         guard UBKit.validatePath(unityAppPath, isDirectory: false) else {
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(unityAppPath))
         }
 
         let unityFolderResult = createUnityFolder()
@@ -104,7 +120,7 @@ private extension UnityProject {
             if statusCode == 0 {
                 return .success
             } else {
-                return .failure(UBKitError.shellCommand)
+                return .failure(UBKitError.shellCommand("Generate Unity Project"))
             }
         case .timedOut:
             return .failure(UBKitError.waitTimedOut)
@@ -114,8 +130,7 @@ private extension UnityProject {
     func createUnityEditorScripts() -> Result {
         let assetsFilePath = workingPath.appending(projectName).appending("/Assets/")
         guard UBKit.validatePath(assetsFilePath, isDirectory: true) else {
-
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(assetsFilePath))
         }
         let editorFilePath = assetsFilePath.appending("Editor/")
         let scenesFilePath = assetsFilePath.appending("Scenes/")

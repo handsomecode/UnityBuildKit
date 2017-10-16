@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D4A53F091F9238BE00FF33E0 /* UBKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A53F081F9238BE00FF33E0 /* UBKitError.swift */; };
+		D4A53F0B1F9385D500FF33E0 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A53F0A1F9385D500FF33E0 /* Config.swift */; };
 		OBJ_193 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_199 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* Package.swift */; };
 		OBJ_205 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_112 /* Package.swift */; };
@@ -466,6 +468,10 @@
 
 /* Begin PBXFileReference section */
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D450F1BA1F94230600D5283B /* ubconfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ubconfig.json; sourceTree = "<group>"; };
+		D450F1BB1F94230700D5283B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D4A53F081F9238BE00FF33E0 /* UBKitError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKitError.swift; sourceTree = "<group>"; };
+		D4A53F0A1F9385D500FF33E0 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		OBJ_100 /* PlistValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlistValue.swift; sourceTree = "<group>"; };
@@ -931,6 +937,8 @@
 			children = (
 				OBJ_27 /* Result.swift */,
 				OBJ_28 /* Shell.swift */,
+				D4A53F081F9238BE00FF33E0 /* UBKitError.swift */,
+				D4A53F0A1F9385D500FF33E0 /* Config.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1006,16 +1014,17 @@
 			path = ".build/checkouts/XcodeGen.git--7277681520713665102/Sources/ProjectSpec";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				D450F1BB1F94230700D5283B /* README.md */,
+				D450F1BA1F94230600D5283B /* ubconfig.json */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_39 /* Tests */,
 				OBJ_40 /* Dependencies */,
 				OBJ_176 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_53 /* XcodeGenKit */ = {
@@ -1475,6 +1484,20 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					"AEXML::AEXML" = {
+						LastSwiftMigration = 0900;
+					};
+					"JSONUtilities::JSONUtilities" = {
+						LastSwiftMigration = 0900;
+					};
+					"PathKit::PathKit" = {
+						LastSwiftMigration = 0900;
+					};
+					"Spectre::Spectre" = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "UnityBuildKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1483,7 +1506,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_176 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1593,6 +1616,7 @@
 				OBJ_279 /* UnityEditorScript.swift in Sources */,
 				OBJ_280 /* BridgeHeaderFile.swift in Sources */,
 				OBJ_281 /* MessageBridge.swift in Sources */,
+				D4A53F0B1F9385D500FF33E0 /* Config.swift in Sources */,
 				OBJ_282 /* UnityUtilsFile.swift in Sources */,
 				OBJ_283 /* AppDelegateFile.swift in Sources */,
 				OBJ_284 /* AppIconContentsFile.swift in Sources */,
@@ -1604,6 +1628,7 @@
 				OBJ_290 /* Result.swift in Sources */,
 				OBJ_291 /* Shell.swift in Sources */,
 				OBJ_292 /* UBKit.swift in Sources */,
+				D4A53F091F9238BE00FF33E0 /* UBKitError.swift in Sources */,
 				OBJ_293 /* UBKitManager.swift in Sources */,
 				OBJ_294 /* FileCopier.swift in Sources */,
 				OBJ_295 /* ProjectRefresher.swift in Sources */,

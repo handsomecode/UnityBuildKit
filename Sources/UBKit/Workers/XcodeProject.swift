@@ -1,9 +1,25 @@
 //
 //  XcodeProject.swift
-//  UEKit
 //
-//  Created by Eric Miller on 10/11/17.
+//  Copyright (c) 2017 Handsome
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 
 import Foundation
 
@@ -12,6 +28,7 @@ class XcodeProject {
     private let projectName: String
     private let bundleIdentifier: String
     private let workingPath: String
+    private let unityVersion: String
 
     private let fileManager = FileManager()
     private let projectPath: String
@@ -19,10 +36,11 @@ class XcodeProject {
     private let specFileName: String
     private var error: Error?
 
-    init(projectName: String, bundleIdentifier: String, workingPath: String) {
+    init(projectName: String, bundleIdentifier: String, workingPath: String, unityVersion: String) {
         self.projectName = projectName
         self.bundleIdentifier = bundleIdentifier
         self.workingPath = workingPath
+        self.unityVersion = unityVersion
 
         self.projectPath = workingPath.appending(projectName).appending("/")
         self.vendorFolderPath = workingPath.appending("Vendor/Unity/")
@@ -95,10 +113,14 @@ private extension XcodeProject {
 
     func createSpecFile() -> Result {
         guard UBKit.validatePath(workingPath, isDirectory: true) else {
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(workingPath))
         }
 
-        let contents = File.specFile(projectName: projectName, bundleIdentifier: bundleIdentifier)
+        let contents = File.specFile(
+            projectName: projectName,
+            bundleIdentifier: bundleIdentifier,
+            unityVersion: unityVersion
+        )
         let success = fileManager.createFile(
             atPath: workingPath.appending(specFileName),
             contents: contents,
@@ -122,7 +144,7 @@ private extension XcodeProject {
 
     func createSourceFiles() -> Result {
         guard UBKit.validatePath(projectPath, isDirectory: true) else {
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(projectPath))
         }
 
         guard fileManager.createFile(
@@ -165,7 +187,7 @@ private extension XcodeProject {
 
     func createAssetCatalog() -> Result {
         guard UBKit.validatePath(projectPath, isDirectory: true) else {
-            return .failure(UBKitError.invalidFolder)
+            return .failure(UBKitError.invalidFolder(projectPath))
         }
 
         let assetsFilePath = projectPath.appending("Assets.xcassets/")

@@ -1,17 +1,31 @@
 //
 //  UBKitManager.swift
-//  unity.embed
 //
-//  Created by Eric Miller on 10/10/17.
-//  Copyright © 2017 Handsome, LLC. All rights reserved.
+//  Copyright (c) 2017 Handsome
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 
 import Foundation
 
 class UBKitManager {
 
-    private let projectName: String
-    private let bundleIdentifier: String
+    private let config: Config
     private let xcodeProjectYMLFileName: String
     private let workingFolderPath: String
     private let workingiOSFolderPath: String
@@ -19,9 +33,8 @@ class UBKitManager {
 
     private let fileManager = FileManager.default
 
-    init(projectName: String, bundleIdentifier: String) {
-        self.projectName = projectName
-        self.bundleIdentifier = bundleIdentifier
+    init(config: Config) {
+        self.config = config
 
         self.workingFolderPath = fileManager.currentDirectoryPath.appending("/")
         self.workingiOSFolderPath = workingFolderPath.appending("iOS/")
@@ -29,16 +42,6 @@ class UBKitManager {
         self.xcodeProjectYMLFileName = "project.yml"
     }
 
-    /**
-     Performs the following tasks
-     - Generate the iOS project's YAML file
-     - Generate the iOS project's source folders/files
-     - Gerenate the iOS project's Unity bridging folders/files
-     - Create the iOS Xcode project
-     
-     - Create the Unity project
-     - Generate the project refresh script
-     */
     func performTasks() -> Result {
         print("\n----------")
         print("Creating iOS Project")
@@ -76,35 +79,39 @@ class UBKitManager {
     }
 
     func createiOSProject() -> Result {
-        let xcodeProject = XcodeProject(projectName: projectName, bundleIdentifier: bundleIdentifier, workingPath: workingiOSFolderPath)
+        let xcodeProject = XcodeProject(
+            projectName: config.projectName,
+            bundleIdentifier: config.bundleID,
+            workingPath: workingiOSFolderPath,
+            unityVersion: config.unityVersion
+        )
         return xcodeProject.create()
     }
 
     func createUnityProject() -> Result {
-        let unityProject = UnityProject(projectName: projectName, workingPath: workingUnityFolderPath)
+        let unityProject = UnityProject(
+            projectName: config.projectName,
+            workingPath: workingUnityFolderPath,
+            unityAppPath: config.unityPath
+        )
         return unityProject.create()
     }
 
     func refreshProjects() -> Result {
-        let refreshser = ProjectRefresher(projectName: projectName, workingPath: workingFolderPath)
+        let refreshser = ProjectRefresher(
+            projectName: config.projectName,
+            workingPath: workingFolderPath,
+            sceneName: config.unitySceneName
+        )
         return refreshser.refresh()
     }
 
     func copyUnityFiles() -> Result {
-        let fileCopier = FileCopier(projectName: projectName, workingPath: workingUnityFolderPath, xcodeProjectPath: workingiOSFolderPath)
+        let fileCopier = FileCopier(
+            config: config,
+            workingPath: workingUnityFolderPath,
+            xcodeProjectPath: workingiOSFolderPath
+        )
         return fileCopier.copyFiles()
     }
-}
-
-enum UBKitError: Error {
-    case error(Error)
-    case unableToCreateFile(String)
-    case invalidFolder
-    case invalidXcodeProject
-    case missingGroup(String)
-    case invalidUnityProject
-    case unableToCreateXcodeProjectGroup
-    case unableToSaveXcodeProject
-    case waitTimedOut
-    case shellCommand
 }
