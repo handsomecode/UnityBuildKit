@@ -30,7 +30,11 @@ do {
 } catch {
     print("\n----------")
     print("💥 An error was encountered while creating your projects")
-    print(error.localizedDescription)
+    if let ubkitError = error as? UBKitError {
+        print(ubkitError.description)
+    } else {
+        print(error.localizedDescription)
+    }
     exit(1)
 }
 
@@ -39,7 +43,11 @@ kit.run { (error) in
     guard error == nil else {
         print("\n----------")
         print("💥 An error was encountered while creating your projects")
-        print(error!.localizedDescription)
+        if let ubkitError = error! as? UBKitError {
+            print(ubkitError.description)
+        } else {
+            print(error!.localizedDescription)
+        }
         exit(1)
     }
 

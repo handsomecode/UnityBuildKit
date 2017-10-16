@@ -23,7 +23,7 @@
 
 import Foundation
 
-enum UBKitError: Error, CustomStringConvertible {
+public enum UBKitError: Error, CustomStringConvertible {
     case invalidNumberOfArguments
     case invalidArguments(String)
     case error(Error)
@@ -38,7 +38,7 @@ enum UBKitError: Error, CustomStringConvertible {
     case shellCommand(String)
     case invalidConfigFile
 
-    var description: String {
+    public var description: String {
         switch self {
         case .invalidNumberOfArguments:
             return "Invalid number of command line arguments"
