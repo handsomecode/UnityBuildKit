@@ -30,11 +30,46 @@ public final class UBKit {
 
     private let fileManager = FileManager.default
 
-    public init(arguments: [String] = CommandLine.arguments) {
+    public init(arguments: [String] = CommandLine.arguments) throws {
+        guard arguments.count == 2 else {
+            throw UBKitError.invalidNumberOfArguments
+        }
+
         self.arguments = arguments
     }
 
     public func run(_ completion: @escaping ((Error?) -> Void)) {
+        guard let arg = getArgument(for: arguments[1]) else {
+            completion(UBKitError.invalidArguments(arguments[1]))
+            return
+        }
+
+        switch arg {
+        case .generate:
+            generate(completion)
+        case .refresh:
+            refresh(completion)
+        }
+    }
+
+    class func validatePath(_ path: String, isDirectory: Bool) -> Bool {
+        if isDirectory {
+            var directory = ObjCBool(false)
+            let folderExists = FileManager.default.fileExists(atPath: path, isDirectory: &directory)
+            return folderExists && directory.boolValue
+        } else {
+            return FileManager.default.fileExists(atPath: path)
+        }
+    }
+}
+
+private extension UBKit {
+
+    enum Argument: String {
+        case generate, refresh
+    }
+
+    func generate(_ completion: @escaping ((Error?) -> Void)) {
         let workingPath = fileManager.currentDirectoryPath
         do {
             guard let fileData = fileManager.contents(atPath: workingPath.appending("/ubconfig.json")) else {
@@ -60,16 +95,20 @@ public final class UBKit {
             return
         }
 
+        print("\n----------")
+        print("👍 Successfully created your iOS and Unity projects")
+        print("The iOS project is located under iOS/")
+        print("The Unity project is located under Unity/")
         completion(nil)
     }
 
-    class func validatePath(_ path: String, isDirectory: Bool) -> Bool {
-        if isDirectory {
-            var directory = ObjCBool(false)
-            let folderExists = FileManager.default.fileExists(atPath: path, isDirectory: &directory)
-            return folderExists && directory.boolValue
-        } else {
-            return FileManager.default.fileExists(atPath: path)
-        }
+    func refresh(_ completion: @escaping ((Error?) -> Void)) {
+        print("\n----------")
+        print("👍 Successfully refreshed your iOS project")
+        completion(nil)
+    }
+
+    func getArgument(for arg: String) -> Argument? {
+        return Argument(rawValue: arg)
     }
 }

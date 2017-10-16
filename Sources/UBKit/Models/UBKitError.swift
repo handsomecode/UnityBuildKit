@@ -24,6 +24,8 @@
 import Foundation
 
 enum UBKitError: Error, CustomStringConvertible {
+    case invalidNumberOfArguments
+    case invalidArguments(String)
     case error(Error)
     case unableToCreateFile(String)
     case invalidFolder(String)
@@ -38,6 +40,10 @@ enum UBKitError: Error, CustomStringConvertible {
 
     var description: String {
         switch self {
+        case .invalidNumberOfArguments:
+            return "Invalid number of command line arguments"
+        case .invalidArguments(let str):
+            return "Invalid argument: \(str)"
         case .error(let err):
             return err.localizedDescription
         case .unableToCreateFile(let str):
