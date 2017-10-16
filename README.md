@@ -7,7 +7,7 @@
 
 # UnityBuildKit
 
-A description of this package.
+`UnityBuildKit` is a command line tool that generates an iOS application with an embedded Unity scene.
 
 ## Installation
 `UnityBuildKit` requires Xcode 9 and Swift 4
@@ -20,7 +20,8 @@ make
 ```
 
 ## Usage
-1. Create a top-level folder that will contain all information about the Xcode and Unity projects and navigate to that folder.  (_Note: By default, the name of this folder will be the name of the Xcode and Unity projects._)
+### To generate a new project
+1. Create a top-level folder and navigate to it. This folder will contain all information about the Xcode and Unity projects.  (_Note: By default, the name of this folder will be the name of the Xcode and Unity projects._)
 ```
 mkdir ExampleProject
 cd ExampleProject
@@ -40,12 +41,19 @@ cd ExampleProject
 
 3. Run `UnityBuildKit` in Terminal
 
+
+
+## Known Unity Version Compatibility
+- 2107.1.f1
+
 ## Attributions
 This tool is built using:
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen)
 - [xcproj](https://github.com/xcodeswift/xcproj)
 
 and the wonderful dependencies they bring with them.
+
+Inspiration for building `UnityBuildKit` came after running into several problems while trying to [manually do this process](https://the-nerd.be/2015/11/13/integrate-unity-5-in-a-native-ios-app-with-xcode-7/) and reading over a [github issue](https://github.com/blitzagency/ios-unity5/issues/52) trying to resolve those problems.
 
 ## License
 
