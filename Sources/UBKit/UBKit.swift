@@ -14,18 +14,21 @@ public final class UBKit {
     public func run(_ completion: @escaping ((Error?) -> Void)) {
         let workingPath = fileManager.currentDirectoryPath
         do {
-            if let fileData = fileManager.contents(atPath: workingPath.appending("/ubconfig.json")) {
-                if let configJSON = try JSONSerialization.jsonObject(with: fileData, options: .allowFragments) as? [String : String] {
-                    guard let config = Config(json: configJSON) else {
-                            completion(UBKitError.invalidConfigFile)
-                            return
-                    }
-                    kitManager = UBKitManager(config: config)
-                }
-
+            guard let fileData = fileManager.contents(atPath: workingPath.appending("/ubconfig.json")) else {
+                completion(UBKitError.invalidFolder(workingPath.appending("/ubconfig.json")))
+                return
             }
+            if let configJSON = try JSONSerialization.jsonObject(with: fileData, options: .allowFragments) as? [String : String] {
+                guard let config = Config(json: configJSON) else {
+                    completion(UBKitError.invalidConfigFile)
+                    return
+                }
+                kitManager = UBKitManager(config: config)
+            }
+
         } catch {
-            completion(UBKitError.invalidFolder(workingPath.appending("/ubconfig.json")))
+            completion(error)
+            return
         }
 
         let taskResult = kitManager.performTasks()
