@@ -28,7 +28,7 @@ cd ExampleProject
 
 2. Create a configuration file named `ubconfig.json`
 
-```json
+```
 {
     "project_name": "", // Leaving this empty uses folder name by default
     "bundle_id": "is.handsome.UnityBuildKit",
