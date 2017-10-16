@@ -50,18 +50,6 @@ cd ExampleProject
 $ UnityBuildKit generate
 ```
 
-### To refresh the Xcode project
-1. Navigate to top-level folder
-```
-cd ExampleProject
-```
-
-2. Run
-```
-$ UnityBuildKit refresh
-```
-
-
 ## Known Unity Version Compatibility
 - 2107.1.f1
 
