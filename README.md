@@ -42,8 +42,8 @@ cd ExampleProject
 
 ## Attributions
 This tool is built using:
-- [XcodeGen]("https://github.com/yonaskolb/XcodeGen")
-- [xcproj]("https://github.com/xcodeswift/xcproj")
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+- [xcproj](https://github.com/xcodeswift/xcproj)
 
 and the wonderful dependencies they bring with them.
 
