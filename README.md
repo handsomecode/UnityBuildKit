@@ -19,6 +19,12 @@ cd UnityBuildKit
 make
 ```
 
+### Swift Package Manager
+#### Use as a dependency
+```
+.package(url: "https://github.com/handsomecode/UnityBuildKit", from: "1.0.0"),
+```
+
 ## Usage
 ### To generate a new project
 1. Create a top-level folder and navigate to it. This folder will contain all information about the Xcode and Unity projects.  (_Note: By default, the name of this folder will be the name of the Xcode and Unity projects._)
