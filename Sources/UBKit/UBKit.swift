@@ -44,11 +44,30 @@ public final class UBKit {
             return
         }
 
+        let workingPath = fileManager.currentDirectoryPath
+        do {
+            guard let fileData = fileManager.contents(atPath: workingPath.appending("/ubconfig.json")) else {
+                completion(UBKitError.invalidFolder(workingPath.appending("/ubconfig.json")))
+                return
+            }
+            if let configJSON = try JSONSerialization.jsonObject(with: fileData, options: .allowFragments) as? [String : String] {
+                guard let config = Config(json: configJSON) else {
+                    completion(UBKitError.invalidConfigFile)
+                    return
+                }
+                kitManager = UBKitManager(config: config)
+            }
+
+        } catch {
+            completion(error)
+            return
+        }
+
         switch arg {
         case .generate:
-            generate(completion)
+            generate(manager: kitManager, completion)
         case .refresh:
-            refresh(completion)
+            refresh(manager: kitManager, completion)
         }
     }
 
@@ -69,27 +88,8 @@ private extension UBKit {
         case generate, refresh
     }
 
-    func generate(_ completion: @escaping ((Error?) -> Void)) {
-        let workingPath = fileManager.currentDirectoryPath
-        do {
-            guard let fileData = fileManager.contents(atPath: workingPath.appending("/ubconfig.json")) else {
-                completion(UBKitError.invalidFolder(workingPath.appending("/ubconfig.json")))
-                return
-            }
-            if let configJSON = try JSONSerialization.jsonObject(with: fileData, options: .allowFragments) as? [String : String] {
-                guard let config = Config(json: configJSON) else {
-                    completion(UBKitError.invalidConfigFile)
-                    return
-                }
-                kitManager = UBKitManager(config: config)
-            }
-
-        } catch {
-            completion(error)
-            return
-        }
-
-        let taskResult = kitManager.performTasks()
+    func generate(manager: UBKitManager, _ completion: @escaping ((Error?) -> Void)) {
+        let taskResult = manager.performGenerateTasks()
         guard taskResult == .success else {
             completion(taskResult.error)
             return
@@ -102,7 +102,12 @@ private extension UBKit {
         completion(nil)
     }
 
-    func refresh(_ completion: @escaping ((Error?) -> Void)) {
+    func refresh(manager: UBKitManager, _ completion: @escaping ((Error?) -> Void)) {
+        let taskResult = manager.performRefreshTasks()
+        guard taskResult == .success else {
+            completion(taskResult.error)
+            return
+        }
         print("\n----------")
         print("👍 Successfully refreshed your iOS project")
         completion(nil)

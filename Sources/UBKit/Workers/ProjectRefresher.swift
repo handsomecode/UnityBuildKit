@@ -25,31 +25,21 @@ import Foundation
 
 class ProjectRefresher {
 
+    private let config: Config
     private let workingPath: String
-    private let projectName: String
 
     private let fileManager = FileManager()
     private lazy var shell = Shell()
-    private let refreshScriptName: String
-    private let unitySceneName: String
 
-    init(projectName: String, workingPath: String, sceneName: String) {
-        self.projectName = projectName
+    init(config: Config, workingPath: String) {
+        self.config = config
         self.workingPath = workingPath
-
-        self.refreshScriptName = "refreshProjects.swift"
-        self.unitySceneName = sceneName
     }
 
     func refresh() -> Result {
-        let projectRefreshScriptResult = createProjectRefreshScript()
-        guard projectRefreshScriptResult == .success else {
-            return projectRefreshScriptResult
-        }
-
-        let initializationResult = runInitialProjectRefresh()
-        guard initializationResult == .success else {
-            return initializationResult
+        let buildUnityResult = buildUnityProject()
+        guard buildUnityResult == .success else {
+            return buildUnityResult
         }
 
         return .success
@@ -58,26 +48,27 @@ class ProjectRefresher {
 
 private extension ProjectRefresher {
 
-    func createProjectRefreshScript() -> Result {
-        guard fileManager.createFile(
-            atPath: workingPath.appending(refreshScriptName),
-            contents: File.projectRefreshFile(projectName: projectName),
-            attributes: [
-                FileAttributeKey.posixPermissions: 0o777
-            ]) else {
-                return .failure(UBKitError.unableToCreateFile("Project Refresh Script"))
-        }
-
-        return .success
-    }
-
-    func runInitialProjectRefresh() -> Result {
+    func buildUnityProject() -> Result {
         let semaphore = DispatchSemaphore(value: 0)
         var statusCode: Int32 = 999
+        let projectPath = workingPath.appending(config.projectName)
+        let outputLocation = projectPath.appending("/").appending("ios_build")
 
+        // MARK: - Main
+        print("Building \(config.unitySceneName) for iOS...")
+        print("This will take some time to complete\n")
         shell.perform(
-            "./\(self.refreshScriptName)",
-            self.unitySceneName,
+            config.unityPath,
+            Unity.Arguments.batchmode,
+            Unity.Arguments.projectPath,
+            projectPath,
+            Unity.Arguments.outputLocation,
+            outputLocation,
+            Unity.Arguments.sceneName,
+            config.unitySceneName,
+            Unity.Arguments.executeMethod,
+            Unity.buildAction,
+            Unity.Arguments.quit,
             terminationHandler: { (process) in
                 statusCode = process.terminationStatus
                 semaphore.signal()
@@ -89,7 +80,7 @@ private extension ProjectRefresher {
             if statusCode == 0 {
                 return .success
             } else {
-                return .failure(UBKitError.shellCommand("Initialize Unity Project"))
+                return .failure(UBKitError.shellCommand("Building Unity Project"))
             }
         case .timedOut:
             return .failure(UBKitError.waitTimedOut)

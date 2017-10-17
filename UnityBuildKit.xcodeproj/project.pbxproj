@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D4A53F091F9238BE00FF33E0 /* UBKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A53F081F9238BE00FF33E0 /* UBKitError.swift */; };
 		D4A53F0B1F9385D500FF33E0 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A53F0A1F9385D500FF33E0 /* Config.swift */; };
+		D4F178C11F952440000B5568 /* Unity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F178C01F952440000B5568 /* Unity.swift */; };
 		OBJ_193 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_199 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_63 /* Package.swift */; };
 		OBJ_205 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_112 /* Package.swift */; };
@@ -29,7 +30,6 @@
 		OBJ_251 /* Spectre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Spectre::Spectre::Product" /* Spectre.framework */; };
 		OBJ_252 /* JSONUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */; };
 		OBJ_277 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* File.swift */; };
-		OBJ_278 /* ProjectRefreshScriptFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ProjectRefreshScriptFile.swift */; };
 		OBJ_279 /* UnityEditorScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* UnityEditorScript.swift */; };
 		OBJ_280 /* BridgeHeaderFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* BridgeHeaderFile.swift */; };
 		OBJ_281 /* MessageBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* MessageBridge.swift */; };
@@ -472,6 +472,7 @@
 		D450F1BB1F94230700D5283B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D4A53F081F9238BE00FF33E0 /* UBKitError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKitError.swift; sourceTree = "<group>"; };
 		D4A53F0A1F9385D500FF33E0 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		D4F178C01F952440000B5568 /* Unity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unity.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		OBJ_100 /* PlistValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlistValue.swift; sourceTree = "<group>"; };
@@ -493,7 +494,6 @@
 		OBJ_117 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		OBJ_118 /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		OBJ_119 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
-		OBJ_12 /* ProjectRefreshScriptFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRefreshScriptFile.swift; sourceTree = "<group>"; };
 		OBJ_122 /* DecodingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingError.swift; sourceTree = "<group>"; };
 		OBJ_123 /* Deprecations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deprecations.swift; sourceTree = "<group>"; };
 		OBJ_124 /* Dictionary+JSONKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSONKey.swift"; sourceTree = "<group>"; };
@@ -750,7 +750,6 @@
 		OBJ_11 /* Unity */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_12 /* ProjectRefreshScriptFile.swift */,
 				OBJ_13 /* UnityEditorScript.swift */,
 			);
 			path = Unity;
@@ -939,6 +938,7 @@
 				OBJ_28 /* Shell.swift */,
 				D4A53F081F9238BE00FF33E0 /* UBKitError.swift */,
 				D4A53F0A1F9385D500FF33E0 /* Config.swift */,
+				D4F178C01F952440000B5568 /* Unity.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1612,7 +1612,6 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_277 /* File.swift in Sources */,
-				OBJ_278 /* ProjectRefreshScriptFile.swift in Sources */,
 				OBJ_279 /* UnityEditorScript.swift in Sources */,
 				OBJ_280 /* BridgeHeaderFile.swift in Sources */,
 				OBJ_281 /* MessageBridge.swift in Sources */,
@@ -1620,6 +1619,7 @@
 				OBJ_282 /* UnityUtilsFile.swift in Sources */,
 				OBJ_283 /* AppDelegateFile.swift in Sources */,
 				OBJ_284 /* AppIconContentsFile.swift in Sources */,
+				D4F178C11F952440000B5568 /* Unity.swift in Sources */,
 				OBJ_285 /* InfoPlistFile.swift in Sources */,
 				OBJ_286 /* LaunchScreenFile.swift in Sources */,
 				OBJ_287 /* MainStoryboardFile.swift in Sources */,

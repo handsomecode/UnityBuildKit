@@ -42,7 +42,7 @@ class UBKitManager {
         self.xcodeProjectYMLFileName = "project.yml"
     }
 
-    func performTasks() -> Result {
+    func performGenerateTasks() -> Result {
         print("\n----------")
         print("Creating iOS Project")
         print("----------")
@@ -60,9 +60,21 @@ class UBKitManager {
         }
 
         print("\n----------")
-        print("Initializing projects")
+        print("Copying Unity Files")
         print("----------")
-        let refreshResult = refreshProjects()
+        let copyFilesResult = copyUnityFiles(refresh: false)
+        guard copyFilesResult == .success else {
+            return copyFilesResult
+        }
+
+        return .success
+    }
+
+    func performRefreshTasks() -> Result {
+        print("\n----------")
+        print("Refreshing Xcode project")
+        print("----------")
+        let refreshResult = refreshXcodeProject()
         guard refreshResult == .success else {
             return refreshResult
         }
@@ -70,13 +82,17 @@ class UBKitManager {
         print("\n----------")
         print("Copying Unity Files")
         print("----------")
-        let copyFilesResult = copyUnityFiles()
+        let copyFilesResult = copyUnityFiles(refresh: true)
         guard copyFilesResult == .success else {
             return copyFilesResult
         }
 
         return .success
     }
+}
+
+// MARK: - Generate
+private extension UBKitManager {
 
     func createiOSProject() -> Result {
         let xcodeProject = XcodeProject(
@@ -92,26 +108,36 @@ class UBKitManager {
         let unityProject = UnityProject(
             projectName: config.projectName,
             workingPath: workingUnityFolderPath,
-            unityAppPath: config.unityPath
+            unityAppPath: config.unityPath,
+            sceneName: config.unitySceneName
         )
         return unityProject.create()
     }
 
-    func refreshProjects() -> Result {
-        let refreshser = ProjectRefresher(
-            projectName: config.projectName,
-            workingPath: workingFolderPath,
-            sceneName: config.unitySceneName
-        )
-        return refreshser.refresh()
-    }
-
-    func copyUnityFiles() -> Result {
+    func copyUnityFiles(refresh: Bool) -> Result {
         let fileCopier = FileCopier(
             config: config,
             workingPath: workingUnityFolderPath,
             xcodeProjectPath: workingiOSFolderPath
         )
-        return fileCopier.copyFiles()
+        return fileCopier.copyFiles(refresh: refresh)
+    }
+
+    func refreshProjects() -> Result {
+        let refresher = ProjectRefresher(config: config, workingPath: workingUnityFolderPath)
+        return refresher.refresh()
+    }
+}
+
+// MARK: - Refresh
+private extension UBKitManager {
+
+    func refreshXcodeProject() -> Result {
+        let refreshResult = refreshProjects()
+        guard refreshResult == .success else {
+            return refreshResult
+        }
+
+        return .success
     }
 }

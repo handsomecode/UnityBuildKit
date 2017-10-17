@@ -43,7 +43,7 @@ class XcodeProject {
         self.unityVersion = unityVersion
 
         self.projectPath = workingPath.appending(projectName).appending("/")
-        self.vendorFolderPath = workingPath.appending("Vendor/Unity/")
+        self.vendorFolderPath = workingPath.appending("Vendor/UBK/")
         self.specFileName = "project.yml"
     }
 
