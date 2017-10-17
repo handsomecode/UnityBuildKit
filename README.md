@@ -1,5 +1,5 @@
 <p>
-    <img src="https://img.shields.io/badge/version-0.7.0-blue.svg?style=flat-square" />
+    <img src="https://img.shields.io/badge/version-0.8.0-blue.svg?style=flat-square" />
     <a href="https://github.com/handsomecode/UnityBuildKit/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"/>
     </a>
@@ -7,10 +7,10 @@
 
 # UnityBuildKit
 
-UnityBuildKit is a command line tool that generates an iOS application with an embedded Unity scene.
+UnityBuildKit is a command line tool that embeds a Unity project into an iOS application.  Both the Xcode and Unity project are automatically created, configured, and linked for immediate use after successful generation.
 
 ## Installation
-`UnityBuildKit` requires Xcode 9 and Swift 4
+`UnityBuildKit` requires Xcode 9, Swift 4, and Unity
 
 ### Make
 ```
@@ -27,6 +27,8 @@ make
 
 ## Usage
 ### To generate a new project
+Currently, Unity needs to be closed for this process to begin.
+
 1. Create a top-level folder and navigate to it. This folder will contain all information about the Xcode and Unity projects.  (_Note: By default, the name of this folder will be the name of the Xcode and Unity projects._)
 ```
 mkdir ExampleProject
@@ -48,6 +50,19 @@ cd ExampleProject
 3. Run 
 ```
 $ UnityBuildKit generate
+```
+
+### To refresh the Xcode project
+After making updates to your Unity project, you'll need to refresh the files linked with the Xcode project.  Currently, Unity needs to be closed for this process to begin.
+
+1. Navigate to the top-level folder
+```
+cd ExampleProject
+```
+
+2. Run
+```
+UnityBuildKit refresh
 ```
 
 ## Known Unity Version Compatibility
