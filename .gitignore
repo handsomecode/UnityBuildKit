@@ -17,8 +17,8 @@ DerivedData/
 !default.perspectivev3
 xcuserdata/
 .DS_Store
-iOS/
-Unity/
+/iOS/
+/Unity/
 ubconfig.json
 refreshprojects.swift
 

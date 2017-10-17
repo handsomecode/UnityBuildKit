@@ -53,15 +53,22 @@ class FileCopier {
         self.xcodeProjectFilePath = String(format: "%@%@%@", xcodeProjectPath, config.projectName, ".xcodeproj")
     }
 
-    func copyFiles() -> Result {
+    func copyFiles(refresh: Bool) -> Result {
         let parseProjectResult = parseProjectFile()
         guard parseProjectResult == .success else {
             return parseProjectResult
         }
 
-        let addBridgeFilesResult = addUnityBridgingFiles()
-        guard addBridgeFilesResult == .success else {
-            return addBridgeFilesResult
+        if refresh {
+            let deleteFilesResult = deleteUnityFiles()
+            guard deleteFilesResult == .success else {
+                return deleteFilesResult
+            }
+        } else {
+            let addBridgeFilesResult = addUnityBridgingFiles()
+            guard addBridgeFilesResult == .success else {
+                return addBridgeFilesResult
+            }
         }
 
         let createGroupsResult = createUnityFileGroups()
@@ -153,12 +160,94 @@ private extension FileCopier {
         return .success
     }
 
+    func deleteUnityFiles() -> Result {
+        guard let project = project else {
+            return .failure(UBKitError.invalidXcodeProject)
+        }
+
+        guard let ubkGroup = project.pbxproj.groups.filter({
+            $0.path == "UBK"
+        }).first else {
+            return .failure(UBKitError.invalidXcodeProject)
+        }
+
+        guard let frameworksBuildPhase = project.pbxproj.frameworksBuildPhases.first else {
+            return .failure(UBKitError.invalidXcodeProject)
+        }
+
+        guard let sourcesBuildPhase = project.pbxproj.sourcesBuildPhases.first else {
+            return .failure(UBKitError.invalidXcodeProject)
+        }
+
+        guard let resourcesBuildPhase = project.pbxproj.resourcesBuildPhases.first else {
+            return .failure(UBKitError.invalidXcodeProject)
+        }
+
+        func removeFile(reference: String) {
+            if let (buildFile, index) = buildFileIndex(for: reference, in: project.pbxproj) {
+                if let idx = frameworksBuildPhase.files.index(of: buildFile.reference) {
+                    frameworksBuildPhase.files.remove(at: idx)
+                }
+
+                if let idx = sourcesBuildPhase.files.index(of: buildFile.reference) {
+                    sourcesBuildPhase.files.remove(at: idx)
+                }
+
+                if let idx = resourcesBuildPhase.files.index(of: buildFile.reference) {
+                    resourcesBuildPhase.files.remove(at: idx)
+                }
+
+                project.pbxproj.buildFiles.remove(at: index)
+            }
+
+            if let index = fileReferenceIndex(for: reference, in: project.pbxproj) {
+                project.pbxproj.fileReferences.remove(at: index)
+            }
+        }
+
+        func removeGroup(reference: String) {
+            if let group = project.pbxproj.groups.filter({ $0.reference == reference }).first {
+                for ref in group.children {
+                    var handled = false
+                    for group in project.pbxproj.groups where group.reference == ref {
+                        removeGroup(reference: ref)
+                        handled = true
+                        break
+                    }
+                    if !handled {
+                        removeFile(reference: ref)
+                    }
+                }
+
+                if let index = project.pbxproj.groups.index(of: group) {
+                    project.pbxproj.groups.remove(at: index)
+                }
+            }
+        }
+
+        for folderRef in ubkGroup.children {
+            var handled = false
+            for group in project.pbxproj.groups where group.reference == folderRef {
+                removeGroup(reference: folderRef)
+                handled = true
+                break
+            }
+            if !handled {
+                removeFile(reference: folderRef)
+            }
+        }
+
+        ubkGroup.children.removeAll()
+
+        return .success
+    }
+
     func createUnityFileGroups() -> Result {
         guard let project = project else {
             return .failure(UBKitError.invalidXcodeProject)
         }
 
-        guard let unityGroup = project.pbxproj.groups.filter({ $0.path == "Unity" }).first else {
+        guard let unityGroup = project.pbxproj.groups.filter({ $0.path == "UBK" }).first else {
             return .failure(UBKitError.invalidXcodeProject)
         }
 
@@ -187,6 +276,27 @@ private extension FileCopier {
         return group
     }
 
+    func buildFileIndex(for fileRef: String, in proj: PBXProj) -> (PBXBuildFile, Int)? {
+        for (index, buildFile) in proj.buildFiles.enumerated() {
+            if buildFile.fileRef == fileRef {
+                return (buildFile, index)
+            }
+        }
+
+        return nil
+    }
+
+    func fileReferenceIndex(for fileRef: String, in proj: PBXProj) -> Int? {
+        var index: Int?
+        for (idx, ref) in proj.fileReferences.enumerated() {
+            if ref.reference == fileRef {
+                index = idx
+                break
+            }
+        }
+        return index
+    }
+
     @discardableResult
     func addFiles(workingPath: String, parentGroup: PBXGroup) -> Result {
         guard let project = project else {
@@ -198,13 +308,24 @@ private extension FileCopier {
             return .failure(UBKitError.invalidXcodeProject)
         }
 
-        let frameworksBuildPhase = PBXFrameworksBuildPhase(reference: generateUUID(PBXFrameworksBuildPhase.self,
-                                                                                   "frameworks".appending(nameSalt)))
-        if let mainTarget = project.pbxproj.nativeTargets.filter({ $0.name == config.projectName }).first,
-            parentGroup.name == "Libraries" {
-            mainTarget.buildPhases.append(frameworksBuildPhase.reference)
+        guard let mainTarget = project.pbxproj.nativeTargets.filter({ $0.name == config.projectName }).first else {
+            return .failure(UBKitError.invalidXcodeProject)
         }
-        project.pbxproj.addObject(frameworksBuildPhase)
+
+        let frameworksBuildPhase: PBXFrameworksBuildPhase
+        if project.pbxproj.frameworksBuildPhases.count > 0 {
+            frameworksBuildPhase = project.pbxproj.frameworksBuildPhases.first!
+            if !mainTarget.buildPhases.contains(frameworksBuildPhase.reference) {
+                mainTarget.buildPhases.append(frameworksBuildPhase.reference)
+            }
+        } else {
+            frameworksBuildPhase = PBXFrameworksBuildPhase(reference: generateUUID(PBXFrameworksBuildPhase.self,
+                                                                                   "frameworks".appending(nameSalt)))
+            if parentGroup.name == "Libraries" {
+                mainTarget.buildPhases.append(frameworksBuildPhase.reference)
+            }
+            project.pbxproj.addObject(frameworksBuildPhase)
+        }
 
         @discardableResult
         func add(toPath: String, parentGroup: PBXGroup) -> Result {
@@ -268,7 +389,7 @@ private extension FileCopier {
             return .failure(UBKitError.invalidXcodeProject)
         }
 
-        guard let unityGroup = project.pbxproj.groups.filter({ $0.path == "Unity" }).first else {
+        guard let unityGroup = project.pbxproj.groups.filter({ $0.path == "UBK" }).first else {
             return .failure(UBKitError.invalidXcodeProject)
         }
 
