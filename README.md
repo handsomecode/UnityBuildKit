@@ -52,6 +52,14 @@ cd ExampleProject
 $ UnityBuildKit generate
 ```
 
+4. Once generation is completed, open the Xcode project.  Using the Build Scheme drop down menu, select Edit Scheme to edit your project's scheme (the scheme should be the same name as your project).  Select the Run action then the Options tab.  In the middle of the window, you will see `Metal API Validation` with a set of options in a drop down menu.  Change the current option to `Disabled`, as seen below:
+![](Assets/metal_validation_scheme.png)
+
+#### Notes
+- The generation script sets up the Unity project to build for the Device SDK.  These means that, if building for a simulator, there is a high probability that you will encounter build errors in Xcode.  Change the run destination to a physical device and the errors should go away.
+
+- If building for a physical device, do not forget to set up your code signing.
+
 ### To refresh the Xcode project
 After making updates to your Unity project, you'll need to refresh the files linked with the Xcode project.  Currently, Unity needs to be closed for this process to begin.
 
