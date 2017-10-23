@@ -8,6 +8,6 @@ class Unitybuildkit < Formula
     depends_on :xcode
 
     def install
-        system "make", "install"
+        system "make"
     end
 end
