@@ -1,5 +1,5 @@
 <p>
-    <img src="https://img.shields.io/badge/version-0.8.0-blue.svg?style=flat-square" />
+    <img src="https://img.shields.io/badge/version-0.9.0-blue.svg?style=flat-square" />
     <a href="https://github.com/handsomecode/UnityBuildKit/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"/>
     </a>
