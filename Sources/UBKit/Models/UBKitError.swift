@@ -29,7 +29,7 @@ public enum UBKitError: Error, CustomStringConvertible {
     case error(Error)
     case unableToCreateFile(String)
     case invalidFolder(String)
-    case invalidXcodeProject
+    case invalidXcodeProject(String)
     case missingGroup(String)
     case invalidUnityProject
     case unableToCreateXcodeProjectGroup(String)
@@ -50,8 +50,8 @@ public enum UBKitError: Error, CustomStringConvertible {
             return "Unable to create \(str)"
         case .invalidFolder(let str):
             return "Invalid Folder: \(str)"
-        case .invalidXcodeProject:
-            return "Invalid Xcode Project"
+        case .invalidXcodeProject(let str):
+            return "Invalid Xcode Project: \(str)"
         case .missingGroup(let str):
             return "Could not find \(str)"
         case .invalidUnityProject:

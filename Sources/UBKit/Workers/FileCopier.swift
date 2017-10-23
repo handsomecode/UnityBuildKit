@@ -124,12 +124,12 @@ private extension FileCopier {
 
     func addUnityBridgingFiles() -> Result {
         guard let project = project else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Failed to find project file"))
         }
 
         let sourceBuildPhases = project.pbxproj.sourcesBuildPhases
         guard sourceBuildPhases.count == 1, let sourceBuildPhase = sourceBuildPhases.first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing sources build phase"))
         }
 
         guard let targetGroup = project.pbxproj.groups.filter({ $0.path == config.projectName }).first else {
@@ -162,25 +162,25 @@ private extension FileCopier {
 
     func deleteUnityFiles() -> Result {
         guard let project = project else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject(""))
         }
 
         guard let ubkGroup = project.pbxproj.groups.filter({
             $0.path == "UBK"
         }).first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing Vendor/UBK/ folder"))
         }
 
         guard let frameworksBuildPhase = project.pbxproj.frameworksBuildPhases.first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing frameworks build phase"))
         }
 
         guard let sourcesBuildPhase = project.pbxproj.sourcesBuildPhases.first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing sources build phase"))
         }
 
         guard let resourcesBuildPhase = project.pbxproj.resourcesBuildPhases.first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing resources build phase"))
         }
 
         func removeFile(reference: String) {
@@ -244,11 +244,11 @@ private extension FileCopier {
 
     func createUnityFileGroups() -> Result {
         guard let project = project else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Failed to find project file"))
         }
 
         guard let unityGroup = project.pbxproj.groups.filter({ $0.path == "UBK" }).first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing Vendor/UBK/ folder"))
         }
 
         if let classesGroup = generateGroup("Classes", sourceTree: .absolute) {
@@ -300,16 +300,16 @@ private extension FileCopier {
     @discardableResult
     func addFiles(workingPath: String, parentGroup: PBXGroup) -> Result {
         guard let project = project else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Failed to find project file"))
         }
 
         let sourceBuildPhases = project.pbxproj.sourcesBuildPhases
         guard sourceBuildPhases.count == 1, let sourceBuildPhase = sourceBuildPhases.first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing sources build phase"))
         }
 
         guard let mainTarget = project.pbxproj.nativeTargets.filter({ $0.name == config.projectName }).first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing main target"))
         }
 
         let frameworksBuildPhase: PBXFrameworksBuildPhase
@@ -386,16 +386,16 @@ private extension FileCopier {
 
     func copyUnityDataFolder() -> Result {
         guard let project = project else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Failed to find project file"))
         }
 
         guard let unityGroup = project.pbxproj.groups.filter({ $0.path == "UBK" }).first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing Vendor/UBK/ folder"))
         }
 
         let resourcesBuildPhases = project.pbxproj.resourcesBuildPhases
         guard resourcesBuildPhases.count == 1, let resourcesBuildPhase = resourcesBuildPhases.first else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Missing resources build phase"))
         }
 
         let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, "data".appending(nameSalt)),
@@ -416,7 +416,7 @@ private extension FileCopier {
 
     func saveProject() -> Result {
         guard let project = project else {
-            return .failure(UBKitError.invalidXcodeProject)
+            return .failure(UBKitError.invalidXcodeProject("Failed to find project file"))
         }
 
         let projectPath = Path(xcodeProjectFilePath)

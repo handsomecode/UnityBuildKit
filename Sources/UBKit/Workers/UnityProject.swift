@@ -155,7 +155,7 @@ private extension UnityProject {
 
         // MARK: - Main
         print("Building \(unitySceneName) for iOS...")
-        print("This will take some time to complete\n")
+        print("This may take some time to complete\n")
         shell.perform(
             unityAppPath,
             Unity.Arguments.batchmode,
