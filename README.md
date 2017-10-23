@@ -40,9 +40,9 @@ cd ExampleProject
 ```
 {
     "project_name": "", // Leaving this empty uses folder name by default
-    "bundle_id": "is.handsome.UnityBuildKit",
+    "bundle_id": "com.example.ExampleProject",
     "unity_path": "<path_to_unity_app>", // "/Applications/Unity/Unity.app/Contents/MacOS/Unity"
-    "unity_version": "2017.1.1f1",
+    "unity_version": "<unity_version>", // e.g. 2017.1.1f1
     "unity_scene_name": "" // Leaving this empty uses folder name by default
 }
 ```
