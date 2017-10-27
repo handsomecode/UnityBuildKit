@@ -41,24 +41,17 @@ mkdir ExampleProject
 cd ExampleProject
 ```
 
-2. Create a configuration file named `ubconfig.json`
-
+2. Run the following to generate the `ubconfig.json` file where you can specify project names and paths
 ```
-{
-    "project_name": "", // Leaving this empty uses folder name by default
-    "bundle_id": "com.example.ExampleProject",
-    "unity_path": "<path_to_unity_app>", // "/Applications/Unity/Unity.app/Contents/MacOS/Unity"
-    "unity_version": "<unity_version>", // e.g. 2017.1.1f1
-    "unity_scene_name": "" // Leaving this empty uses folder name by default
-}
+UnityBuildKit init
 ```
 
-3. Run 
+3. After filling out the config file information, run 
 ```
 $ UnityBuildKit generate
 ```
 
-4. Once generation is completed, open the Xcode project.  Using the Build Scheme drop down menu, select Edit Scheme to edit your project's scheme (the scheme should be the same name as your project).  Select the Run action then the Options tab.  In the middle of the window, you will see `Metal API Validation` with a set of options in a drop down menu.  Change the current option to `Disabled`, as seen below:
+4. Once generation is complete, open the Xcode project.  Using the Build Scheme drop down menu, select Edit Scheme to edit your project's scheme (the scheme should be the same name as your project).  Select the Run action then the Options tab.  In the middle of the window, you will see `Metal API Validation` with a set of options in a drop down menu.  Change the current option to `Disabled`, as seen below:
 ![](Assets/metal_validation_scheme.png)
 _(Note: if you do not see the option for Metal API Validation, verify your run destination is a physical device of set to Generic iOS Device)_
 
