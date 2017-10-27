@@ -63,7 +63,7 @@ private extension XcodeGenerator {
         }
 
         do {
-            let projectGenerator = ProjectGenerator(spec: spec, path: specPath.parent())
+            let projectGenerator = ProjectGenerator(spec: spec)
             let project = try projectGenerator.generateProject()
             print("⚙️  Generated project")
 
