@@ -12,6 +12,12 @@ UnityBuildKit is a command line tool that embeds a Unity project into an iOS app
 ## Installation
 `UnityBuildKit` requires Xcode 9, Swift 4, and Unity
 
+### Homebrew
+```
+brew tap handsomecode/UnityBuiltKit https://github.com/handsomecode/UnityBuildKit.git
+brew install UnityBuildKit
+```
+
 ### Make
 ```
 git clone https://github.com/handsomecode/UnityBuildKit

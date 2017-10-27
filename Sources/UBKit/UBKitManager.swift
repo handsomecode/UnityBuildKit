@@ -42,6 +42,19 @@ class UBKitManager {
         self.xcodeProjectYMLFileName = "project.yml"
     }
 
+    func performInitializeTasks() -> Result {
+        print("\n----------")
+        print("Initializing")
+        print("----------")
+
+        let initResult = initializeConfiguration()
+        guard initResult == .success else {
+            return initResult
+        }
+
+        return .success
+    }
+
     func performGenerateTasks() -> Result {
         print("\n----------")
         print("Creating iOS Project")
@@ -93,6 +106,17 @@ class UBKitManager {
 
 // MARK: - Generate
 private extension UBKitManager {
+
+    func initializeConfiguration() -> Result {
+        guard fileManager.createFile(
+            atPath: workingFolderPath.appending("ubconfig.json"),
+            contents: File.configFile(),
+            attributes: nil) else {
+                return .failure(UBKitError.unableToCreateFile("Configuration file"))
+        }
+
+        return .success
+    }
 
     func createiOSProject() -> Result {
         let xcodeProject = XcodeProject(
