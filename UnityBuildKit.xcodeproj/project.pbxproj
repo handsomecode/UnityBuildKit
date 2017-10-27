@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D43456441FA3AD5B00CE9717 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43456431FA3AD5B00CE9717 /* config.swift */; };
 		OBJ_197 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_203 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* Package.swift */; };
 		OBJ_209 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_116 /* Package.swift */; };
@@ -468,6 +469,7 @@
 
 /* Begin PBXFileReference section */
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D43456431FA3AD5B00CE9717 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		OBJ_100 /* PBXSourcesBuildPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXSourcesBuildPhase.swift; sourceTree = "<group>"; };
@@ -747,6 +749,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D43456421FA3AD3100CE9717 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				D43456431FA3AD5B00CE9717 /* config.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		OBJ_11 /* Unity */ = {
 			isa = PBXGroup;
 			children = (
@@ -1014,7 +1024,7 @@
 			path = ".build/checkouts/XcodeGen.git--7277681520713665102/Sources/ProjectSpec";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1025,7 +1035,6 @@
 				OBJ_44 /* Dependencies */,
 				OBJ_180 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_57 /* XcodeGenKit */ = {
@@ -1140,6 +1149,7 @@
 		OBJ_9 /* Files */ = {
 			isa = PBXGroup;
 			children = (
+				D43456421FA3AD3100CE9717 /* Config */,
 				OBJ_10 /* File.swift */,
 				OBJ_11 /* Unity */,
 				OBJ_13 /* UnityBridge */,
@@ -1493,7 +1503,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_180 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1611,6 +1621,7 @@
 				OBJ_291 /* SpecFile.swift in Sources */,
 				OBJ_292 /* ViewControllerFile.swift in Sources */,
 				OBJ_293 /* Config.swift in Sources */,
+				D43456441FA3AD5B00CE9717 /* config.swift in Sources */,
 				OBJ_294 /* Result.swift in Sources */,
 				OBJ_295 /* Shell.swift in Sources */,
 				OBJ_296 /* UBKitError.swift in Sources */,
