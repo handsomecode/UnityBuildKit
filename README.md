@@ -1,4 +1,6 @@
-![](Assets/ubk_logo.png)
+<p align="center"> 
+    <img src="Assets/ubk_logo.png">
+</p>
 
 <p>
     <img src="https://img.shields.io/badge/version-0.9.0-blue.svg?style=flat-square" />
