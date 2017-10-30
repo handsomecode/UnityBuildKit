@@ -1,8 +1,7 @@
 <p align="center"> 
     <img src="Assets/ubk_logo.png">
 </p>
-
-<p>
+<p align="center">
     <img src="https://img.shields.io/badge/version-0.9.0-blue.svg?style=flat-square" />
     <a href="https://github.com/handsomecode/UnityBuildKit/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"/>
