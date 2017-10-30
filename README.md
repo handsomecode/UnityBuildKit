@@ -1,3 +1,5 @@
+![](Assets/ubk_logo.png)
+
 <p>
     <img src="https://img.shields.io/badge/version-0.9.0-blue.svg?style=flat-square" />
     <a href="https://github.com/handsomecode/UnityBuildKit/blob/master/LICENSE">
