@@ -60,21 +60,21 @@ class UBKitManager {
             return iOSGenerationResult
         }
 
-//        print("\n----------")
-//        print("⚙️  Creating Unity Project")
-//        print("----------")
-//        let unityGenerationResult = createUnityProject()
-//        guard unityGenerationResult == .success else {
-//            return unityGenerationResult
-//        }
-//
-//        print("\n----------")
-//        print("⚙️  Copying Unity Files")
-//        print("----------")
-//        let copyFilesResult = copyUnityFiles(refresh: false)
-//        guard copyFilesResult == .success else {
-//            return copyFilesResult
-//        }
+        print("\n----------")
+        print("⚙️  Creating Unity Project")
+        print("----------")
+        let unityGenerationResult = createUnityProject()
+        guard unityGenerationResult == .success else {
+            return unityGenerationResult
+        }
+
+        print("\n----------")
+        print("⚙️  Copying Unity Files")
+        print("----------")
+        let copyFilesResult = copyUnityFiles(refresh: false)
+        guard copyFilesResult == .success else {
+            return copyFilesResult
+        }
 
         return .success
     }
