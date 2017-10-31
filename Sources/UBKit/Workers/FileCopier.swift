@@ -46,10 +46,10 @@ class FileCopier {
     private var classesGroup: PBXGroup?
     private var libsGroup: PBXGroup?
 
-    init(config: Config, workingPath: String, xcodeProjectPath: String) {
+    init(config: Config) {
         self.config = config
-        self.workingPath = workingPath
-        self.xcodeProjectPath = xcodeProjectPath
+        self.workingPath = config.unityProjectPath
+        self.xcodeProjectPath = config.iOSProjectPath
         self.xcodeProjectFilePath = String(format: "%@%@%@", xcodeProjectPath, config.projectName, ".xcodeproj")
     }
 

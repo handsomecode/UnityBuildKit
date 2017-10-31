@@ -27,20 +27,17 @@ class UnityProject {
 
     private let workingPath: String
     private let projectName: String
-    private let refreshScriptName: String
     private let unitySceneName: String
 
     private let fileManager = FileManager()
     private lazy var shell = Shell()
     private let unityAppPath: String
 
-    init(projectName: String, workingPath: String, unityAppPath: String, sceneName: String) {
-        self.projectName = projectName
-        self.workingPath = workingPath
-        self.unityAppPath = unityAppPath
-        self.unitySceneName = sceneName
-
-        self.refreshScriptName = "refreshProjects.swift"
+    init(config: Config) {
+        self.projectName = config.projectName
+        self.workingPath = config.unityProjectPath
+        self.unityAppPath = config.unityPath
+        self.unitySceneName = config.unitySceneName
     }
 
     func create() -> Result {
@@ -141,7 +138,14 @@ private extension UnityProject {
             atPath: editorFilePath.appending("iOSBuildScript.cs"),
             contents: File.unityBuildScriptFile(),
             attributes: nil) else {
-            return .failure(UBKitError.unableToCreateFile("Unity iOS Build Script"))
+                return .failure(UBKitError.unableToCreateFile("Unity iOS Build Script"))
+        }
+
+        guard fileManager.createFile(
+            atPath: editorFilePath.appending("iOSRefreshScript.cs"),
+            contents: File.unityRefreshScriptFile(),
+            attributes: nil) else {
+                return .failure(UBKitError.unableToCreateFile("Unity iOS Refresh Script"))
         }
 
         return .success
@@ -180,6 +184,45 @@ private extension UnityProject {
                 return .success
             } else {
                 return .failure(UBKitError.shellCommand("Initializing Unity Project"))
+            }
+        case .timedOut:
+            return .failure(UBKitError.waitTimedOut)
+        }
+    }
+
+    func refreshProject() -> Result {
+        let semaphore = DispatchSemaphore(value: 0)
+        var statusCode: Int32 = 999
+        let projectPath = workingPath.appending(projectName)
+        let outputLocation = projectPath.appending("/").appending("ios_build")
+
+        // MARK: - Main
+        print("Building \(unitySceneName) for iOS...")
+        print("This will take some time to complete\n")
+        shell.perform(
+            unityAppPath,
+            Unity.Arguments.batchmode,
+            Unity.Arguments.projectPath,
+            projectPath,
+            Unity.Arguments.outputLocation,
+            outputLocation,
+            Unity.Arguments.sceneName,
+            unitySceneName,
+            Unity.Arguments.executeMethod,
+            Unity.refreshAction,
+            Unity.Arguments.quit,
+            terminationHandler: { (process) in
+                statusCode = process.terminationStatus
+                semaphore.signal()
+        })
+
+        let timeout = semaphore.wait(timeout: DispatchTime.now()+60.0)
+        switch timeout {
+        case .success:
+            if statusCode == 0 {
+                return .success
+            } else {
+                return .failure(UBKitError.shellCommand("Building Unity Project"))
             }
         case .timedOut:
             return .failure(UBKitError.waitTimedOut)

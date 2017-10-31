@@ -36,11 +36,11 @@ class XcodeProject {
     private let specFileName: String
     private var error: Error?
 
-    init(projectName: String, bundleIdentifier: String, workingPath: String, unityVersion: String) {
-        self.projectName = projectName
-        self.bundleIdentifier = bundleIdentifier
-        self.workingPath = workingPath
-        self.unityVersion = unityVersion
+    init(config: Config) {
+        self.projectName = config.projectName
+        self.bundleIdentifier = config.bundleID
+        self.workingPath = config.iOSProjectPath
+        self.unityVersion = config.unityVersion
 
         self.projectPath = workingPath.appending(projectName).appending("/")
         self.vendorFolderPath = workingPath.appending("Vendor/UBK/")

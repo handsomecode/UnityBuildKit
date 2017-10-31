@@ -52,7 +52,7 @@ public final class UBKit {
                     return
                 }
                 if let configJSON = try JSONSerialization.jsonObject(with: fileData, options: .allowFragments) as? [String : String] {
-                    guard let config = Config(json: configJSON) else {
+                    guard let config = Config(json: configJSON, currentPath: fileManager.currentDirectoryPath) else {
                         completion(UBKitError.invalidConfigFile)
                         return
                     }

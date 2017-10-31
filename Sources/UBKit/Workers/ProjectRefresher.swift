@@ -31,9 +31,9 @@ class ProjectRefresher {
     private let fileManager = FileManager()
     private lazy var shell = Shell()
 
-    init(config: Config, workingPath: String) {
+    init(config: Config) {
         self.config = config
-        self.workingPath = workingPath
+        self.workingPath = config.unityProjectPath
     }
 
     func refresh() -> Result {
@@ -68,6 +68,45 @@ private extension ProjectRefresher {
             config.unitySceneName,
             Unity.Arguments.executeMethod,
             Unity.buildAction,
+            Unity.Arguments.quit,
+            terminationHandler: { (process) in
+                statusCode = process.terminationStatus
+                semaphore.signal()
+        })
+
+        let timeout = semaphore.wait(timeout: DispatchTime.now()+60.0)
+        switch timeout {
+        case .success:
+            if statusCode == 0 {
+                return .success
+            } else {
+                return .failure(UBKitError.shellCommand("Building Unity Project"))
+            }
+        case .timedOut:
+            return .failure(UBKitError.waitTimedOut)
+        }
+    }
+
+    func refreshUnityProject() -> Result {
+        let semaphore = DispatchSemaphore(value: 0)
+        var statusCode: Int32 = 999
+        let projectPath = workingPath.appending(config.projectName)
+        let outputLocation = projectPath.appending("/").appending("ios_build")
+
+        // MARK: - Main
+        print("Building \(config.unitySceneName) for iOS...")
+        print("This will take some time to complete\n")
+        shell.perform(
+            config.unityPath,
+            Unity.Arguments.batchmode,
+            Unity.Arguments.projectPath,
+            projectPath,
+            Unity.Arguments.outputLocation,
+            outputLocation,
+            Unity.Arguments.sceneName,
+            config.unitySceneName,
+            Unity.Arguments.executeMethod,
+            Unity.refreshAction,
             Unity.Arguments.quit,
             terminationHandler: { (process) in
                 statusCode = process.terminationStatus

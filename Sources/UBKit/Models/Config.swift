@@ -38,12 +38,16 @@ struct Config {
     let unityPath: String
     let unityVersion: String
     let unitySceneName: String
+    let unityProjectPath: String
+    let iOSProjectPath: String
+
     let relativeIOSBuildPath: String
     let relativeUnityClassesPath: String
     let relativeUnityLibrariesPath: String
     let relativeUnityDataPath: String
 
-    init?(json: [String : String]) {
+
+    init?(json: [String : String], currentPath: String) {
         guard let projectName = json[Keys.projectName],
             let bundleID = json[Keys.bundleID], !bundleID.isEmpty,
             let unityPath = json[Config.Keys.unityPath], !unityPath.isEmpty,
@@ -53,7 +57,7 @@ struct Config {
         }
 
         if projectName.isEmpty {
-            guard let folderName = FileManager.default.currentDirectoryPath.components(separatedBy: "/").last else {
+            guard let folderName = currentPath.components(separatedBy: "/").last else {
                 return nil
             }
             self.projectName = folderName
@@ -70,6 +74,9 @@ struct Config {
         self.bundleID = bundleID
         self.unityPath = unityPath
         self.unityVersion = unityVersion
+
+        self.unityProjectPath = currentPath.appending("/Unity/")
+        self.iOSProjectPath = currentPath.appending("/iOS/")
 
         self.relativeIOSBuildPath = self.projectName.appending("/ios_build/")
         self.relativeUnityClassesPath = self.projectName.appending("/ios_build/Classes/")

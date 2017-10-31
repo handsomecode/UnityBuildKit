@@ -28,8 +28,6 @@ class UBKitManager {
     private let config: Config
     private let xcodeProjectYMLFileName: String
     private let workingFolderPath: String
-    private let workingiOSFolderPath: String
-    private let workingUnityFolderPath: String
 
     private let fileManager = FileManager.default
 
@@ -37,8 +35,6 @@ class UBKitManager {
         self.config = config
 
         self.workingFolderPath = fileManager.currentDirectoryPath.appending("/")
-        self.workingiOSFolderPath = workingFolderPath.appending("iOS/")
-        self.workingUnityFolderPath = workingFolderPath.appending("Unity/")
         self.xcodeProjectYMLFileName = "project.yml"
     }
 
@@ -119,36 +115,22 @@ private extension UBKitManager {
     }
 
     func createiOSProject() -> Result {
-        let xcodeProject = XcodeProject(
-            projectName: config.projectName,
-            bundleIdentifier: config.bundleID,
-            workingPath: workingiOSFolderPath,
-            unityVersion: config.unityVersion
-        )
+        let xcodeProject = XcodeProject(config: config)
         return xcodeProject.create()
     }
 
     func createUnityProject() -> Result {
-        let unityProject = UnityProject(
-            projectName: config.projectName,
-            workingPath: workingUnityFolderPath,
-            unityAppPath: config.unityPath,
-            sceneName: config.unitySceneName
-        )
+        let unityProject = UnityProject(config: config)
         return unityProject.create()
     }
 
     func copyUnityFiles(refresh: Bool) -> Result {
-        let fileCopier = FileCopier(
-            config: config,
-            workingPath: workingUnityFolderPath,
-            xcodeProjectPath: workingiOSFolderPath
-        )
+        let fileCopier = FileCopier(config: config)
         return fileCopier.copyFiles(refresh: refresh)
     }
 
     func refreshProjects() -> Result {
-        let refresher = ProjectRefresher(config: config, workingPath: workingUnityFolderPath)
+        let refresher = ProjectRefresher(config: config)
         return refresher.refresh()
     }
 }

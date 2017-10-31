@@ -28,6 +28,7 @@ import Foundation
  */
 struct Unity {
     static let buildAction = "iOSBuilder.Perform"
+    static let refreshAction = "iOSRefresher.Perform"
 
     struct Arguments {
         static let projectPath = "-projectPath"

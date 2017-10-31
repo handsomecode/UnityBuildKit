@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D43456441FA3AD5B00CE9717 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43456431FA3AD5B00CE9717 /* config.swift */; };
+		D489BB601FA8D20800FC1141 /* UnityEditorRefreshScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489BB5F1FA8D20800FC1141 /* UnityEditorRefreshScript.swift */; };
 		OBJ_197 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_203 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* Package.swift */; };
 		OBJ_209 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_116 /* Package.swift */; };
@@ -470,6 +471,7 @@
 /* Begin PBXFileReference section */
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43456431FA3AD5B00CE9717 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
+		D489BB5F1FA8D20800FC1141 /* UnityEditorRefreshScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityEditorRefreshScript.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		OBJ_100 /* PBXSourcesBuildPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXSourcesBuildPhase.swift; sourceTree = "<group>"; };
@@ -566,8 +568,6 @@
 		OBJ_37 /* XcodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeGenerator.swift; sourceTree = "<group>"; };
 		OBJ_38 /* XcodeProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeProject.swift; sourceTree = "<group>"; };
 		OBJ_40 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		OBJ_42 /* Formula */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Formula; sourceTree = SOURCE_ROOT; };
-		OBJ_43 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = SOURCE_ROOT; };
 		OBJ_47 /* BuildScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildScript.swift; sourceTree = "<group>"; };
 		OBJ_48 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		OBJ_49 /* Decoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decoding.swift; sourceTree = "<group>"; };
@@ -761,6 +761,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_12 /* UnityEditorScript.swift */,
+				D489BB5F1FA8D20800FC1141 /* UnityEditorRefreshScript.swift */,
 			);
 			path = Unity;
 			sourceTree = "<group>";
@@ -1030,8 +1031,6 @@
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_41 /* Tests */,
-				OBJ_42 /* Formula */,
-				OBJ_43 /* Assets */,
 				OBJ_44 /* Dependencies */,
 				OBJ_180 /* Products */,
 			);
@@ -1615,6 +1614,7 @@
 				OBJ_285 /* UnityUtilsFile.swift in Sources */,
 				OBJ_286 /* AppDelegateFile.swift in Sources */,
 				OBJ_287 /* AppIconContentsFile.swift in Sources */,
+				D489BB601FA8D20800FC1141 /* UnityEditorRefreshScript.swift in Sources */,
 				OBJ_288 /* InfoPlistFile.swift in Sources */,
 				OBJ_289 /* LaunchScreenFile.swift in Sources */,
 				OBJ_290 /* MainStoryboardFile.swift in Sources */,
