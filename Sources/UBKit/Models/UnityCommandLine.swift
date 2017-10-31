@@ -28,12 +28,13 @@ import Foundation
  */
 struct UnityCommandLine {
     static let buildAction = "iOSBuilder.Perform"
-    static let refreshAction = "iOSRefresher.Perform"
+    static let refreshAction = "XcodeRefresher.Refresh"
 
     struct Arguments {
         static let projectPath = "-projectPath"
         static let createProject = "-createProject"
         static let outputLocation = "-outputLocation"
+        static let buildPath = "-buildPath"
         static let sceneName = "-sceneName"
         static let executeMethod = "-executeMethod"
         static let batchmode = "-batchmode"

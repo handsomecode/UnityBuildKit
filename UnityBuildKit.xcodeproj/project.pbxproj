@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D43456441FA3AD5B00CE9717 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43456431FA3AD5B00CE9717 /* config.swift */; };
+		D48370ED1FA9137E00A05A8B /* UnityProjectScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48370EB1FA912B200A05A8B /* UnityProjectScript.swift */; };
 		D489BB601FA8D20800FC1141 /* UnityEditorRefreshScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489BB5F1FA8D20800FC1141 /* UnityEditorRefreshScript.swift */; };
 		OBJ_197 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_203 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* Package.swift */; };
@@ -470,6 +471,7 @@
 /* Begin PBXFileReference section */
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43456431FA3AD5B00CE9717 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
+		D48370EB1FA912B200A05A8B /* UnityProjectScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityProjectScript.swift; sourceTree = "<group>"; };
 		D489BB5F1FA8D20800FC1141 /* UnityEditorRefreshScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityEditorRefreshScript.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -760,6 +762,7 @@
 			children = (
 				OBJ_12 /* UnityEditorBuildScript.swift */,
 				D489BB5F1FA8D20800FC1141 /* UnityEditorRefreshScript.swift */,
+				D48370EB1FA912B200A05A8B /* UnityProjectScript.swift */,
 			);
 			path = Unity;
 			sourceTree = "<group>";
@@ -1637,6 +1640,7 @@
 				OBJ_295 /* Shell.swift in Sources */,
 				OBJ_296 /* UBKitError.swift in Sources */,
 				OBJ_297 /* UnityCommandLine.swift in Sources */,
+				D48370ED1FA9137E00A05A8B /* UnityProjectScript.swift in Sources */,
 				OBJ_298 /* UBKit.swift in Sources */,
 				OBJ_299 /* UBKitManager.swift in Sources */,
 				OBJ_300 /* FileCopier.swift in Sources */,

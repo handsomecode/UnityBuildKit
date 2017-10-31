@@ -29,11 +29,12 @@ class XcodeProject {
     private let bundleIdentifier: String
     private let workingPath: String
     private let unityVersion: String
-
-    private let fileManager = FileManager()
     private let projectPath: String
     private let vendorFolderPath: String
     private let specFileName: String
+    private let bridgingFilesPath: String
+
+    private let fileManager = FileManager()
     private var error: Error?
 
     init(config: Config) {
@@ -45,6 +46,7 @@ class XcodeProject {
         self.projectPath = workingPath.appending(projectName).appending("/")
         self.vendorFolderPath = workingPath.appending("Vendor/UBK/")
         self.specFileName = "project.yml"
+        self.bridgingFilesPath = projectPath.appending("UnityBridge/")
     }
 
     func create() -> Result {
@@ -221,29 +223,38 @@ private extension XcodeProject {
     }
 
     func createUnityBridgeFiles() -> Result {
+        do {
+            try fileManager.createDirectory(
+                atPath: bridgingFilesPath,
+                withIntermediateDirectories: false,
+                attributes: nil)
+        } catch {
+            return .failure(UBKitError.unableToCreateFile("Unity Bridging Header"))
+        }
+
         guard fileManager.createFile(
-            atPath: workingPath.appending("UnityBridge.h"),
+            atPath: bridgingFilesPath.appending("UnityBridge.h"),
             contents: File.unityBridgeFile(),
             attributes: nil) else {
             return .failure(UBKitError.unableToCreateFile("Unity Bridging Header"))
         }
 
         guard fileManager.createFile(
-            atPath: workingPath.appending("UnityUtils.h"),
+            atPath: bridgingFilesPath.appending("UnityUtils.h"),
             contents: File.unityUtilsHeaderFile(),
             attributes: nil) else {
             return .failure(UBKitError.unableToCreateFile("Unity Utils Header"))
         }
 
         guard fileManager.createFile(
-            atPath: workingPath.appending("UnityUtils.mm"),
+            atPath: bridgingFilesPath.appending("UnityUtils.mm"),
             contents: File.unityUtilsFile(),
             attributes: nil) else {
             return .failure(UBKitError.unableToCreateFile("Unity Utils"))
         }
 
         guard fileManager.createFile(
-            atPath: workingPath.appending("UnityMessageBridge.h"),
+            atPath: bridgingFilesPath.appending("UnityMessageBridge.h"),
             contents: File.unityMessageBridgeFile(),
             attributes: nil) else {
             return .failure(UBKitError.unableToCreateFile("Unity Message Bridge"))

@@ -32,6 +32,7 @@ public enum UBKitError: Error, CustomStringConvertible {
     case invalidXcodeProject(String)
     case missingGroup(String)
     case invalidUnityProject
+    case missingUnityFile(String)
     case unableToCreateXcodeProjectGroup(String)
     case unableToSaveXcodeProject
     case waitTimedOut
@@ -57,6 +58,8 @@ public enum UBKitError: Error, CustomStringConvertible {
             return "Could not find \(str)"
         case .invalidUnityProject:
             return "Invalid Unity Project"
+        case .missingUnityFile(let str):
+            return "Missing Unity File: \(str)"
         case .unableToCreateXcodeProjectGroup(let str):
             return "Could not create Xcode Group: \(str)"
         case .unableToSaveXcodeProject:

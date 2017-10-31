@@ -51,7 +51,7 @@ class UnityProject {
         }
 
         print("Generating Unity project")
-        print("This will take some time to complete\n")
+        print("This may take some time to complete\n")
         let projectGenerationResult = generateUnityProject()
         guard projectGenerationResult == .success else {
             return projectGenerationResult
@@ -64,7 +64,7 @@ class UnityProject {
         }
 
         print("\n----------")
-        print("Initializing projects")
+        print("⚙️  Initializing projects")
         print("----------")
         let initializationResult = runInitialProjectBuild()
         guard initializationResult == .success else {
@@ -161,6 +161,13 @@ private extension UnityProject {
                 return .failure(UBKitError.unableToCreateFile("Unity iOS Refresh Script"))
         }
 
+        guard fileManager.createFile(
+            atPath: editorFilePath.appending("ProjectScript.cs"),
+            contents: File.unityProjectScriptFile(),
+            attributes: nil) else {
+                return .failure(UBKitError.unableToCreateFile("Unity Project Script"))
+        }
+
         return .success
     }
 
@@ -172,7 +179,7 @@ private extension UnityProject {
 
         // MARK: - Main
         print("Initializing Unity scene \(unitySceneNames[0]) for iOS...")
-        print("This may take some time to complete\n")
+        print("This will take some time to complete\n")
         shell.perform(
             unityAppPath,
             UnityCommandLine.Arguments.batchmode,
@@ -186,6 +193,7 @@ private extension UnityProject {
             UnityCommandLine.buildAction,
             UnityCommandLine.Arguments.quit,
             terminationHandler: { (process) in
+                print(process.terminationStatus)
                 statusCode = process.terminationStatus
                 semaphore.signal()
         })
