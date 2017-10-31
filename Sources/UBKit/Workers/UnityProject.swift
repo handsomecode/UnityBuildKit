@@ -25,6 +25,7 @@ import Foundation
 
 class UnityProject {
 
+    private let config: Config
     private let workingPath: String
     private let projectName: String
     private let unitySceneNames: [String]
@@ -34,6 +35,7 @@ class UnityProject {
     private let unityAppPath: String
 
     init(config: Config) {
+        self.config = config
         self.projectName = config.iOS.projectName
         self.workingPath = config.unity.projectPath
         self.unityAppPath = config.unity.applicationPath
@@ -163,7 +165,7 @@ private extension UnityProject {
 
         guard fileManager.createFile(
             atPath: editorFilePath.appending("ProjectScript.cs"),
-            contents: File.unityProjectScriptFile(),
+            contents: File.unityProjectScriptFile(projectName: projectName, iOSProjectPath: config.iOS.projectPath),
             attributes: nil) else {
                 return .failure(UBKitError.unableToCreateFile("Unity Project Script"))
         }

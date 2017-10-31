@@ -26,7 +26,7 @@ import Foundation
 
 extension File {
 
-    class func unityProjectScriptFile() -> Data? {
+    class func unityProjectScriptFile(projectName: String, iOSProjectPath: String) -> Data? {
         let file = """
         using System.Linq;
         using System.Collections.Generic;
@@ -39,11 +39,11 @@ extension File {
 
         public class XcodeRefresher {
 
-            private const string XcodeProjectRoot = "../../iOS";
-            private const string XcodeProjectName = "UnityBuildKit";
+            private const string iOSProjectRoot = \"\(iOSProjectPath)\";
+            private const string iOSProjectName = \"\(projectName)\";
             private const string ClassesProjectPath = "Vendor/UBK/Classes";
             private const string LibrariesProjectPath = "Vendor/UBK/Libraries";
-            private const string PbxFilePath = XcodeProjectName + ".xcodeproj/project.pbxproj";
+            private const string PbxFilePath = iOSProjectName + ".xcodeproj/project.pbxproj";
 
             public static void Refresh() {
                 var pathToBuiltProject = GetArg ("-buildPath");
@@ -59,19 +59,19 @@ extension File {
 
             private static void UpdateUnityProjectFiles(string pathToBuiltProject) {
                 var pbx = new PBXProject();
-                var pbxPath = Path.Combine(XcodeProjectRoot, PbxFilePath);
+                var pbxPath = Path.Combine(iOSProjectRoot, PbxFilePath);
                 pbx.ReadFromFile(pbxPath);
 
                 ProcessUnityDirectory(
                     pbx,
                     Path.Combine(pathToBuiltProject, "Classes"),
-                    Path.Combine(XcodeProjectRoot, ClassesProjectPath),
+                    Path.Combine(iOSProjectRoot, ClassesProjectPath),
                     ClassesProjectPath);
 
                 ProcessUnityDirectory(
                     pbx,
                     Path.Combine(pathToBuiltProject, "Libraries"),
-                    Path.Combine(XcodeProjectRoot, LibrariesProjectPath),
+                    Path.Combine(iOSProjectRoot, LibrariesProjectPath),
                     LibrariesProjectPath);
 
                 pbx.WriteToFile(pbxPath);
@@ -94,7 +94,7 @@ extension File {
             /// project for Unity code files. E.g. "DempApp/Unity/Classes" for all files
             /// under Classes folder from Unity iOS build output.</param>
             private static void ProcessUnityDirectory(PBXProject pbx, string src, string dest, string projectPathPrefix) {
-                var targetGuid = pbx.TargetGuidByName(XcodeProjectName);
+                var targetGuid = pbx.TargetGuidByName(iOSProjectName);
 
                 string[] newFiles, extraFiles;
                 CompareDirectories(src, dest, out newFiles, out extraFiles);
