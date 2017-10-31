@@ -23,64 +23,116 @@
 
 import Foundation
 
-struct Config {
+struct Config: Decodable {
 
-    struct Keys {
-        static let projectName = "project_name"
-        static let bundleID = "bundle_id"
-        static let unityPath = "unity_path"
-        static let unityVersion = "unity_version"
-        static let unitySceneName = "unity_scene_name"
+    enum ConfigKeys: String, CodingKey {
+        case ios
+        case unity
     }
 
+    let iOS: iOSConfig
+    let unity: UnityConfig
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ConfigKeys.self)
+        self.iOS = try iOSConfig(from: container.superDecoder(forKey: .ios))
+        self.unity = try UnityConfig(from: container.superDecoder(forKey: .unity))
+    }
+}
+
+struct iOSConfig: Decodable {
     let projectName: String
-    let bundleID: String
-    let unityPath: String
-    let unityVersion: String
-    let unitySceneName: String
-    let unityProjectPath: String
-    let iOSProjectPath: String
+    let bundleId: String
+    let projectPath: String
 
+    private enum Keys: String, CodingKey {
+        case projectName
+        case bundleId
+        case projectPath
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Keys.self)
+        let projectName = try container.decode(String.self, forKey: .projectName)
+        guard !projectName.isEmpty else {
+            throw UBKitError.invalidConfigArgument(Keys.projectName.rawValue)
+        }
+
+        let bundleId = try container.decode(String.self, forKey: .bundleId)
+        guard !bundleId.isEmpty else {
+            throw UBKitError.invalidConfigArgument(Keys.bundleId.rawValue)
+        }
+
+        let projectPath: String
+        if let path = try? container.decode(String.self, forKey: .projectPath), !path.isEmpty {
+            projectPath = path
+        } else {
+            projectPath = FileManager.default.currentDirectoryPath.appending("/iOS/")
+        }
+
+        self.projectName = projectName
+        self.bundleId = bundleId
+        self.projectPath = projectPath
+    }
+}
+
+struct UnityConfig {
+    let projectName: String
+    let applicationPath: String
+    let version: String
+    let projectPath: String
+    let sceneNames: [String]
     let relativeIOSBuildPath: String
-    let relativeUnityClassesPath: String
-    let relativeUnityLibrariesPath: String
-    let relativeUnityDataPath: String
+    let relativeClassesPath: String
+    let relativeLibrariesPath: String
+    let relativeDataPath: String
 
+    private enum Keys: String, CodingKey {
+        case applicationPath
+        case version
+        case projectPath
+        case projectName
+        case sceneNames
+    }
 
-    init?(json: [String : String], currentPath: String) {
-        guard let projectName = json[Keys.projectName],
-            let bundleID = json[Keys.bundleID], !bundleID.isEmpty,
-            let unityPath = json[Config.Keys.unityPath], !unityPath.isEmpty,
-            let unityVersion = json[Config.Keys.unityVersion], !unityVersion.isEmpty,
-            let sceneName = json[Config.Keys.unitySceneName] else {
-                return nil
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Keys.self)
+        let projectName = try container.decode(String.self, forKey: .projectName)
+        guard !projectName.isEmpty else {
+            throw UBKitError.invalidConfigArgument(Keys.projectName.rawValue)
         }
 
-        if projectName.isEmpty {
-            guard let folderName = currentPath.components(separatedBy: "/").last else {
-                return nil
-            }
-            self.projectName = folderName
+        let appPath = try container.decode(String.self, forKey: .applicationPath)
+        guard !appPath.isEmpty else {
+            throw UBKitError.invalidConfigArgument(Keys.applicationPath.rawValue)
+        }
+
+        let version = try container.decode(String.self, forKey: .version)
+        guard !version.isEmpty else {
+            throw UBKitError.invalidConfigArgument(Keys.version.rawValue)
+        }
+
+        let projectPath: String
+        if let path = try? container.decode(String.self, forKey: .projectPath), !path.isEmpty {
+            projectPath = path
         } else {
-            self.projectName = projectName
+            projectPath = FileManager.default.currentDirectoryPath.appending("/Unity/")
         }
 
-        if sceneName.isEmpty {
-            self.unitySceneName = self.projectName
-        } else {
-            self.unitySceneName = sceneName
+        let sceneNames = try container.decode([String].self, forKey: .sceneNames)
+        guard sceneNames.count > 0 else {
+            throw UBKitError.invalidConfigArgument(Keys.sceneNames.rawValue)
         }
 
-        self.bundleID = bundleID
-        self.unityPath = unityPath
-        self.unityVersion = unityVersion
+        self.projectName = projectName
+        self.applicationPath = appPath
+        self.version = version
+        self.projectPath = projectPath
+        self.sceneNames = sceneNames
 
-        self.unityProjectPath = currentPath.appending("/Unity/")
-        self.iOSProjectPath = currentPath.appending("/iOS/")
-
-        self.relativeIOSBuildPath = self.projectName.appending("/ios_build/")
-        self.relativeUnityClassesPath = self.projectName.appending("/ios_build/Classes/")
-        self.relativeUnityLibrariesPath = self.projectName.appending("/ios_build/Libraries/")
-        self.relativeUnityDataPath = self.projectName.appending("/ios_build/Data/")
+        self.relativeIOSBuildPath = projectName.appending("/ios_build/")
+        self.relativeClassesPath = self.relativeIOSBuildPath.appending("Classes/")
+        self.relativeLibrariesPath = self.relativeIOSBuildPath.appending("Libraries/")
+        self.relativeDataPath = self.relativeIOSBuildPath.appending("Data/")
     }
 }

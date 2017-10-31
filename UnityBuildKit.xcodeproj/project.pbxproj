@@ -44,7 +44,7 @@
 		OBJ_294 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* Result.swift */; };
 		OBJ_295 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Shell.swift */; };
 		OBJ_296 /* UBKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* UBKitError.swift */; };
-		OBJ_297 /* Unity.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Unity.swift */; };
+		OBJ_297 /* UnityCommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* UnityCommandLine.swift */; };
 		OBJ_298 /* UBKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* UBKit.swift */; };
 		OBJ_299 /* UBKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* UBKitManager.swift */; };
 		OBJ_300 /* FileCopier.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* FileCopier.swift */; };
@@ -559,7 +559,7 @@
 		OBJ_27 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		OBJ_28 /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		OBJ_29 /* UBKitError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKitError.swift; sourceTree = "<group>"; };
-		OBJ_30 /* Unity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unity.swift; sourceTree = "<group>"; };
+		OBJ_30 /* UnityCommandLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityCommandLine.swift; sourceTree = "<group>"; };
 		OBJ_31 /* UBKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKit.swift; sourceTree = "<group>"; };
 		OBJ_32 /* UBKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKitManager.swift; sourceTree = "<group>"; };
 		OBJ_34 /* FileCopier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCopier.swift; sourceTree = "<group>"; };
@@ -949,7 +949,7 @@
 				OBJ_27 /* Result.swift */,
 				OBJ_28 /* Shell.swift */,
 				OBJ_29 /* UBKitError.swift */,
-				OBJ_30 /* Unity.swift */,
+				OBJ_30 /* UnityCommandLine.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1494,6 +1494,20 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					"AEXML::AEXML" = {
+						LastSwiftMigration = 0900;
+					};
+					"JSONUtilities::JSONUtilities" = {
+						LastSwiftMigration = 0900;
+					};
+					"PathKit::PathKit" = {
+						LastSwiftMigration = 0900;
+					};
+					"Spectre::Spectre" = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "UnityBuildKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1625,7 +1639,7 @@
 				OBJ_294 /* Result.swift in Sources */,
 				OBJ_295 /* Shell.swift in Sources */,
 				OBJ_296 /* UBKitError.swift in Sources */,
-				OBJ_297 /* Unity.swift in Sources */,
+				OBJ_297 /* UnityCommandLine.swift in Sources */,
 				OBJ_298 /* UBKit.swift in Sources */,
 				OBJ_299 /* UBKitManager.swift in Sources */,
 				OBJ_300 /* FileCopier.swift in Sources */,

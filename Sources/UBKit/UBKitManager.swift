@@ -128,22 +128,13 @@ private extension UBKitManager {
         let fileCopier = FileCopier(config: config)
         return fileCopier.copyFiles(refresh: refresh)
     }
-
-    func refreshProjects() -> Result {
-        let refresher = ProjectRefresher(config: config)
-        return refresher.refresh()
-    }
 }
 
 // MARK: - Refresh
 private extension UBKitManager {
 
     func refreshXcodeProject() -> Result {
-        let refreshResult = refreshProjects()
-        guard refreshResult == .success else {
-            return refreshResult
-        }
-
-        return .success
+        let unityProject = UnityProject(config: config)
+        return unityProject.refresh()
     }
 }

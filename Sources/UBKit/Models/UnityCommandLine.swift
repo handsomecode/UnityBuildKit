@@ -1,5 +1,5 @@
 //
-//  Unity.swift
+//  UnityCommandLine.swift
 //
 //  Copyright (c) 2017 Handsome
 //
@@ -26,7 +26,7 @@ import Foundation
 /**
  A helper class for interacting with the Unity command line.
  */
-struct Unity {
+struct UnityCommandLine {
     static let buildAction = "iOSBuilder.Perform"
     static let refreshAction = "iOSRefresher.Perform"
 

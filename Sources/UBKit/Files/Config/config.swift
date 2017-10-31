@@ -28,11 +28,18 @@ extension File {
     class func configFile() -> Data? {
         let file = """
         {
-            "project_name": "",
-            "bundle_id": "<com.example.project_name>",
-            "unity_path": "<path_to_Unity>",
-            "unity_version": "",
-            "unity_scene_name": ""
+            "ios": {
+                "projectName": "",
+                "bundleId": "<com.example.project_name>",
+                "projectPath": ""
+            },
+            "unity": {
+                "projectName": "",
+                "applicationPath": "<path_to_Unity>",
+                "version": "",
+                "projectPath": "",
+                "unity_scene_name": ""
+            }
         }
         """.data(using: .utf8)
         return file

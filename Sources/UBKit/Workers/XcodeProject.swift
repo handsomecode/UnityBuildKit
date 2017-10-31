@@ -37,10 +37,10 @@ class XcodeProject {
     private var error: Error?
 
     init(config: Config) {
-        self.projectName = config.projectName
-        self.bundleIdentifier = config.bundleID
-        self.workingPath = config.iOSProjectPath
-        self.unityVersion = config.unityVersion
+        self.projectName = config.iOS.projectName
+        self.bundleIdentifier = config.iOS.bundleId
+        self.workingPath = config.iOS.projectPath
+        self.unityVersion = config.unity.version
 
         self.projectPath = workingPath.appending(projectName).appending("/")
         self.vendorFolderPath = workingPath.appending("Vendor/UBK/")

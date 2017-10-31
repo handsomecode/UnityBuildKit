@@ -43,24 +43,19 @@ public final class UBKit {
             completion(UBKitError.invalidArguments(arguments[1]))
             return
         }
-
+        
         let workingPath = fileManager.currentDirectoryPath.appending("/")
         if arg != .initialize {
-            do {
-                guard let fileData = fileManager.contents(atPath: workingPath.appending("ubconfig.json")) else {
-                    completion(UBKitError.invalidFolder(workingPath.appending("ubconfig.json")))
-                    return
-                }
-                if let configJSON = try JSONSerialization.jsonObject(with: fileData, options: .allowFragments) as? [String : String] {
-                    guard let config = Config(json: configJSON, currentPath: fileManager.currentDirectoryPath) else {
-                        completion(UBKitError.invalidConfigFile)
-                        return
-                    }
-                    kitManager = UBKitManager(config: config)
-                }
+            guard let fileData = fileManager.contents(atPath: workingPath.appending("ubconfig.json")) else {
+                completion(UBKitError.invalidFolder(workingPath.appending("ubconfig.json")))
+                return
+            }
 
+            do {
+                let config = try JSONDecoder().decode(Config.self, from: fileData)
+                kitManager = UBKitManager(config: config)
             } catch {
-                completion(error)
+                completion(UBKitError.invalidConfigFile(error))
                 return
             }
         }

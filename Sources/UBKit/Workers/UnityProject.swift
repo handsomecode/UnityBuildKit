@@ -27,17 +27,17 @@ class UnityProject {
 
     private let workingPath: String
     private let projectName: String
-    private let unitySceneName: String
+    private let unitySceneNames: [String]
 
     private let fileManager = FileManager()
     private lazy var shell = Shell()
     private let unityAppPath: String
 
     init(config: Config) {
-        self.projectName = config.projectName
-        self.workingPath = config.unityProjectPath
-        self.unityAppPath = config.unityPath
-        self.unitySceneName = config.unitySceneName
+        self.projectName = config.iOS.projectName
+        self.workingPath = config.unity.projectPath
+        self.unityAppPath = config.unity.applicationPath
+        self.unitySceneNames = config.unity.sceneNames
     }
 
     func create() -> Result {
@@ -73,6 +73,19 @@ class UnityProject {
 
         return .success
     }
+
+    func refresh() -> Result {
+        guard UBKit.validatePath(unityAppPath, isDirectory: false) else {
+            return .failure(UBKitError.invalidFolder(unityAppPath))
+        }
+
+        let refreshResult = refreshProject()
+        guard refreshResult == .success else {
+            return refreshResult
+        }
+
+        return .success
+    }
 }
 
 private extension UnityProject {
@@ -97,10 +110,10 @@ private extension UnityProject {
 
         shell.perform(
             unityAppPath,
-            Unity.Arguments.batchmode,
-            Unity.Arguments.createProject,
+            UnityCommandLine.Arguments.batchmode,
+            UnityCommandLine.Arguments.createProject,
             unityProjectPath,
-            Unity.Arguments.quit,
+            UnityCommandLine.Arguments.quit,
             terminationHandler: { (process) in
                 statusCode = process.terminationStatus
                 semaphore.signal()
@@ -158,20 +171,20 @@ private extension UnityProject {
         let outputLocation = projectPath.appending("/").appending("ios_build")
 
         // MARK: - Main
-        print("Building \(unitySceneName) for iOS...")
+        print("Initializing Unity scene \(unitySceneNames[0]) for iOS...")
         print("This may take some time to complete\n")
         shell.perform(
             unityAppPath,
-            Unity.Arguments.batchmode,
-            Unity.Arguments.projectPath,
+            UnityCommandLine.Arguments.batchmode,
+            UnityCommandLine.Arguments.projectPath,
             projectPath,
-            Unity.Arguments.outputLocation,
+            UnityCommandLine.Arguments.outputLocation,
             outputLocation,
-            Unity.Arguments.sceneName,
-            unitySceneName,
-            Unity.Arguments.executeMethod,
-            Unity.buildAction,
-            Unity.Arguments.quit,
+            UnityCommandLine.Arguments.sceneName,
+            unitySceneNames[0],
+            UnityCommandLine.Arguments.executeMethod,
+            UnityCommandLine.buildAction,
+            UnityCommandLine.Arguments.quit,
             terminationHandler: { (process) in
                 statusCode = process.terminationStatus
                 semaphore.signal()
@@ -197,20 +210,20 @@ private extension UnityProject {
         let outputLocation = projectPath.appending("/").appending("ios_build")
 
         // MARK: - Main
-        print("Building \(unitySceneName) for iOS...")
+        print("Refreshing Unity scenes...")
         print("This will take some time to complete\n")
         shell.perform(
             unityAppPath,
-            Unity.Arguments.batchmode,
-            Unity.Arguments.projectPath,
+            UnityCommandLine.Arguments.batchmode,
+            UnityCommandLine.Arguments.projectPath,
             projectPath,
-            Unity.Arguments.outputLocation,
+            UnityCommandLine.Arguments.outputLocation,
             outputLocation,
-            Unity.Arguments.sceneName,
-            unitySceneName,
-            Unity.Arguments.executeMethod,
-            Unity.refreshAction,
-            Unity.Arguments.quit,
+            UnityCommandLine.Arguments.sceneName,
+            unitySceneNames.joined(separator: ","),
+            UnityCommandLine.Arguments.executeMethod,
+            UnityCommandLine.refreshAction,
+            UnityCommandLine.Arguments.quit,
             terminationHandler: { (process) in
                 statusCode = process.terminationStatus
                 semaphore.signal()

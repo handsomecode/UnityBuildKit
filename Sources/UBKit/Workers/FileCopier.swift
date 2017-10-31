@@ -48,9 +48,9 @@ class FileCopier {
 
     init(config: Config) {
         self.config = config
-        self.workingPath = config.unityProjectPath
-        self.xcodeProjectPath = config.iOSProjectPath
-        self.xcodeProjectFilePath = String(format: "%@%@%@", xcodeProjectPath, config.projectName, ".xcodeproj")
+        self.workingPath = config.unity.projectPath
+        self.xcodeProjectPath = config.iOS.projectPath
+        self.xcodeProjectFilePath = String(format: "%@%@%@", xcodeProjectPath, config.iOS.projectName, ".xcodeproj")
     }
 
     func copyFiles(refresh: Bool) -> Result {
@@ -77,7 +77,7 @@ class FileCopier {
         }
 
         print("Adding Unity files to Xcode project")
-        let classesPath = workingPath.appending(config.relativeUnityClassesPath)
+        let classesPath = workingPath.appending(config.unity.relativeClassesPath)
         guard let classesGroup = classesGroup else {
             return .failure(UBKitError.invalidUnityProject)
         }
@@ -86,7 +86,7 @@ class FileCopier {
             return addClassesFilesResult
         }
 
-        let librariesPath = workingPath.appending(config.relativeUnityLibrariesPath)
+        let librariesPath = workingPath.appending(config.unity.relativeLibrariesPath)
         guard let libsGroup = libsGroup else {
             return .failure(UBKitError.invalidUnityProject)
         }
@@ -132,8 +132,8 @@ private extension FileCopier {
             return .failure(UBKitError.invalidXcodeProject("Missing sources build phase"))
         }
 
-        guard let targetGroup = project.pbxproj.groups.filter({ $0.path == config.projectName }).first else {
-            return .failure(UBKitError.missingGroup(config.projectName))
+        guard let targetGroup = project.pbxproj.groups.filter({ $0.path == config.iOS.projectName }).first else {
+            return .failure(UBKitError.missingGroup(config.iOS.projectName))
         }
 
         do {
@@ -252,14 +252,14 @@ private extension FileCopier {
         }
 
         if let classesGroup = generateGroup("Classes", sourceTree: .absolute) {
-            classesGroup.path = workingPath.appending(config.relativeUnityClassesPath)
+            classesGroup.path = workingPath.appending(config.unity.relativeClassesPath)
             project.pbxproj.addObject(classesGroup)
             self.classesGroup = classesGroup
             unityGroup.children.append(classesGroup.reference)
         }
 
         if let librariesGroup = generateGroup("Libraries", sourceTree: .absolute) {
-            librariesGroup.path = workingPath.appending(config.relativeUnityLibrariesPath)
+            librariesGroup.path = workingPath.appending(config.unity.relativeLibrariesPath)
             project.pbxproj.addObject(librariesGroup)
             self.libsGroup = librariesGroup
             unityGroup.children.append(librariesGroup.reference)
@@ -308,7 +308,7 @@ private extension FileCopier {
             return .failure(UBKitError.invalidXcodeProject("Missing sources build phase"))
         }
 
-        guard let mainTarget = project.pbxproj.nativeTargets.filter({ $0.name == config.projectName }).first else {
+        guard let mainTarget = project.pbxproj.nativeTargets.filter({ $0.name == config.iOS.projectName }).first else {
             return .failure(UBKitError.invalidXcodeProject("Missing main target"))
         }
 
@@ -401,7 +401,7 @@ private extension FileCopier {
         let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, "data".appending(nameSalt)),
                                                                 sourceTree: .absolute)
         fileReference.name = "Data"
-        fileReference.path = workingPath.appending(config.relativeUnityDataPath)
+        fileReference.path = workingPath.appending(config.unity.relativeDataPath)
         fileReference.lastKnownFileType = "folder"
         unityGroup.children.append(fileReference.reference)
         project.pbxproj.addObject(fileReference)
@@ -538,7 +538,7 @@ private extension FileCopier {
     }
 
     func generateSourceFile(path: Path, in group: PBXGroup, name: String) -> SourceFile? {
-        let referencePath = Path(xcodeProjectPath.appending(config.projectName).appending("/").appending(config.projectName))
+        let referencePath = Path(xcodeProjectPath.appending(config.iOS.projectName).appending("/").appending(config.iOS.projectName))
         guard let fileReference = getFileReference(path: path, inPath: referencePath, name: name) else {
             return nil
         }

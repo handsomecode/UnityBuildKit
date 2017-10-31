@@ -33,7 +33,7 @@ class ProjectRefresher {
 
     init(config: Config) {
         self.config = config
-        self.workingPath = config.unityProjectPath
+        self.workingPath = config.unity.projectPath
     }
 
     func refresh() -> Result {
@@ -51,24 +51,24 @@ private extension ProjectRefresher {
     func buildUnityProject() -> Result {
         let semaphore = DispatchSemaphore(value: 0)
         var statusCode: Int32 = 999
-        let projectPath = workingPath.appending(config.projectName)
+        let projectPath = workingPath.appending(config.iOS.projectName)
         let outputLocation = projectPath.appending("/").appending("ios_build")
 
         // MARK: - Main
-        print("Building \(config.unitySceneName) for iOS...")
+        print("Building \(config.unity.sceneNames[0]) for iOS...")
         print("This will take some time to complete\n")
         shell.perform(
-            config.unityPath,
-            Unity.Arguments.batchmode,
-            Unity.Arguments.projectPath,
+            config.unity.applicationPath,
+            UnityCommandLine.Arguments.batchmode,
+            UnityCommandLine.Arguments.projectPath,
             projectPath,
-            Unity.Arguments.outputLocation,
+            UnityCommandLine.Arguments.outputLocation,
             outputLocation,
-            Unity.Arguments.sceneName,
-            config.unitySceneName,
-            Unity.Arguments.executeMethod,
-            Unity.buildAction,
-            Unity.Arguments.quit,
+            UnityCommandLine.Arguments.sceneName,
+            config.unity.sceneNames.joined(separator: ","),
+            UnityCommandLine.Arguments.executeMethod,
+            UnityCommandLine.buildAction,
+            UnityCommandLine.Arguments.quit,
             terminationHandler: { (process) in
                 statusCode = process.terminationStatus
                 semaphore.signal()
@@ -90,24 +90,24 @@ private extension ProjectRefresher {
     func refreshUnityProject() -> Result {
         let semaphore = DispatchSemaphore(value: 0)
         var statusCode: Int32 = 999
-        let projectPath = workingPath.appending(config.projectName)
+        let projectPath = workingPath.appending(config.iOS.projectName)
         let outputLocation = projectPath.appending("/").appending("ios_build")
 
         // MARK: - Main
-        print("Building \(config.unitySceneName) for iOS...")
+        print("Refreshing Unity scenes...")
         print("This will take some time to complete\n")
         shell.perform(
-            config.unityPath,
-            Unity.Arguments.batchmode,
-            Unity.Arguments.projectPath,
+            config.unity.applicationPath,
+            UnityCommandLine.Arguments.batchmode,
+            UnityCommandLine.Arguments.projectPath,
             projectPath,
-            Unity.Arguments.outputLocation,
+            UnityCommandLine.Arguments.outputLocation,
             outputLocation,
-            Unity.Arguments.sceneName,
-            config.unitySceneName,
-            Unity.Arguments.executeMethod,
-            Unity.refreshAction,
-            Unity.Arguments.quit,
+            UnityCommandLine.Arguments.sceneName,
+            config.unity.sceneNames.joined(separator: ","),
+            UnityCommandLine.Arguments.executeMethod,
+            UnityCommandLine.refreshAction,
+            UnityCommandLine.Arguments.quit,
             terminationHandler: { (process) in
                 statusCode = process.terminationStatus
                 semaphore.signal()
