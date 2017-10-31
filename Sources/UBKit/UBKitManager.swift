@@ -40,7 +40,7 @@ class UBKitManager {
 
     func performInitializeTasks() -> Result {
         print("\n----------")
-        print("Initializing")
+        print("⚙️ Initializing")
         print("----------")
 
         let initResult = initializeConfiguration()
@@ -53,35 +53,35 @@ class UBKitManager {
 
     func performGenerateTasks() -> Result {
         print("\n----------")
-        print("Creating iOS Project")
+        print("⚙️  Creating iOS Project")
         print("----------")
         let iOSGenerationResult = createiOSProject()
         guard iOSGenerationResult == .success else {
             return iOSGenerationResult
         }
 
-        print("\n----------")
-        print("Creating Unity Project")
-        print("----------")
-        let unityGenerationResult = createUnityProject()
-        guard unityGenerationResult == .success else {
-            return unityGenerationResult
-        }
-
-        print("\n----------")
-        print("Copying Unity Files")
-        print("----------")
-        let copyFilesResult = copyUnityFiles(refresh: false)
-        guard copyFilesResult == .success else {
-            return copyFilesResult
-        }
+//        print("\n----------")
+//        print("⚙️  Creating Unity Project")
+//        print("----------")
+//        let unityGenerationResult = createUnityProject()
+//        guard unityGenerationResult == .success else {
+//            return unityGenerationResult
+//        }
+//
+//        print("\n----------")
+//        print("⚙️  Copying Unity Files")
+//        print("----------")
+//        let copyFilesResult = copyUnityFiles(refresh: false)
+//        guard copyFilesResult == .success else {
+//            return copyFilesResult
+//        }
 
         return .success
     }
 
     func performRefreshTasks() -> Result {
         print("\n----------")
-        print("Refreshing Xcode project")
+        print("⚙️ Refreshing Xcode project")
         print("----------")
         let refreshResult = refreshXcodeProject()
         guard refreshResult == .success else {
@@ -89,7 +89,7 @@ class UBKitManager {
         }
 
         print("\n----------")
-        print("Copying Unity Files")
+        print("⚙️ Copying Unity Files")
         print("----------")
         let copyFilesResult = copyUnityFiles(refresh: true)
         guard copyFilesResult == .success else {

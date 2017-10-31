@@ -38,7 +38,9 @@ extension File {
                 "applicationPath": "<path_to_Unity>",
                 "version": "",
                 "projectPath": "",
-                "unity_scene_name": ""
+                "sceneNames": [
+                    ""
+                ]
             }
         }
         """.data(using: .utf8)

@@ -111,8 +111,6 @@ private extension UBKit {
 
         print("\n----------")
         print("👍 Successfully created your iOS and Unity projects")
-        print("The iOS project is located under iOS/")
-        print("The Unity project is located under Unity/")
         completion(nil)
     }
 
