@@ -35,8 +35,8 @@ make
 ```
 
 ## Usage
-### To generate a new project
-Currently, Unity needs to be closed for this process to begin.
+### To generate new iOS and Unity projects
+_Currently, Unity needs to be closed for this process to begin._
 
 1. Create a top-level folder and navigate to it. This folder will contain all information about the Xcode and Unity projects.  (_Note: By default, the name of this folder will be the name of the Xcode and Unity projects._)
 ```
@@ -44,9 +44,9 @@ mkdir ExampleProject
 cd ExampleProject
 ```
 
-2. Run the following to generate the `ubconfig.json` file where you can specify project names and paths
+2. Run the following to generate the `ubconfig.json` file where you can specify project information
 ```
-UnityBuildKit init
+UnityBuildKit config
 ```
 
 3. After filling out the config file information, run 
@@ -54,27 +54,11 @@ UnityBuildKit init
 $ UnityBuildKit generate
 ```
 
-4. Once generation is complete, open the Xcode project.  Using the Build Scheme drop down menu, select Edit Scheme to edit your project's scheme (the scheme should be the same name as your project).  Select the Run action then the Options tab.  In the middle of the window, you will see `Metal API Validation` with a set of options in a drop down menu.  Change the current option to `Disabled`, as seen below:
-![](Assets/metal_validation_scheme.png)
-_(Note: if you do not see the option for Metal API Validation, verify your run destination is a physical device of set to Generic iOS Device)_
-
 #### Notes
-- The generation script sets up the Unity project to build for the Device SDK.  These means that, if building for a simulator, there is a high probability that you will encounter build and linker errors in Xcode.  Change the run destination to a physical device and the errors should go away.
+- The generation script sets up the Unity project to build for the Device SDK.  These means that, if building for a simulator, there is a high probability that you will encounter build and linker errors in Xcode.  Change the run destination to a physical device and the errors should go away.  You can change this in Unity using the Build Settings once generation is completed.
 
-- If building for a physical device, do not forget to set up your code signing.
-
-### To refresh the Xcode project
-After making updates to your Unity project, you'll need to refresh the files linked with the Xcode project.  Currently, Unity needs to be closed for this process to begin.
-
-1. Navigate to the top-level folder
-```
-cd ExampleProject
-```
-
-2. Run
-```
-UnityBuildKit refresh
-```
+### Refreshing the projects
+The iOS project is automatically updated and refreshed every time the Unity project is built.  You shouldn't need to do anything! 😀
 
 ## Known Unity Version Compatibility
 - 2107.1.f1
@@ -86,7 +70,7 @@ This tool is built using:
 
 and the wonderful dependencies they bring with them.
 
-Inspiration for building `UnityBuildKit` came after running into several problems while trying to [manually do this process](https://the-nerd.be/2015/11/13/integrate-unity-5-in-a-native-ios-app-with-xcode-7/) and reading over a [github issue](https://github.com/blitzagency/ios-unity5/issues/52) trying to resolve those problems.
+Inspiration for building `UnityBuildKit` came after running into several problems while trying to [manually do this process](https://the-nerd.be/2015/11/13/integrate-unity-5-in-a-native-ios-app-with-xcode-7/) and reading over a [github issue](https://github.com/blitzagency/ios-unity5/issues/52) trying to resolve those problems (big thanks to [jiulongw](https://github.com/jiulongw/swift-unity)).
 
 ## License
 
