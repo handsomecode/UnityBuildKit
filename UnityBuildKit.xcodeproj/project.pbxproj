@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		D43456441FA3AD5B00CE9717 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43456431FA3AD5B00CE9717 /* config.swift */; };
 		D48370ED1FA9137E00A05A8B /* UnityProjectScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48370EB1FA912B200A05A8B /* UnityProjectScript.swift */; };
-		D48371001FA9F5A500A05A8B /* UnityExclusionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48370FF1FA9F5A500A05A8B /* UnityExclusionFile.swift */; };
 		OBJ_197 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_203 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* Package.swift */; };
 		OBJ_209 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_116 /* Package.swift */; };
@@ -472,7 +471,6 @@
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43456431FA3AD5B00CE9717 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		D48370EB1FA912B200A05A8B /* UnityProjectScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityProjectScript.swift; sourceTree = "<group>"; };
-		D48370FF1FA9F5A500A05A8B /* UnityExclusionFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityExclusionFile.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		OBJ_100 /* PBXSourcesBuildPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXSourcesBuildPhase.swift; sourceTree = "<group>"; };
@@ -903,7 +901,6 @@
 				OBJ_22 /* MainStoryboardFile.swift */,
 				OBJ_23 /* SpecFile.swift */,
 				OBJ_24 /* ViewControllerFile.swift */,
-				D48370FF1FA9F5A500A05A8B /* UnityExclusionFile.swift */,
 			);
 			path = Xcode;
 			sourceTree = "<group>";
@@ -1623,7 +1620,6 @@
 			files = (
 				OBJ_281 /* File.swift in Sources */,
 				OBJ_282 /* UnityEditorBuildScript.swift in Sources */,
-				D48371001FA9F5A500A05A8B /* UnityExclusionFile.swift in Sources */,
 				OBJ_283 /* BridgeHeaderFile.swift in Sources */,
 				OBJ_284 /* MessageBridge.swift in Sources */,
 				OBJ_285 /* UnityUtilsFile.swift in Sources */,

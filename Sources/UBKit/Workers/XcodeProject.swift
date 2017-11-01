@@ -61,11 +61,6 @@ class XcodeProject {
             return specFileResult
         }
 
-        let unityExclusionFileResult = createUnityExclusionFile()
-        guard unityExclusionFileResult == .success else {
-            return unityExclusionFileResult
-        }
-
         let projectFolderResult = createProjectFolder()
         guard projectFolderResult == .success else {
             return projectFolderResult
@@ -134,21 +129,6 @@ private extension XcodeProject {
             contents: contents,
             attributes: nil) else {
                 return .failure(UBKitError.unableToCreateFile("Spec file"))
-        }
-
-        return .success
-    }
-
-    func createUnityExclusionFile() -> Result {
-        guard UBKit.validatePath(workingPath, isDirectory: true) else {
-            return .failure(UBKitError.invalidFolder(workingPath))
-        }
-
-        guard fileManager.createFile(
-            atPath: workingPath.appending("rsync_unity_exclusion"),
-            contents: File.unityExclusionFile(),
-            attributes: nil) else {
-                return .failure(UBKitError.unableToCreateFile("Unity exclusion file"))
         }
 
         return .success

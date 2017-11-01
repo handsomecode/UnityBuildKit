@@ -122,14 +122,28 @@ private extension FileCopier {
         guard fileManager.fileExists(atPath: mainFilePath) else {
             return .failure(UBKitError.missingUnityFile("main.mm"))
         }
+        let changeInitResult = changeUnityInitMethod(pathString: mainFilePath)
+        guard changeInitResult == .success else {
+            return changeInitResult
+        }
 
         let appControllerFilePath = workingPath.appending(config.unity.projectName).appending("/ios_build/Classes/UnityAppController.h")
         guard fileManager.fileExists(atPath: appControllerFilePath) else {
             return .failure(UBKitError.missingUnityFile("UnityAppController.h"))
         }
+        let changeAppControllerResult = changeUnityAppControllerMethod(pathString: appControllerFilePath)
+        guard changeAppControllerResult == .success else {
+            return changeAppControllerResult
+        }
 
-        changeUnityInitMethod(pathString: mainFilePath)
-        changeUnityAppControllerMethod(pathString: appControllerFilePath)
+        let metalHelperFilePath = workingPath.appending(config.unity.projectName).appending("/ios_build/Classes/Unity/MetalHelper.mm")
+        guard fileManager.fileExists(atPath: metalHelperFilePath) else {
+            return .failure(UBKitError.missingUnityFile("MetalHelper.mm"))
+        }
+        let changeMetalResult = changeUnityMetalHelper(pathString: metalHelperFilePath)
+        guard changeMetalResult == .success else {
+            return changeMetalResult
+        }
         return .success
     }
 
@@ -177,7 +191,7 @@ private extension FileCopier {
         }
     }
 
-    func changeUnityInitMethod(pathString: String) {
+    func changeUnityInitMethod(pathString: String) -> Result {
         do {
             let fileString = try String(contentsOfFile: pathString)
             let unityString = "int main(int argc, char* argv[])"
@@ -186,11 +200,13 @@ private extension FileCopier {
 
             try newFileString.data(using: .utf8)?.write(to: URL(fileURLWithPath: pathString))
         } catch {
-            print("FAILED TO READ FILE")
+            return .failure(UBKitError.missingUnityFile("main.mm"))
         }
+
+        return .success
     }
 
-    func changeUnityAppControllerMethod(pathString: String) {
+    func changeUnityAppControllerMethod(pathString: String) -> Result {
         do {
             let fileString = try String(contentsOfFile: pathString)
             let unityString = """
@@ -210,8 +226,24 @@ private extension FileCopier {
             let newFileString = fileString.replacingOccurrences(of: unityString, with: replacementString)
             try newFileString.data(using: .utf8)?.write(to: URL(fileURLWithPath: pathString))
         } catch {
-            print("FAILED TO READ FILE")
+            return .failure(UBKitError.missingUnityFile("UnityAppController.h"))
         }
+
+        return .success
+    }
+
+    func changeUnityMetalHelper(pathString: String) -> Result {
+        do {
+            let fileString = try String(contentsOfFile: pathString)
+            let unityString = "surface->stencilRB = [surface->device newTextureWithDescriptor: stencilTexDesc];"
+            let replacementString = "stencilTexDesc.usage |= MTLTextureUsageRenderTarget;\n    surface->stencilRB = [surface->device newTextureWithDescriptor: stencilTexDesc];"
+            let newFileString = fileString.replacingOccurrences(of: unityString, with: replacementString)
+            try newFileString.data(using: .utf8)?.write(to: URL(fileURLWithPath: pathString))
+        } catch {
+            return .failure(UBKitError.missingUnityFile("MetalHelper.mm"))
+        }
+
+        return .success
     }
 }
 
@@ -225,8 +257,8 @@ private extension FileCopier {
         var uuid: String = ""
         var counter: UInt = 0
         let className: String = String(describing: T.self).replacingOccurrences(of: "PBX", with: "")
-        let classAcronym = String(className.characters.filter { String($0).lowercased() != String($0) })
-        let stringID = String(abs(id.hashValue).description.characters.prefix(10 - classAcronym.characters.count))
+        let classAcronym = className.filter({ String($0).lowercased() != String($0) })
+        let stringID = String(abs(id.hashValue).description.prefix(10 - classAcronym.utf8.count))
         repeat {
             counter += 1
             uuid = "\(classAcronym)\(stringID)\(String(format: "%02d", counter))"

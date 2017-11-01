@@ -43,9 +43,6 @@ extension File {
                 sources:
                   - \(projectName)
                   - Vendor
-                prebuildScripts:
-                  - script: rsync -rc --exclude-from=rsync_unity_exclusion --delete $UNITY_IOS_EXPORT_PATH/Classes/ Vendor/UBK/Classes/\\nrsync -rc --exclude-from=rsync_unity_exclusion --delete $UNITY_IOS_EXPORT_PATH/Libraries/ Vendor/UBK/Libraries/
-                    name: UnityBuildKit Prebuild
                 postbuildScripts:
                   - script: rm -rf "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Data"\\ncp -Rf "$UNITY_IOS_EXPORT_PATH/Data" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Data"
                     name: UnityBuildKit Postbuild
