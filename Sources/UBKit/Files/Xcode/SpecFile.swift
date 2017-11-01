@@ -43,6 +43,12 @@ extension File {
                 sources:
                   - \(projectName)
                   - Vendor
+                prebuildScripts:
+                  - script: rsync -rc --exclude-from=DemoApp/Unity/rsync_exclude --delete $UNITY_IOS_EXPORT_PATH/Classes/ DemoApp/Unity/Classes/\\nrsync -rc --exclude-from=DemoApp/Unity/rsync_exclude --delete $UNITY_IOS_EXPORT_PATH/Libraries/ DemoApp/Unity/Libraries/
+                    name: UnityBuildKit Prebuild
+                postbuildScripts:
+                  - script: rm -rf "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Data"\\ncp -Rf "$UNITY_IOS_EXPORT_PATH/Data" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Data"
+                    name: UnityBuildKit Postbuild
                 settings:
                   PRODUCT_BUNDLE_IDENTIFIER: \(bundleIdentifier)
                   IOS_DEPLOYMENT_TARGET: 11.0
