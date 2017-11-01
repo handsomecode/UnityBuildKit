@@ -29,17 +29,17 @@ extension File {
         let file = """
         {
             "ios": {
-                "projectName": "",
-                "bundleId": "<com.example.project_name>",
-                "projectPath": ""
+                "projectName": "ExampleProject",
+                "bundleId": "com.example.ExampleProject",
+                "projectPath": "" // Defaults to iOS/
             },
             "unity": {
-                "projectName": "",
-                "applicationPath": "<path_to_Unity>",
-                "version": "",
-                "projectPath": "",
+                "projectName": "ExampleProject",
+                "applicationPath": "", // e.g /Applications/Unity/Unity.app/Contents/MacOS/Unity
+                "version": "", // e.g. 2017.1.f1
+                "projectPath": "", // Defaults to Unity/
                 "sceneNames": [
-                    ""
+                    "ExampleScene"
                 ]
             }
         }
