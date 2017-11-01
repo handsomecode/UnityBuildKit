@@ -44,7 +44,7 @@ extension File {
                   - \(projectName)
                   - Vendor
                 prebuildScripts:
-                  - script: rsync -rc --exclude-from=DemoApp/Unity/rsync_exclude --delete $UNITY_IOS_EXPORT_PATH/Classes/ DemoApp/Unity/Classes/\\nrsync -rc --exclude-from=DemoApp/Unity/rsync_exclude --delete $UNITY_IOS_EXPORT_PATH/Libraries/ DemoApp/Unity/Libraries/
+                  - script: rsync -rc --exclude-from=rsync_unity_exclusion --delete $UNITY_IOS_EXPORT_PATH/Classes/ Vendor/UBK/Classes/\\nrsync -rc --exclude-from=rsync_unity_exclusion --delete $UNITY_IOS_EXPORT_PATH/Libraries/ Vendor/UBK/Libraries/
                     name: UnityBuildKit Prebuild
                 postbuildScripts:
                   - script: rm -rf "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Data"\\ncp -Rf "$UNITY_IOS_EXPORT_PATH/Data" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Data"
@@ -64,7 +64,7 @@ extension File {
                   OTHER_CFLAGS: $(inherited) -DINIT_SCRIPTING_BACKEND=1 -fno-strict-overflow -DRUNTIME_IL2CPP=1
                   CLANG_CXX_LANGUAGE_STANDARD: c++11
                   CLANG_CXX_LIBRARY: libc++
-                  SWIFT_OBJC_BRIDGING_HEADER: UnityBridge.h
+                  SWIFT_OBJC_BRIDGING_HEADER: UnityBuildKit/UnityBridge/UnityBridge.h
                   CLANG_ENABLE_MODULES: NO
                   CLANG_WARN_BOOL_CONVERSION: NO
                   CLANG_WARN_CONSTANT_CONVERSION: NO

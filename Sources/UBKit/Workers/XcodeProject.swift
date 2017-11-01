@@ -55,10 +55,15 @@ class XcodeProject {
             return iOSFolderResult
         }
 
-        print("Generating iOS spec file")
+//        print("Generating iOS spec file")
         let specFileResult = createSpecFile()
         guard specFileResult == .success else {
             return specFileResult
+        }
+
+        let unityExclusionFileResult = createUnityExclusionFile()
+        guard unityExclusionFileResult == .success else {
+            return unityExclusionFileResult
         }
 
         let projectFolderResult = createProjectFolder()
@@ -66,7 +71,7 @@ class XcodeProject {
             return projectFolderResult
         }
 
-        print("Generating iOS source files")
+//        print("Generating iOS source files")
         let sourceFileResult = createSourceFiles()
         guard sourceFileResult == .success else {
             return sourceFileResult
@@ -77,18 +82,18 @@ class XcodeProject {
             return assetCatalogResult
         }
 
-        let unityFolderResult = createUnityVendorFolder()
-        guard unityFolderResult == .success else {
-            return unityFolderResult
-        }
-
-        print("Generating Unity bridging files")
+//        print("Generating Unity bridging files")
         let unityFilesResult = createUnityBridgeFiles()
         guard unityFilesResult == .success else {
             return unityFilesResult
         }
 
-        print("Generating iOS project")
+        let unityFolderResult = createUnityVendorFolder()
+        guard unityFolderResult == .success else {
+            return unityFolderResult
+        }
+
+//        print("Generating iOS project")
         let projectGenerationResult = generateXcodeProject()
         guard projectGenerationResult == .success else {
             return projectGenerationResult
@@ -123,12 +128,30 @@ private extension XcodeProject {
             bundleIdentifier: bundleIdentifier,
             unityVersion: unityVersion
         )
-        let success = fileManager.createFile(
+
+        guard fileManager.createFile(
             atPath: workingPath.appending(specFileName),
             contents: contents,
-            attributes: nil)
+            attributes: nil) else {
+                return .failure(UBKitError.unableToCreateFile("Spec file"))
+        }
 
-        return success ? .success : .failure(UBKitError.unableToCreateFile("Spec File"))
+        return .success
+    }
+
+    func createUnityExclusionFile() -> Result {
+        guard UBKit.validatePath(workingPath, isDirectory: true) else {
+            return .failure(UBKitError.invalidFolder(workingPath))
+        }
+
+        guard fileManager.createFile(
+            atPath: workingPath.appending("rsync_unity_exclusion"),
+            contents: File.unityExclusionFile(),
+            attributes: nil) else {
+                return .failure(UBKitError.unableToCreateFile("Unity exclusion file"))
+        }
+
+        return .success
     }
 
     func createProjectFolder() -> Result {
