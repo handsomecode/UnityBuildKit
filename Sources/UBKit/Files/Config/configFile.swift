@@ -1,5 +1,5 @@
 //
-//  config.swift
+//  configFile.swift
 //
 //  Copyright (c) 2017 Handsome
 //
