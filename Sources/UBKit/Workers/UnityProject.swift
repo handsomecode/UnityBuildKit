@@ -75,19 +75,6 @@ class UnityProject {
 
         return .success
     }
-
-    func refresh() -> Result {
-        guard UBKit.validatePath(unityAppPath, isDirectory: false) else {
-            return .failure(UBKitError.invalidFolder(unityAppPath))
-        }
-
-        let refreshResult = refreshProject()
-        guard refreshResult == .success else {
-            return refreshResult
-        }
-
-        return .success
-    }
 }
 
 private extension UnityProject {
@@ -157,13 +144,6 @@ private extension UnityProject {
         }
 
         guard fileManager.createFile(
-            atPath: editorFilePath.appending("iOSRefreshScript.cs"),
-            contents: File.unityRefreshScriptFile(),
-            attributes: nil) else {
-                return .failure(UBKitError.unableToCreateFile("Unity iOS Refresh Script"))
-        }
-
-        guard fileManager.createFile(
             atPath: editorFilePath.appending("ProjectScript.cs"),
             contents: File.unityProjectScriptFile(projectName: projectName, iOSProjectPath: config.iOS.projectPath),
             attributes: nil) else {
@@ -207,45 +187,6 @@ private extension UnityProject {
                 return .success
             } else {
                 return .failure(UBKitError.shellCommand("Initializing Unity Project"))
-            }
-        case .timedOut:
-            return .failure(UBKitError.waitTimedOut)
-        }
-    }
-
-    func refreshProject() -> Result {
-        let semaphore = DispatchSemaphore(value: 0)
-        var statusCode: Int32 = 999
-        let projectPath = workingPath.appending(projectName)
-        let outputLocation = projectPath.appending("/").appending("ios_build")
-
-        // MARK: - Main
-        print("Refreshing Unity scenes...")
-        print("This will take some time to complete\n")
-        shell.perform(
-            unityAppPath,
-            UnityCommandLine.Arguments.batchmode,
-            UnityCommandLine.Arguments.projectPath,
-            projectPath,
-            UnityCommandLine.Arguments.outputLocation,
-            outputLocation,
-            UnityCommandLine.Arguments.sceneName,
-            unitySceneNames.joined(separator: ","),
-            UnityCommandLine.Arguments.executeMethod,
-            UnityCommandLine.refreshAction,
-            UnityCommandLine.Arguments.quit,
-            terminationHandler: { (process) in
-                statusCode = process.terminationStatus
-                semaphore.signal()
-        })
-
-        let timeout = semaphore.wait(timeout: DispatchTime.now()+60.0)
-        switch timeout {
-        case .success:
-            if statusCode == 0 {
-                return .success
-            } else {
-                return .failure(UBKitError.shellCommand("Building Unity Project"))
             }
         case .timedOut:
             return .failure(UBKitError.waitTimedOut)

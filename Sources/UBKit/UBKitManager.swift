@@ -71,27 +71,7 @@ class UBKitManager {
         print("\n----------")
         print("⚙️  Copying Unity Files")
         print("----------")
-        let copyFilesResult = copyUnityFiles(refresh: false)
-        guard copyFilesResult == .success else {
-            return copyFilesResult
-        }
-
-        return .success
-    }
-
-    func performRefreshTasks() -> Result {
-        print("\n----------")
-        print("⚙️ Refreshing Xcode project")
-        print("----------")
-        let refreshResult = refreshXcodeProject()
-        guard refreshResult == .success else {
-            return refreshResult
-        }
-
-        print("\n----------")
-        print("⚙️ Copying Unity Files")
-        print("----------")
-        let copyFilesResult = copyUnityFiles(refresh: true)
+        let copyFilesResult = copyUnityFiles()
         guard copyFilesResult == .success else {
             return copyFilesResult
         }
@@ -124,17 +104,8 @@ private extension UBKitManager {
         return unityProject.create()
     }
 
-    func copyUnityFiles(refresh: Bool) -> Result {
+    func copyUnityFiles() -> Result {
         let fileCopier = FileCopier(config: config)
-        return fileCopier.copyFiles(refresh: refresh)
-    }
-}
-
-// MARK: - Refresh
-private extension UBKitManager {
-
-    func refreshXcodeProject() -> Result {
-        let unityProject = UnityProject(config: config)
-        return unityProject.refresh()
+        return fileCopier.copyFiles()
     }
 }

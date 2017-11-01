@@ -65,8 +65,6 @@ public final class UBKit {
             initialize(workingPath: workingPath, completion)
         case .generate:
             generate(manager: kitManager, completion)
-        case .refresh:
-            refresh(manager: kitManager, completion)
         }
     }
 
@@ -84,7 +82,8 @@ public final class UBKit {
 private extension UBKit {
 
     enum Argument: String {
-        case initialize = "init", generate, refresh
+        case initialize = "init"
+        case generate
     }
 
     func initialize(workingPath: String, _ completion: @escaping ((Error?) -> Void)) {
@@ -111,17 +110,6 @@ private extension UBKit {
 
         print("\n----------")
         print("👍 Successfully created your iOS and Unity projects")
-        completion(nil)
-    }
-
-    func refresh(manager: UBKitManager, _ completion: @escaping ((Error?) -> Void)) {
-        let taskResult = manager.performRefreshTasks()
-        guard taskResult == .success else {
-            completion(taskResult.error)
-            return
-        }
-        print("\n----------")
-        print("👍 Successfully refreshed your iOS project")
         completion(nil)
     }
 

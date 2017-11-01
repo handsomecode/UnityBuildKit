@@ -54,7 +54,7 @@ class FileCopier {
         self.xcodeProjectFilePath = String(format: "%@%@%@", xcodeProjectPath, config.iOS.projectName, ".xcodeproj")
     }
 
-    func copyFiles(refresh: Bool) -> Result {
+    func copyFiles() -> Result {
         let parseProjectResult = parseProjectFile()
         guard parseProjectResult == .success else {
             return parseProjectResult
