@@ -61,8 +61,10 @@ public final class UBKit {
         }
 
         switch arg {
+        case .config:
+            createConfiguration(workingPath: workingPath, completion)
         case .initialize:
-            initialize(workingPath: workingPath, completion)
+            break
         case .generate:
             generate(manager: kitManager, completion)
         }
@@ -82,11 +84,12 @@ public final class UBKit {
 private extension UBKit {
 
     enum Argument: String {
+        case config
         case initialize = "init"
         case generate
     }
 
-    func initialize(workingPath: String, _ completion: @escaping ((Error?) -> Void)) {
+    func createConfiguration(workingPath: String, _ completion: @escaping ((Error?) -> Void)) {
         guard fileManager.createFile(
             atPath: workingPath.appending("ubconfig.json"),
             contents: File.configFile(),
