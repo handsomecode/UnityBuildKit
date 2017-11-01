@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D43456441FA3AD5B00CE9717 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43456431FA3AD5B00CE9717 /* config.swift */; };
+		D43456441FA3AD5B00CE9717 /* configFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43456431FA3AD5B00CE9717 /* configFile.swift */; };
+		D48370ED1FA9137E00A05A8B /* UnityProjectScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48370EB1FA912B200A05A8B /* UnityProjectScript.swift */; };
 		OBJ_197 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_203 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_67 /* Package.swift */; };
 		OBJ_209 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_116 /* Package.swift */; };
@@ -28,7 +29,7 @@
 		OBJ_255 /* Spectre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Spectre::Spectre::Product" /* Spectre.framework */; };
 		OBJ_256 /* JSONUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */; };
 		OBJ_281 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* File.swift */; };
-		OBJ_282 /* UnityEditorScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* UnityEditorScript.swift */; };
+		OBJ_282 /* UnityEditorBuildScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* UnityEditorBuildScript.swift */; };
 		OBJ_283 /* BridgeHeaderFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* BridgeHeaderFile.swift */; };
 		OBJ_284 /* MessageBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* MessageBridge.swift */; };
 		OBJ_285 /* UnityUtilsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* UnityUtilsFile.swift */; };
@@ -43,11 +44,10 @@
 		OBJ_294 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* Result.swift */; };
 		OBJ_295 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Shell.swift */; };
 		OBJ_296 /* UBKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* UBKitError.swift */; };
-		OBJ_297 /* Unity.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* Unity.swift */; };
+		OBJ_297 /* UnityCommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* UnityCommandLine.swift */; };
 		OBJ_298 /* UBKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* UBKit.swift */; };
 		OBJ_299 /* UBKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* UBKitManager.swift */; };
 		OBJ_300 /* FileCopier.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* FileCopier.swift */; };
-		OBJ_301 /* ProjectRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* ProjectRefresher.swift */; };
 		OBJ_302 /* UnityProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* UnityProject.swift */; };
 		OBJ_303 /* XcodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* XcodeGenerator.swift */; };
 		OBJ_304 /* XcodeProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* XcodeProject.swift */; };
@@ -469,7 +469,8 @@
 
 /* Begin PBXFileReference section */
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D43456431FA3AD5B00CE9717 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
+		D43456431FA3AD5B00CE9717 /* configFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = configFile.swift; sourceTree = "<group>"; };
+		D48370EB1FA912B200A05A8B /* UnityProjectScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityProjectScript.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		OBJ_100 /* PBXSourcesBuildPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXSourcesBuildPhase.swift; sourceTree = "<group>"; };
@@ -491,7 +492,7 @@
 		OBJ_116 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/xero/Documents/Handsome/Projects/UnityBuildKit/.build/checkouts/xcproj.git-1047381684203639720/Package.swift"; sourceTree = "<group>"; };
 		OBJ_118 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = "/Users/xero/Documents/Handsome/Projects/UnityBuildKit/.build/checkouts/AEXML.git--1992474868199569405/Package.swift"; sourceTree = "<group>"; };
 		OBJ_119 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
-		OBJ_12 /* UnityEditorScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityEditorScript.swift; sourceTree = "<group>"; };
+		OBJ_12 /* UnityEditorBuildScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityEditorBuildScript.swift; sourceTree = "<group>"; };
 		OBJ_120 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 		OBJ_121 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		OBJ_122 /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
@@ -557,17 +558,14 @@
 		OBJ_27 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		OBJ_28 /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		OBJ_29 /* UBKitError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKitError.swift; sourceTree = "<group>"; };
-		OBJ_30 /* Unity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unity.swift; sourceTree = "<group>"; };
+		OBJ_30 /* UnityCommandLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityCommandLine.swift; sourceTree = "<group>"; };
 		OBJ_31 /* UBKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKit.swift; sourceTree = "<group>"; };
 		OBJ_32 /* UBKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UBKitManager.swift; sourceTree = "<group>"; };
 		OBJ_34 /* FileCopier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCopier.swift; sourceTree = "<group>"; };
-		OBJ_35 /* ProjectRefresher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRefresher.swift; sourceTree = "<group>"; };
 		OBJ_36 /* UnityProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityProject.swift; sourceTree = "<group>"; };
 		OBJ_37 /* XcodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeGenerator.swift; sourceTree = "<group>"; };
 		OBJ_38 /* XcodeProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeProject.swift; sourceTree = "<group>"; };
 		OBJ_40 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		OBJ_42 /* Formula */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Formula; sourceTree = SOURCE_ROOT; };
-		OBJ_43 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = SOURCE_ROOT; };
 		OBJ_47 /* BuildScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildScript.swift; sourceTree = "<group>"; };
 		OBJ_48 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		OBJ_49 /* Decoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decoding.swift; sourceTree = "<group>"; };
@@ -752,7 +750,7 @@
 		D43456421FA3AD3100CE9717 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				D43456431FA3AD5B00CE9717 /* config.swift */,
+				D43456431FA3AD5B00CE9717 /* configFile.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -760,7 +758,8 @@
 		OBJ_11 /* Unity */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_12 /* UnityEditorScript.swift */,
+				OBJ_12 /* UnityEditorBuildScript.swift */,
+				D48370EB1FA912B200A05A8B /* UnityProjectScript.swift */,
 			);
 			path = Unity;
 			sourceTree = "<group>";
@@ -948,7 +947,7 @@
 				OBJ_27 /* Result.swift */,
 				OBJ_28 /* Shell.swift */,
 				OBJ_29 /* UBKitError.swift */,
-				OBJ_30 /* Unity.swift */,
+				OBJ_30 /* UnityCommandLine.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -957,7 +956,6 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_34 /* FileCopier.swift */,
-				OBJ_35 /* ProjectRefresher.swift */,
 				OBJ_36 /* UnityProject.swift */,
 				OBJ_37 /* XcodeGenerator.swift */,
 				OBJ_38 /* XcodeProject.swift */,
@@ -1030,8 +1028,6 @@
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_41 /* Tests */,
-				OBJ_42 /* Formula */,
-				OBJ_43 /* Assets */,
 				OBJ_44 /* Dependencies */,
 				OBJ_180 /* Products */,
 			);
@@ -1495,6 +1491,20 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					"AEXML::AEXML" = {
+						LastSwiftMigration = 0900;
+					};
+					"JSONUtilities::JSONUtilities" = {
+						LastSwiftMigration = 0900;
+					};
+					"PathKit::PathKit" = {
+						LastSwiftMigration = 0900;
+					};
+					"Spectre::Spectre" = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "UnityBuildKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1609,7 +1619,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_281 /* File.swift in Sources */,
-				OBJ_282 /* UnityEditorScript.swift in Sources */,
+				OBJ_282 /* UnityEditorBuildScript.swift in Sources */,
 				OBJ_283 /* BridgeHeaderFile.swift in Sources */,
 				OBJ_284 /* MessageBridge.swift in Sources */,
 				OBJ_285 /* UnityUtilsFile.swift in Sources */,
@@ -1621,15 +1631,15 @@
 				OBJ_291 /* SpecFile.swift in Sources */,
 				OBJ_292 /* ViewControllerFile.swift in Sources */,
 				OBJ_293 /* Config.swift in Sources */,
-				D43456441FA3AD5B00CE9717 /* config.swift in Sources */,
+				D43456441FA3AD5B00CE9717 /* configFile.swift in Sources */,
 				OBJ_294 /* Result.swift in Sources */,
 				OBJ_295 /* Shell.swift in Sources */,
 				OBJ_296 /* UBKitError.swift in Sources */,
-				OBJ_297 /* Unity.swift in Sources */,
+				OBJ_297 /* UnityCommandLine.swift in Sources */,
+				D48370ED1FA9137E00A05A8B /* UnityProjectScript.swift in Sources */,
 				OBJ_298 /* UBKit.swift in Sources */,
 				OBJ_299 /* UBKitManager.swift in Sources */,
 				OBJ_300 /* FileCopier.swift in Sources */,
-				OBJ_301 /* ProjectRefresher.swift in Sources */,
 				OBJ_302 /* UnityProject.swift in Sources */,
 				OBJ_303 /* XcodeGenerator.swift in Sources */,
 				OBJ_304 /* XcodeProject.swift in Sources */,

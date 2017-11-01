@@ -32,11 +32,13 @@ public enum UBKitError: Error, CustomStringConvertible {
     case invalidXcodeProject(String)
     case missingGroup(String)
     case invalidUnityProject
+    case missingUnityFile(String)
     case unableToCreateXcodeProjectGroup(String)
     case unableToSaveXcodeProject
     case waitTimedOut
     case shellCommand(String)
-    case invalidConfigFile
+    case invalidConfigArgument(String)
+    case invalidConfigFile(Error)
 
     public var description: String {
         switch self {
@@ -56,6 +58,8 @@ public enum UBKitError: Error, CustomStringConvertible {
             return "Could not find \(str)"
         case .invalidUnityProject:
             return "Invalid Unity Project"
+        case .missingUnityFile(let str):
+            return "Missing Unity File: \(str)"
         case .unableToCreateXcodeProjectGroup(let str):
             return "Could not create Xcode Group: \(str)"
         case .unableToSaveXcodeProject:
@@ -64,8 +68,14 @@ public enum UBKitError: Error, CustomStringConvertible {
             return "Wait Timed Out"
         case .shellCommand(let str):
             return "Failed to execute shell command: \(str)"
-        case .invalidConfigFile:
-            return "Invalid config file"
+        case .invalidConfigArgument(let str):
+            return "Invalid config argument: \(str)"
+        case .invalidConfigFile(let err):
+            if let ubError = err as? UBKitError {
+                return ubError.description
+            } else {
+                return "Invalid config file: \(err.localizedDescription)"
+            }
         }
     }
 }

@@ -54,8 +54,6 @@ private extension XcodeGenerator {
         let spec: ProjectSpec
         do {
             spec = try SpecLoader.loadSpec(path: specPath)
-            print("\n📋  Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
-
         } catch let error as JSONUtilities.DecodingError {
             return .failure(error)
         } catch {
@@ -65,11 +63,8 @@ private extension XcodeGenerator {
         do {
             let projectGenerator = ProjectGenerator(spec: spec)
             let project = try projectGenerator.generateProject()
-            print("⚙️  Generated project")
-
             let projectFile = projectPath + "\(spec.name).xcodeproj"
             try project.write(path: projectFile, override: true)
-            print("💾  Saved project to \(projectFile.string)")
 
         } catch let error as SpecValidationError {
             return .failure(error)

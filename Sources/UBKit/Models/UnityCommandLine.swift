@@ -1,5 +1,5 @@
 //
-//  Unity.swift
+//  UnityCommandLine.swift
 //
 //  Copyright (c) 2017 Handsome
 //
@@ -26,13 +26,15 @@ import Foundation
 /**
  A helper class for interacting with the Unity command line.
  */
-struct Unity {
+struct UnityCommandLine {
     static let buildAction = "iOSBuilder.Perform"
+    static let refreshAction = "XcodeRefresher.Refresh"
 
     struct Arguments {
         static let projectPath = "-projectPath"
         static let createProject = "-createProject"
         static let outputLocation = "-outputLocation"
+        static let buildPath = "-buildPath"
         static let sceneName = "-sceneName"
         static let executeMethod = "-executeMethod"
         static let batchmode = "-batchmode"

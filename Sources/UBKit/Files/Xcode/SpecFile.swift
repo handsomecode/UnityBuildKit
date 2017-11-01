@@ -43,6 +43,9 @@ extension File {
                 sources:
                   - \(projectName)
                   - Vendor
+                postbuildScripts:
+                  - script: rm -rf "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Data"\\ncp -Rf "$UNITY_IOS_EXPORT_PATH/Data" "$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Data"
+                    name: UnityBuildKit Postbuild
                 settings:
                   PRODUCT_BUNDLE_IDENTIFIER: \(bundleIdentifier)
                   IOS_DEPLOYMENT_TARGET: 11.0
@@ -58,7 +61,7 @@ extension File {
                   OTHER_CFLAGS: $(inherited) -DINIT_SCRIPTING_BACKEND=1 -fno-strict-overflow -DRUNTIME_IL2CPP=1
                   CLANG_CXX_LANGUAGE_STANDARD: c++11
                   CLANG_CXX_LIBRARY: libc++
-                  SWIFT_OBJC_BRIDGING_HEADER: UnityBridge.h
+                  SWIFT_OBJC_BRIDGING_HEADER: UnityBuildKit/UnityBridge/UnityBridge.h
                   CLANG_ENABLE_MODULES: NO
                   CLANG_WARN_BOOL_CONVERSION: NO
                   CLANG_WARN_CONSTANT_CONVERSION: NO

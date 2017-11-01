@@ -29,22 +29,24 @@ class XcodeProject {
     private let bundleIdentifier: String
     private let workingPath: String
     private let unityVersion: String
-
-    private let fileManager = FileManager()
     private let projectPath: String
     private let vendorFolderPath: String
     private let specFileName: String
+    private let bridgingFilesPath: String
+
+    private let fileManager = FileManager()
     private var error: Error?
 
-    init(projectName: String, bundleIdentifier: String, workingPath: String, unityVersion: String) {
-        self.projectName = projectName
-        self.bundleIdentifier = bundleIdentifier
-        self.workingPath = workingPath
-        self.unityVersion = unityVersion
+    init(config: Config) {
+        self.projectName = config.iOS.projectName
+        self.bundleIdentifier = config.iOS.bundleId
+        self.workingPath = config.iOS.projectPath
+        self.unityVersion = config.unity.version
 
         self.projectPath = workingPath.appending(projectName).appending("/")
         self.vendorFolderPath = workingPath.appending("Vendor/UBK/")
         self.specFileName = "project.yml"
+        self.bridgingFilesPath = projectPath.appending("UnityBridge/")
     }
 
     func create() -> Result {
@@ -53,7 +55,7 @@ class XcodeProject {
             return iOSFolderResult
         }
 
-        print("Generating iOS spec file")
+//        print("Generating iOS spec file")
         let specFileResult = createSpecFile()
         guard specFileResult == .success else {
             return specFileResult
@@ -64,7 +66,7 @@ class XcodeProject {
             return projectFolderResult
         }
 
-        print("Generating iOS source files")
+//        print("Generating iOS source files")
         let sourceFileResult = createSourceFiles()
         guard sourceFileResult == .success else {
             return sourceFileResult
@@ -75,18 +77,18 @@ class XcodeProject {
             return assetCatalogResult
         }
 
-        let unityFolderResult = createUnityVendorFolder()
-        guard unityFolderResult == .success else {
-            return unityFolderResult
-        }
-
-        print("Generating Unity bridging files")
+//        print("Generating Unity bridging files")
         let unityFilesResult = createUnityBridgeFiles()
         guard unityFilesResult == .success else {
             return unityFilesResult
         }
 
-        print("Generating iOS project")
+        let unityFolderResult = createUnityVendorFolder()
+        guard unityFolderResult == .success else {
+            return unityFolderResult
+        }
+
+//        print("Generating iOS project")
         let projectGenerationResult = generateXcodeProject()
         guard projectGenerationResult == .success else {
             return projectGenerationResult
@@ -121,12 +123,15 @@ private extension XcodeProject {
             bundleIdentifier: bundleIdentifier,
             unityVersion: unityVersion
         )
-        let success = fileManager.createFile(
+
+        guard fileManager.createFile(
             atPath: workingPath.appending(specFileName),
             contents: contents,
-            attributes: nil)
+            attributes: nil) else {
+                return .failure(UBKitError.unableToCreateFile("Spec file"))
+        }
 
-        return success ? .success : .failure(UBKitError.unableToCreateFile("Spec File"))
+        return .success
     }
 
     func createProjectFolder() -> Result {
@@ -221,29 +226,38 @@ private extension XcodeProject {
     }
 
     func createUnityBridgeFiles() -> Result {
+        do {
+            try fileManager.createDirectory(
+                atPath: bridgingFilesPath,
+                withIntermediateDirectories: false,
+                attributes: nil)
+        } catch {
+            return .failure(UBKitError.unableToCreateFile("Unity Bridging Header"))
+        }
+
         guard fileManager.createFile(
-            atPath: workingPath.appending("UnityBridge.h"),
+            atPath: bridgingFilesPath.appending("UnityBridge.h"),
             contents: File.unityBridgeFile(),
             attributes: nil) else {
             return .failure(UBKitError.unableToCreateFile("Unity Bridging Header"))
         }
 
         guard fileManager.createFile(
-            atPath: workingPath.appending("UnityUtils.h"),
+            atPath: bridgingFilesPath.appending("UnityUtils.h"),
             contents: File.unityUtilsHeaderFile(),
             attributes: nil) else {
             return .failure(UBKitError.unableToCreateFile("Unity Utils Header"))
         }
 
         guard fileManager.createFile(
-            atPath: workingPath.appending("UnityUtils.mm"),
+            atPath: bridgingFilesPath.appending("UnityUtils.mm"),
             contents: File.unityUtilsFile(),
             attributes: nil) else {
             return .failure(UBKitError.unableToCreateFile("Unity Utils"))
         }
 
         guard fileManager.createFile(
-            atPath: workingPath.appending("UnityMessageBridge.h"),
+            atPath: bridgingFilesPath.appending("UnityMessageBridge.h"),
             contents: File.unityMessageBridgeFile(),
             attributes: nil) else {
             return .failure(UBKitError.unableToCreateFile("Unity Message Bridge"))

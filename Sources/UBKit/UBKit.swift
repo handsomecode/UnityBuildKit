@@ -43,35 +43,30 @@ public final class UBKit {
             completion(UBKitError.invalidArguments(arguments[1]))
             return
         }
-
+        
         let workingPath = fileManager.currentDirectoryPath.appending("/")
         if arg != .initialize {
-            do {
-                guard let fileData = fileManager.contents(atPath: workingPath.appending("ubconfig.json")) else {
-                    completion(UBKitError.invalidFolder(workingPath.appending("ubconfig.json")))
-                    return
-                }
-                if let configJSON = try JSONSerialization.jsonObject(with: fileData, options: .allowFragments) as? [String : String] {
-                    guard let config = Config(json: configJSON) else {
-                        completion(UBKitError.invalidConfigFile)
-                        return
-                    }
-                    kitManager = UBKitManager(config: config)
-                }
+            guard let fileData = fileManager.contents(atPath: workingPath.appending("ubconfig.json")) else {
+                completion(UBKitError.invalidFolder(workingPath.appending("ubconfig.json")))
+                return
+            }
 
+            do {
+                let config = try JSONDecoder().decode(Config.self, from: fileData)
+                kitManager = UBKitManager(config: config)
             } catch {
-                completion(error)
+                completion(UBKitError.invalidConfigFile(error))
                 return
             }
         }
 
         switch arg {
+        case .config:
+            createConfiguration(workingPath: workingPath, completion)
         case .initialize:
-            initialize(workingPath: workingPath, completion)
+            break
         case .generate:
             generate(manager: kitManager, completion)
-        case .refresh:
-            refresh(manager: kitManager, completion)
         }
     }
 
@@ -89,10 +84,12 @@ public final class UBKit {
 private extension UBKit {
 
     enum Argument: String {
-        case initialize = "init", generate, refresh
+        case config
+        case initialize = "init"
+        case generate
     }
 
-    func initialize(workingPath: String, _ completion: @escaping ((Error?) -> Void)) {
+    func createConfiguration(workingPath: String, _ completion: @escaping ((Error?) -> Void)) {
         guard fileManager.createFile(
             atPath: workingPath.appending("ubconfig.json"),
             contents: File.configFile(),
@@ -116,19 +113,6 @@ private extension UBKit {
 
         print("\n----------")
         print("👍 Successfully created your iOS and Unity projects")
-        print("The iOS project is located under iOS/")
-        print("The Unity project is located under Unity/")
-        completion(nil)
-    }
-
-    func refresh(manager: UBKitManager, _ completion: @escaping ((Error?) -> Void)) {
-        let taskResult = manager.performRefreshTasks()
-        guard taskResult == .success else {
-            completion(taskResult.error)
-            return
-        }
-        print("\n----------")
-        print("👍 Successfully refreshed your iOS project")
         completion(nil)
     }
 

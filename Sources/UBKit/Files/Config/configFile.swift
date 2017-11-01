@@ -1,5 +1,5 @@
 //
-//  config.swift
+//  configFile.swift
 //
 //  Copyright (c) 2017 Handsome
 //
@@ -28,11 +28,20 @@ extension File {
     class func configFile() -> Data? {
         let file = """
         {
-            "project_name": "",
-            "bundle_id": "<com.example.project_name>",
-            "unity_path": "<path_to_Unity>",
-            "unity_version": "",
-            "unity_scene_name": ""
+            "ios": {
+                "projectName": "ExampleProject",
+                "bundleId": "com.example.ExampleProject",
+                "projectPath": "" // Defaults to iOS/
+            },
+            "unity": {
+                "projectName": "ExampleProject",
+                "applicationPath": "", // e.g /Applications/Unity/Unity.app/Contents/MacOS/Unity
+                "version": "", // e.g. 2017.1.f1
+                "projectPath": "", // Defaults to Unity/
+                "sceneNames": [
+                    "ExampleScene"
+                ]
+            }
         }
         """.data(using: .utf8)
         return file

@@ -28,8 +28,6 @@ class UBKitManager {
     private let config: Config
     private let xcodeProjectYMLFileName: String
     private let workingFolderPath: String
-    private let workingiOSFolderPath: String
-    private let workingUnityFolderPath: String
 
     private let fileManager = FileManager.default
 
@@ -37,14 +35,12 @@ class UBKitManager {
         self.config = config
 
         self.workingFolderPath = fileManager.currentDirectoryPath.appending("/")
-        self.workingiOSFolderPath = workingFolderPath.appending("iOS/")
-        self.workingUnityFolderPath = workingFolderPath.appending("Unity/")
         self.xcodeProjectYMLFileName = "project.yml"
     }
 
     func performInitializeTasks() -> Result {
         print("\n----------")
-        print("Initializing")
+        print("⚙️ Initializing")
         print("----------")
 
         let initResult = initializeConfiguration()
@@ -57,7 +53,7 @@ class UBKitManager {
 
     func performGenerateTasks() -> Result {
         print("\n----------")
-        print("Creating iOS Project")
+        print("⚙️  Creating iOS Project")
         print("----------")
         let iOSGenerationResult = createiOSProject()
         guard iOSGenerationResult == .success else {
@@ -65,7 +61,7 @@ class UBKitManager {
         }
 
         print("\n----------")
-        print("Creating Unity Project")
+        print("⚙️  Creating Unity Project")
         print("----------")
         let unityGenerationResult = createUnityProject()
         guard unityGenerationResult == .success else {
@@ -73,29 +69,9 @@ class UBKitManager {
         }
 
         print("\n----------")
-        print("Copying Unity Files")
+        print("⚙️  Copying Unity Files")
         print("----------")
-        let copyFilesResult = copyUnityFiles(refresh: false)
-        guard copyFilesResult == .success else {
-            return copyFilesResult
-        }
-
-        return .success
-    }
-
-    func performRefreshTasks() -> Result {
-        print("\n----------")
-        print("Refreshing Xcode project")
-        print("----------")
-        let refreshResult = refreshXcodeProject()
-        guard refreshResult == .success else {
-            return refreshResult
-        }
-
-        print("\n----------")
-        print("Copying Unity Files")
-        print("----------")
-        let copyFilesResult = copyUnityFiles(refresh: true)
+        let copyFilesResult = copyUnityFiles()
         guard copyFilesResult == .success else {
             return copyFilesResult
         }
@@ -119,49 +95,17 @@ private extension UBKitManager {
     }
 
     func createiOSProject() -> Result {
-        let xcodeProject = XcodeProject(
-            projectName: config.projectName,
-            bundleIdentifier: config.bundleID,
-            workingPath: workingiOSFolderPath,
-            unityVersion: config.unityVersion
-        )
+        let xcodeProject = XcodeProject(config: config)
         return xcodeProject.create()
     }
 
     func createUnityProject() -> Result {
-        let unityProject = UnityProject(
-            projectName: config.projectName,
-            workingPath: workingUnityFolderPath,
-            unityAppPath: config.unityPath,
-            sceneName: config.unitySceneName
-        )
+        let unityProject = UnityProject(config: config)
         return unityProject.create()
     }
 
-    func copyUnityFiles(refresh: Bool) -> Result {
-        let fileCopier = FileCopier(
-            config: config,
-            workingPath: workingUnityFolderPath,
-            xcodeProjectPath: workingiOSFolderPath
-        )
-        return fileCopier.copyFiles(refresh: refresh)
-    }
-
-    func refreshProjects() -> Result {
-        let refresher = ProjectRefresher(config: config, workingPath: workingUnityFolderPath)
-        return refresher.refresh()
-    }
-}
-
-// MARK: - Refresh
-private extension UBKitManager {
-
-    func refreshXcodeProject() -> Result {
-        let refreshResult = refreshProjects()
-        guard refreshResult == .success else {
-            return refreshResult
-        }
-
-        return .success
+    func copyUnityFiles() -> Result {
+        let fileCopier = FileCopier(config: config)
+        return fileCopier.copyFiles()
     }
 }
