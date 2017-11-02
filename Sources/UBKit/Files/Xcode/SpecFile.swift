@@ -61,7 +61,7 @@ extension File {
                   OTHER_CFLAGS: $(inherited) -DINIT_SCRIPTING_BACKEND=1 -fno-strict-overflow -DRUNTIME_IL2CPP=1
                   CLANG_CXX_LANGUAGE_STANDARD: c++11
                   CLANG_CXX_LIBRARY: libc++
-                  SWIFT_OBJC_BRIDGING_HEADER: UnityBuildKit/UnityBridge/UnityBridge.h
+                  SWIFT_OBJC_BRIDGING_HEADER: \(projectName)/UnityBridge/UnityBridge.h
                   CLANG_ENABLE_MODULES: NO
                   CLANG_WARN_BOOL_CONVERSION: NO
                   CLANG_WARN_CONSTANT_CONVERSION: NO

@@ -36,10 +36,9 @@ extension File {
             override func viewDidAppear(_ animated: Bool) {
                 super.viewDidAppear(animated)
 
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+2) {
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    appDelegate.startUnity()
-
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.startUnity()
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+5) {
                     if let newUnityView = UnityGetGLView() {
                         newUnityView.translatesAutoresizingMaskIntoConstraints = false
                         self.view.addSubview(newUnityView)
