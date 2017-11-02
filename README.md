@@ -58,6 +58,8 @@ $ UnityBuildKit generate
 - The generation script sets up the Unity project to build for the Device SDK.  These means that, if building for a simulator, there is a high probability that you will encounter build and linker errors in Xcode.  Change the run destination to a physical device and the errors should go away.  You can change this in Unity using the Build Settings once generation is completed.
 
 ### Refreshing the projects
+The built Unity files are under `ios_build/`.  When building your Unity project, make sure that you append the new build to this `ios_build/` folder so that refresh script knows where the Unity files are located.
+
 The iOS project is automatically updated and refreshed every time the Unity project is built.  You shouldn't need to do anything! 😀
 
 ## Known Unity Version Compatibility
