@@ -45,7 +45,7 @@ public final class UBKit {
         }
         
         let workingPath = fileManager.currentDirectoryPath.appending("/")
-        if arg != .initialize {
+        if arg != .config {
             guard let fileData = fileManager.contents(atPath: workingPath.appending("ubconfig.json")) else {
                 completion(UBKitError.invalidFolder(workingPath.appending("ubconfig.json")))
                 return
@@ -63,8 +63,6 @@ public final class UBKit {
         switch arg {
         case .config:
             createConfiguration(workingPath: workingPath, completion)
-        case .initialize:
-            break
         case .generate:
             generate(manager: kitManager, completion)
         }
@@ -85,7 +83,6 @@ private extension UBKit {
 
     enum Argument: String {
         case config
-        case initialize = "init"
         case generate
     }
 
