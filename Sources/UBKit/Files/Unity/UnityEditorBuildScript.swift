@@ -59,11 +59,15 @@ extension File {
                 playerOptions.options = BuildOptions.None;
                 BuildPipeline.BuildPlayer (playerOptions);
 
+                CopyDataFolderReference (outputLocation);
+            }
+
+            private static void CopyDataFolderReference (string folderRootPath) {
                 var pbx = new PBXProject();
                 var pbxPath = Path.Combine(iOSProjectRoot, PbxFilePath);
                 pbx.ReadFromFile(pbxPath);
 
-                var folderGuid = pbx.AddFolderReference(Path.Combine(outputLocation, "Data"), Path.Combine(iOSProjectRoot, DataProjectPath), PBXSourceTree.Absolute);
+                var folderGuid = pbx.AddFolderReference(Path.Combine(folderRootPath, "Data"), Path.Combine(iOSProjectRoot, DataProjectPath), PBXSourceTree.Absolute);
                 var targetGiud = pbx.TargetGuidByName(iOSProjectName);
                 var resourceGiud = pbx.GetResourcesBuildPhaseByTarget(targetGiud);
                 pbx.AddFileToBuildSection(targetGiud, resourceGiud, folderGuid);

@@ -175,7 +175,6 @@ private extension UnityProject {
             UnityCommandLine.buildAction,
             UnityCommandLine.Arguments.quit,
             terminationHandler: { (process) in
-                print(process.terminationStatus)
                 statusCode = process.terminationStatus
                 semaphore.signal()
         })
