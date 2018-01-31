@@ -965,7 +965,7 @@
 			path = ".build/checkouts/XcodeGen.git--7277681520713665102/Sources/ProjectSpec";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -976,7 +976,6 @@
 				OBJ_46 /* Dependencies */,
 				OBJ_188 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_67 /* XcodeGenKit */ = {
@@ -1417,7 +1416,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_188 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
