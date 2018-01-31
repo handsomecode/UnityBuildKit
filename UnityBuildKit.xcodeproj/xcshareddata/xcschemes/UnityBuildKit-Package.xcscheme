@@ -140,20 +140,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Spectre::Spectre"
-               BuildableName = "Spectre.framework"
-               BlueprintName = "Spectre"
-               ReferencedContainer = "container:UnityBuildKit.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "JSONUtilities::JSONUtilities"
                BuildableName = "JSONUtilities.framework"
                BlueprintName = "JSONUtilities"

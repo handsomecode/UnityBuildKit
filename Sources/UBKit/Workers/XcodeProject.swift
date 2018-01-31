@@ -55,7 +55,6 @@ class XcodeProject {
             return iOSFolderResult
         }
 
-//        print("Generating iOS spec file")
         let specFileResult = createSpecFile()
         guard specFileResult == .success else {
             return specFileResult
@@ -66,7 +65,6 @@ class XcodeProject {
             return projectFolderResult
         }
 
-//        print("Generating iOS source files")
         let sourceFileResult = createSourceFiles()
         guard sourceFileResult == .success else {
             return sourceFileResult
@@ -77,7 +75,6 @@ class XcodeProject {
             return assetCatalogResult
         }
 
-//        print("Generating Unity bridging files")
         let unityFilesResult = createUnityBridgeFiles()
         guard unityFilesResult == .success else {
             return unityFilesResult
@@ -88,7 +85,6 @@ class XcodeProject {
             return unityFolderResult
         }
 
-//        print("Generating iOS project")
         let projectGenerationResult = generateXcodeProject()
         guard projectGenerationResult == .success else {
             return projectGenerationResult

@@ -138,7 +138,7 @@ private extension UnityProject {
 
         guard fileManager.createFile(
             atPath: editorFilePath.appending("iOSBuildScript.cs"),
-            contents: File.unityBuildScriptFile(),
+            contents: File.unityBuildScriptFile(iOSProjectFolderPath: config.iOS.projectPath, iOSProjectName: projectName),
             attributes: nil) else {
                 return .failure(UBKitError.unableToCreateFile("Unity iOS Build Script"))
         }
@@ -175,7 +175,6 @@ private extension UnityProject {
             UnityCommandLine.buildAction,
             UnityCommandLine.Arguments.quit,
             terminationHandler: { (process) in
-                print(process.terminationStatus)
                 statusCode = process.terminationStatus
                 semaphore.signal()
         })

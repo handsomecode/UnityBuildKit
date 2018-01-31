@@ -53,7 +53,7 @@ private extension XcodeGenerator {
 
         let spec: ProjectSpec
         do {
-            spec = try SpecLoader.loadSpec(path: specPath)
+            spec = try ProjectSpec(path: specPath)
         } catch let error as JSONUtilities.DecodingError {
             return .failure(error)
         } catch {
