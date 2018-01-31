@@ -2,7 +2,7 @@
     <img src="Assets/ubk_logo.png">
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/version-1.0.2-blue.svg?style=flat-square" />
+    <img src="https://img.shields.io/badge/version-1.1.0-blue.svg?style=flat-square" />
     <a href="https://github.com/handsomecode/UnityBuildKit/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"/>
     </a>
@@ -63,7 +63,7 @@ The built Unity files are under `ios_build/`.  When building your Unity project,
 The iOS project is automatically updated and refreshed every time the Unity project is built.  You shouldn't need to do anything! 😀
 
 ## Known Unity Version Compatibility
-- 2107.1.f1
+- 2107.2.0.f3
 
 ## Attributions
 This tool is built using:
