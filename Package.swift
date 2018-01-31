@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "UBKit", targets: ["UBKit"]),
         ],
     dependencies: [
-        .package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "1.2.4")
+        .package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "1.4.0")
     ],
     targets: [
         .target(

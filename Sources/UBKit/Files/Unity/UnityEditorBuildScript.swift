@@ -25,7 +25,7 @@ import Foundation
 
 extension File {
 
-    class func unityBuildScriptFile() -> Data? {
+    class func unityBuildScriptFile(iOSProjectFolderPath: String, iOSProjectName: String) -> Data? {
         let file = """
         using System.Collections;
         using System.IO;
@@ -33,8 +33,15 @@ extension File {
         using UnityEditor;
         using UnityEditor.SceneManagement;
         using UnityEngine.SceneManagement;
+        using UnityEditor.iOS.Xcode;
 
         public class iOSBuilder: MonoBehaviour {
+
+            private const string iOSProjectRoot = \"\(iOSProjectFolderPath)\";
+            private const string iOSProjectName = \"\(iOSProjectName)\";
+            private const string DataProjectPath = "Vendor/UBK/Data";
+            private const string PbxFilePath = iOSProjectName + ".xcodeproj/project.pbxproj";
+
             public static void Perform () {
                 var outputLocation = GetArg ("-outputLocation");
                 var sceneName = GetArg ("-sceneName");
@@ -51,6 +58,17 @@ extension File {
                 playerOptions.target = BuildTarget.iOS;
                 playerOptions.options = BuildOptions.None;
                 BuildPipeline.BuildPlayer (playerOptions);
+
+                var pbx = new PBXProject();
+                var pbxPath = Path.Combine(iOSProjectRoot, PbxFilePath);
+                pbx.ReadFromFile(pbxPath);
+
+                var folderGuid = pbx.AddFolderReference(Path.Combine(outputLocation, "Data"), Path.Combine(iOSProjectRoot, DataProjectPath), PBXSourceTree.Absolute);
+                var targetGiud = pbx.TargetGuidByName(iOSProjectName);
+                var resourceGiud = pbx.GetResourcesBuildPhaseByTarget(targetGiud);
+                pbx.AddFileToBuildSection(targetGiud, resourceGiud, folderGuid);
+
+                pbx.WriteToFile(pbxPath);
             }
 
             private static string GetArg (string name) {

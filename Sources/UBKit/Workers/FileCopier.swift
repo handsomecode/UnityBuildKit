@@ -60,25 +60,21 @@ class FileCopier {
             return parseProjectResult
         }
 
-//        print("Preparing Build Phase")
         let frameworkPhaseResult = addFrameworksBuildPhase()
         guard frameworkPhaseResult == .success else {
             return frameworkPhaseResult
         }
 
-//        print("Saving Xcode project")
         let saveResult = saveProject()
         guard saveResult == .success else {
             return saveResult
         }
 
-//        print("Changing Unity Files")
         let changeFilesResult = changeUnityFiles()
         guard changeFilesResult == .success else {
             return changeFilesResult
         }
 
-//        print("Adding Unity Files")
         let unityFilesResult = addUnityFiles()
         guard unityFilesResult == .success else {
             return unityFilesResult
@@ -105,14 +101,33 @@ private extension FileCopier {
             return .failure(UBKitError.invalidXcodeProject("Failed to find project file"))
         }
 
-        guard let mainTarget = project.pbxproj.nativeTargets.filter({ $0.name == config.iOS.projectName }).first else {
+        guard let mainTarget = project.pbxproj.objects.nativeTargets.filter({ $0.value.name == config.iOS.projectName }).first else {
             return .failure(UBKitError.invalidXcodeProject("Missing main target"))
         }
 
         let frameworksBuildPhase = PBXFrameworksBuildPhase(reference: generateUUID(PBXFrameworksBuildPhase.self,
                                                                                    "frameworks".appending(nameSalt)))
-        mainTarget.buildPhases.append(frameworksBuildPhase.reference)
-        project.pbxproj.addObject(frameworksBuildPhase)
+        mainTarget.value.buildPhases.append(frameworksBuildPhase.reference)
+        project.pbxproj.objects.addObject(frameworksBuildPhase)
+
+        return .success
+    }
+
+    func x() -> Result {
+        guard let project = project else {
+            return .failure(UBKitError.invalidXcodeProject("Failed to find project file"))
+        }
+
+        guard let mainTarget = project.pbxproj.objects.nativeTargets.filter({ $0.value.name == config.iOS.projectName }).first else {
+            return .failure(UBKitError.invalidXcodeProject("Missing main target"))
+        }
+
+        for phase in mainTarget.value.buildPhases {
+            if phase.starts(with: "RBP_") {
+                
+                break
+            }
+        }
 
         return .success
     }
