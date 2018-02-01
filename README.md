@@ -64,6 +64,7 @@ The iOS project is automatically updated and refreshed every time the Unity proj
 
 ## Known Unity Version Compatibility
 - 2107.2.0.f3
+- 2017.2.1.f1
 
 ## Attributions
 This tool is built using:
