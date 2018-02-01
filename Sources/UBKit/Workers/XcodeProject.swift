@@ -31,6 +31,8 @@ class XcodeProject {
     private let unityVersion: String
     private let projectPath: String
     private let vendorFolderPath: String
+    private let vendorClassesFolderPath: String
+    private let vendorLibrariesFolderPath: String
     private let specFileName: String
     private let bridgingFilesPath: String
 
@@ -45,6 +47,8 @@ class XcodeProject {
 
         self.projectPath = workingPath.appending(projectName).appending("/")
         self.vendorFolderPath = workingPath.appending("Vendor/UBK/")
+        self.vendorClassesFolderPath = vendorFolderPath.appending("Classes")
+        self.vendorLibrariesFolderPath = vendorFolderPath.appending("Libraries")
         self.specFileName = "project.yml"
         self.bridgingFilesPath = projectPath.appending("UnityBridge/")
     }
@@ -80,9 +84,9 @@ class XcodeProject {
             return unityFilesResult
         }
 
-        let unityFolderResult = createUnityVendorFolder()
-        guard unityFolderResult == .success else {
-            return unityFolderResult
+        let unityFoldersResult = createUnityVendorFolders()
+        guard unityFoldersResult == .success else {
+            return unityFoldersResult
         }
 
         let projectGenerationResult = generateXcodeProject()
@@ -211,9 +215,11 @@ private extension XcodeProject {
         }
     }
 
-    func createUnityVendorFolder() -> Result {
+    func createUnityVendorFolders() -> Result {
         do {
             try fileManager.createDirectory(atPath: vendorFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: vendorClassesFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: vendorLibrariesFolderPath, withIntermediateDirectories: true, attributes: nil)
 
             return .success
         } catch {
