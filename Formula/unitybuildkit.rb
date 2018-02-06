@@ -1,8 +1,8 @@
 class Unitybuildkit < Formula
     desc "A command line tool that generates an iOS application with an embedded Unity scene"
     homepage "https://github.com/handsomecode/UnityBuildKit"
-    url "https://github.com/handsomecode/UnityBuildKit/archive/1.1.1.tar.gz"
-    sha256 "19dd6959f0aa6b6aaa52a6acb4c9423014f5282a5909da77a5192ae16a29dcca"
+    url "https://github.com/handsomecode/UnityBuildKit/archive/1.1.2.tar.gz"
+    sha256 "81e89fb52a1826602fd10ef03e6271d1fff19961a68a8840a05545b0f1e49177"
     head "https://github.com/handsomecode/UnityBuildKit.git"
 
     depends_on :xcode
