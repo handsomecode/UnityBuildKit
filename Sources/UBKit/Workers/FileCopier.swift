@@ -80,6 +80,11 @@ class FileCopier {
             return unityFilesResult
         }
 
+        let addFrameworksResult = addXcodeFrameworks()
+        guard addFrameworksResult == .success else {
+            return addFrameworksResult
+        }
+
         return .success
     }
 }
@@ -109,25 +114,6 @@ private extension FileCopier {
                                                                                    "frameworks".appending(nameSalt)))
         mainTarget.value.buildPhases.append(frameworksBuildPhase.reference)
         project.pbxproj.objects.addObject(frameworksBuildPhase)
-
-        return .success
-    }
-
-    func x() -> Result {
-        guard let project = project else {
-            return .failure(UBKitError.invalidXcodeProject("Failed to find project file"))
-        }
-
-        guard let mainTarget = project.pbxproj.objects.nativeTargets.filter({ $0.value.name == config.iOS.projectName }).first else {
-            return .failure(UBKitError.invalidXcodeProject("Missing main target"))
-        }
-
-        for phase in mainTarget.value.buildPhases {
-            if phase.starts(with: "RBP_") {
-                
-                break
-            }
-        }
 
         return .success
     }
@@ -165,12 +151,13 @@ private extension FileCopier {
     func addUnityFiles() -> Result {
         let semaphore = DispatchSemaphore(value: 0)
         var statusCode: Int32 = 999
+        let projectPath = workingPath.appending(config.unity.projectName).appending("/ios_build")
 
         shell.perform(
             config.unity.applicationPath,
             UnityCommandLine.Arguments.batchmode,
             UnityCommandLine.Arguments.buildPath,
-            workingPath.appending(config.unity.projectName).appending("/ios_build"),
+            projectPath,
             UnityCommandLine.Arguments.executeMethod,
             UnityCommandLine.refreshAction,
             UnityCommandLine.Arguments.quit,
@@ -186,6 +173,37 @@ private extension FileCopier {
                 return .success
             } else {
                 return .failure(UBKitError.shellCommand("Adding files to  Unity project"))
+            }
+        case .timedOut:
+            return .failure(UBKitError.waitTimedOut)
+        }
+    }
+
+    func addXcodeFrameworks() -> Result {
+        let semaphore = DispatchSemaphore(value: 0)
+        var statusCode: Int32 = 999
+        let projectPath = workingPath.appending(config.unity.projectName)
+
+        shell.perform(
+            config.unity.applicationPath,
+            UnityCommandLine.Arguments.batchmode,
+            UnityCommandLine.Arguments.projectPath,
+            projectPath,
+            UnityCommandLine.Arguments.executeMethod,
+            UnityCommandLine.frameworksAction,
+            UnityCommandLine.Arguments.quit,
+            terminationHandler: { (process) in
+                statusCode = process.terminationStatus
+                semaphore.signal()
+        })
+
+        let timeout = semaphore.wait(timeout: DispatchTime.now()+60.0)
+        switch timeout {
+        case .success:
+            if statusCode == 0 {
+                return .success
+            } else {
+                return .failure(UBKitError.shellCommand("Initializing Unity Project"))
             }
         case .timedOut:
             return .failure(UBKitError.waitTimedOut)
