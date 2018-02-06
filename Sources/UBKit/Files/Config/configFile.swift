@@ -31,13 +31,13 @@ extension File {
             "ios": {
                 "projectName": "ExampleProject",
                 "bundleId": "com.example.ExampleProject",
-                "projectPath": "" // Defaults to iOS/
+                "projectPath": "" // e.g. iOS/
             },
             "unity": {
                 "projectName": "ExampleProject",
-                "applicationPath": "", // e.g /Applications/Unity/Unity.app/Contents/MacOS/Unity
-                "version": "", // e.g. 2017.1.f1
-                "projectPath": "", // Defaults to Unity/
+                "applicationPath": "", // e.g. /Applications/Unity/Unity.app/Contents/MacOS/Unity
+                "version": "", // e.g. 2017.2.1.f1
+                "projectPath": "", // e.g. Unity/
                 "sceneNames": [
                     "ExampleScene"
                 ]

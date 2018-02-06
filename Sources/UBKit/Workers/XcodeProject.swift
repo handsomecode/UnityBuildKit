@@ -54,6 +54,7 @@ class XcodeProject {
     }
 
     func create() -> Result {
+        print("iOS Project Path: \(workingPath)")
         let iOSFolderResult = createiOSFolder()
         guard iOSFolderResult == .success else {
             return iOSFolderResult

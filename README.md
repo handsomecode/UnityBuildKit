@@ -2,7 +2,7 @@
     <img src="Assets/ubk_logo.png">
 </p>
 <p align="center">
-    <img src="https://img.shields.io/badge/version-1.1.1-blue.svg?style=flat-square" />
+    <img src="https://img.shields.io/badge/version-1.1.2-blue.svg?style=flat-square" />
     <a href="https://github.com/handsomecode/UnityBuildKit/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"/>
     </a>
@@ -44,12 +44,12 @@ mkdir ExampleProject
 cd ExampleProject
 ```
 
-2. Run the following to generate the `ubconfig.json` file where you can specify project information
+2. Run the following to generate the `ubconfig.json` file where you can specify project information (see more information [here](https://github.com/handsomecode/UnityBuildKit/wiki/Configuration-File))
 ```
 UnityBuildKit config
 ```
 
-3. After filling out the config file information, run 
+3. After filling out the config file, run 
 ```
 $ UnityBuildKit generate
 ```
