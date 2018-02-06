@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D4C15EC42023E6C3002B8938 /* UnityFrameworksScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C15EC32023E6C3002B8938 /* UnityFrameworksScript.swift */; };
+		D4C15EC52023E6C3002B8938 /* UnityFrameworksScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C15EC32023E6C3002B8938 /* UnityFrameworksScript.swift */; };
 		OBJ_204 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_210 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_78 /* Package.swift */; };
 		OBJ_216 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_134 /* Package.swift */; };
@@ -428,6 +430,7 @@
 
 /* Begin PBXFileReference section */
 		"AEXML::AEXML::Product" /* AEXML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AEXML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4C15EC32023E6C3002B8938 /* UnityFrameworksScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityFrameworksScript.swift; sourceTree = "<group>"; };
 		"JSONUtilities::JSONUtilities::Product" /* JSONUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JSONUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_100 /* PBXHeadersBuildPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXHeadersBuildPhase.swift; sourceTree = "<group>"; };
 		OBJ_101 /* PBXLegacyTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PBXLegacyTarget.swift; sourceTree = "<group>"; };
@@ -714,6 +717,7 @@
 			children = (
 				OBJ_14 /* UnityEditorBuildScript.swift */,
 				OBJ_15 /* UnityProjectScript.swift */,
+				D4C15EC32023E6C3002B8938 /* UnityFrameworksScript.swift */,
 			);
 			path = Unity;
 			sourceTree = "<group>";
@@ -1448,6 +1452,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_204 /* Package.swift in Sources */,
+				D4C15EC42023E6C3002B8938 /* UnityFrameworksScript.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1526,6 +1531,7 @@
 				OBJ_291 /* SpecFile.swift in Sources */,
 				OBJ_292 /* ViewControllerFile.swift in Sources */,
 				OBJ_293 /* Config.swift in Sources */,
+				D4C15EC52023E6C3002B8938 /* UnityFrameworksScript.swift in Sources */,
 				OBJ_294 /* Result.swift in Sources */,
 				OBJ_295 /* Shell.swift in Sources */,
 				OBJ_296 /* UBKitError.swift in Sources */,

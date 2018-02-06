@@ -51,7 +51,7 @@ extension File {
                   UNITY_SCRIPTING_BACKEND: il2cpp
                   UNITY_IOS_EXPORT_PATH: ${SRCROOT}/../Unity/\(projectName)/ios_build
                   GCC_PREFIX_HEADER: $(UNITY_IOS_EXPORT_PATH)/Classes/Prefix.pch
-                  OTHER_LDFLAGS: -weak-lSystem -weak_framework CoreMotion -weak_framework GameKit -weak_framework iAd -framework CoreGraphics -framework AVFoundation -framework CoreVideo -framework CoreMedia -framework SystemConfiguration -framework CoreLocation -framework MediaPlayer -framework CFNetwork -framework AudioToolbox -framework OpenAL -framework QuartzCore -framework OpenGLES -framework UIKit -framework Foundation -framework MediaToolbox -liconv.2 -liPhone-lib
+                  OTHER_LDFLAGS: -weak-lSystem -liconv.2 -liPhone-lib -weak_framework CoreMotion -weak_framework iAd -framework OpenGLES 
                   HEADER_SEARCH_PATHS: $(UNITY_IOS_EXPORT_PATH)/Classes $(UNITY_IOS_EXPORT_PATH)/Classes/Native $(UNITY_IOS_EXPORT_PATH)/Libraries/libil2cpp/include
                   LIBRARY_SEARCH_PATHS: $(UNITY_IOS_EXPORT_PATH)/Libraries $(UNITY_IOS_EXPORT_PATH)/Libraries/libil2cpp/include
                   ENABLE_BITCODE: NO

@@ -47,6 +47,7 @@ class UnityProject {
             return .failure(UBKitError.invalidFolder(unityAppPath))
         }
 
+        print("Unity Project Path: \(workingPath)\n")
         let unityFolderResult = createUnityFolder()
         guard unityFolderResult == .success else {
             return unityFolderResult
@@ -59,7 +60,7 @@ class UnityProject {
             return projectGenerationResult
         }
 
-        print("\nGenerating Unity Editor scripts")
+        print("Generating Unity Editor scripts")
         let editorScriptsResult = createUnityEditorScripts()
         guard editorScriptsResult == .success else {
             return editorScriptsResult
@@ -144,10 +145,17 @@ private extension UnityProject {
         }
 
         guard fileManager.createFile(
-            atPath: editorFilePath.appending("ProjectScript.cs"),
+            atPath: editorFilePath.appending("XcodeProjectRefresher.cs"),
             contents: File.unityProjectScriptFile(projectName: projectName, iOSProjectPath: config.iOS.projectPath),
             attributes: nil) else {
                 return .failure(UBKitError.unableToCreateFile("Unity Project Script"))
+        }
+
+        guard fileManager.createFile(
+            atPath: editorFilePath.appending("XcodeFrameworks.cs"),
+            contents: File.unityFrameworksScriptFile(projectName: projectName, iOSProjectPath: config.iOS.projectPath),
+            attributes: nil) else {
+                return .failure(UBKitError.unableToCreateFile("Xcode Frameworks Script"))
         }
 
         return .success
@@ -185,7 +193,7 @@ private extension UnityProject {
             if statusCode == 0 {
                 return .success
             } else {
-                return .failure(UBKitError.shellCommand("Initializing Unity Project"))
+                return .failure(UBKitError.shellCommand("Initializing Unity Project: \(statusCode)"))
             }
         case .timedOut:
             return .failure(UBKitError.waitTimedOut)

@@ -64,10 +64,18 @@ struct iOSConfig: Decodable {
         }
 
         let projectPath: String
-        if let path = try? container.decode(String.self, forKey: .projectPath), !path.isEmpty {
-            projectPath = path
-        } else {
-            projectPath = FileManager.default.currentDirectoryPath.appending("/iOS/")
+        do {
+            let path = try container.decode(String.self, forKey: .projectPath)
+            if path.isEmpty {
+                throw UBKitError.invalidConfigArgument(Keys.projectPath.rawValue)
+            }
+            projectPath = FileManager.default.currentDirectoryPath.appending("/").appending(path)
+        } catch {
+            throw UBKitError.invalidConfigArgument(Keys.projectPath.rawValue)
+        }
+
+        if !projectPath.hasSuffix("/") {
+            throw UBKitError.invalidConfigArgument("Project Path must end with a \"/\"")
         }
 
         self.projectName = projectName
@@ -113,10 +121,18 @@ struct UnityConfig {
         }
 
         let projectPath: String
-        if let path = try? container.decode(String.self, forKey: .projectPath), !path.isEmpty {
-            projectPath = path
-        } else {
-            projectPath = FileManager.default.currentDirectoryPath.appending("/Unity/")
+        do {
+            let path = try container.decode(String.self, forKey: .projectPath)
+            if path.isEmpty {
+                throw UBKitError.invalidConfigArgument(Keys.projectPath.rawValue)
+            }
+            projectPath = FileManager.default.currentDirectoryPath.appending("/").appending(path)
+        } catch {
+            throw UBKitError.invalidConfigArgument(Keys.projectPath.rawValue)
+        }
+
+        if !projectPath.hasSuffix("/") {
+            throw UBKitError.invalidConfigArgument("Project Path must end with a \"/\"")
         }
 
         let sceneNames = try container.decode([String].self, forKey: .sceneNames)
