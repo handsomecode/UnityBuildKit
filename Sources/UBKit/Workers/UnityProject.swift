@@ -26,28 +26,19 @@ import Foundation
 class UnityProject {
 
     private let config: Config
-    private let workingPath: String
-    private let projectName: String
-    private let unitySceneNames: [String]
-
     private let fileManager = FileManager()
     private lazy var shell = Shell()
-    private let unityAppPath: String
 
     init(config: Config) {
         self.config = config
-        self.projectName = config.iOS.projectName
-        self.workingPath = config.unity.projectPath
-        self.unityAppPath = config.unity.applicationPath
-        self.unitySceneNames = config.unity.sceneNames
     }
 
     func create() -> Result {
-        guard UBKit.validatePath(unityAppPath, isDirectory: false) else {
-            return .failure(UBKitError.invalidFolder(unityAppPath))
+        guard UBKit.validatePath(config.unity.applicationPath, isDirectory: false) else {
+            return .failure(UBKitError.invalidFolder(config.unity.applicationPath))
         }
 
-        print("Unity Project Path: \(workingPath)\n")
+        print("Unity Project Path: \(config.unity.projectPath)\n")
         let unityFolderResult = createUnityFolder()
         guard unityFolderResult == .success else {
             return unityFolderResult
@@ -83,7 +74,7 @@ private extension UnityProject {
     func createUnityFolder() -> Result {
         do {
             try fileManager.createDirectory(
-                atPath: workingPath,
+                atPath: config.unity.projectPath,
                 withIntermediateDirectories: false,
                 attributes: nil)
         } catch {
@@ -95,11 +86,11 @@ private extension UnityProject {
 
     func generateUnityProject() -> Result {
         let semaphore = DispatchSemaphore(value: 0)
-        let unityProjectPath = workingPath.appending(projectName)
+        let unityProjectPath = config.unity.projectPath.appending(config.unity.projectName)
         var statusCode: Int32 = 0
 
         shell.perform(
-            unityAppPath,
+            config.unity.applicationPath,
             UnityCommandLine.Arguments.batchmode,
             UnityCommandLine.Arguments.createProject,
             unityProjectPath,
@@ -123,7 +114,7 @@ private extension UnityProject {
     }
 
     func createUnityEditorScripts() -> Result {
-        let assetsFilePath = workingPath.appending(projectName).appending("/Assets/")
+        let assetsFilePath = config.unity.projectPath.appending(config.unity.projectName).appending("/Assets/")
         guard UBKit.validatePath(assetsFilePath, isDirectory: true) else {
             return .failure(UBKitError.invalidFolder(assetsFilePath))
         }
@@ -139,21 +130,21 @@ private extension UnityProject {
 
         guard fileManager.createFile(
             atPath: editorFilePath.appending("iOSBuildScript.cs"),
-            contents: File.unityBuildScriptFile(iOSProjectFolderPath: config.iOS.projectPath, iOSProjectName: projectName),
+            contents: File.unityBuildScriptFile(iOSProjectFolderPath: config.iOS.projectPath, iOSProjectName: config.iOS.projectName),
             attributes: nil) else {
                 return .failure(UBKitError.unableToCreateFile("Unity iOS Build Script"))
         }
 
         guard fileManager.createFile(
             atPath: editorFilePath.appending("XcodeProjectRefresher.cs"),
-            contents: File.unityProjectScriptFile(projectName: projectName, iOSProjectPath: config.iOS.projectPath),
+            contents: File.unityProjectScriptFile(iOSProjectName: config.iOS.projectName, iOSProjectPath: config.iOS.projectPath),
             attributes: nil) else {
                 return .failure(UBKitError.unableToCreateFile("Unity Project Script"))
         }
 
         guard fileManager.createFile(
             atPath: editorFilePath.appending("XcodeFrameworks.cs"),
-            contents: File.unityFrameworksScriptFile(projectName: projectName, iOSProjectPath: config.iOS.projectPath),
+            contents: File.unityFrameworksScriptFile(iOSProjectName: config.iOS.projectName, iOSProjectPath: config.iOS.projectPath),
             attributes: nil) else {
                 return .failure(UBKitError.unableToCreateFile("Xcode Frameworks Script"))
         }
@@ -164,21 +155,21 @@ private extension UnityProject {
     func runInitialProjectBuild() -> Result {
         let semaphore = DispatchSemaphore(value: 0)
         var statusCode: Int32 = 999
-        let projectPath = workingPath.appending(projectName)
+        let projectPath = config.unity.projectPath.appending(config.unity.projectName)
         let outputLocation = projectPath.appending("/").appending("ios_build")
 
         // MARK: - Main
-        print("Initializing Unity scene \(unitySceneNames[0]) for iOS...")
+        print("Initializing Unity scene \(config.unity.sceneNames[0]) for iOS...")
         print("This will take some time to complete\n")
         shell.perform(
-            unityAppPath,
+            config.unity.applicationPath,
             UnityCommandLine.Arguments.batchmode,
             UnityCommandLine.Arguments.projectPath,
             projectPath,
             UnityCommandLine.Arguments.outputLocation,
             outputLocation,
             UnityCommandLine.Arguments.sceneName,
-            unitySceneNames[0],
+            config.unity.sceneNames[0],
             UnityCommandLine.Arguments.executeMethod,
             UnityCommandLine.buildAction,
             UnityCommandLine.Arguments.quit,

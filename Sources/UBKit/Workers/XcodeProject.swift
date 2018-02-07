@@ -25,10 +25,7 @@ import Foundation
 
 class XcodeProject {
 
-    private let projectName: String
-    private let bundleIdentifier: String
-    private let workingPath: String
-    private let unityVersion: String
+    private let config: Config
     private let projectPath: String
     private let vendorFolderPath: String
     private let vendorClassesFolderPath: String
@@ -40,13 +37,10 @@ class XcodeProject {
     private var error: Error?
 
     init(config: Config) {
-        self.projectName = config.iOS.projectName
-        self.bundleIdentifier = config.iOS.bundleId
-        self.workingPath = config.iOS.projectPath
-        self.unityVersion = config.unity.version
+        self.config = config
 
-        self.projectPath = workingPath.appending(projectName).appending("/")
-        self.vendorFolderPath = workingPath.appending("Vendor/UBK/")
+        self.projectPath = config.iOS.projectPath.appending(config.iOS.projectName).appending("/")
+        self.vendorFolderPath = config.iOS.projectPath.appending("Vendor/UBK/")
         self.vendorClassesFolderPath = vendorFolderPath.appending("Classes")
         self.vendorLibrariesFolderPath = vendorFolderPath.appending("Libraries")
         self.specFileName = "project.yml"
@@ -54,7 +48,7 @@ class XcodeProject {
     }
 
     func create() -> Result {
-        print("iOS Project Path: \(workingPath)")
+        print("iOS Project Path: \(config.iOS.projectPath)")
         let iOSFolderResult = createiOSFolder()
         guard iOSFolderResult == .success else {
             return iOSFolderResult
@@ -104,7 +98,7 @@ private extension XcodeProject {
     func createiOSFolder() -> Result {
         do {
             try fileManager.createDirectory(
-                atPath: workingPath,
+                atPath: config.iOS.projectPath,
                 withIntermediateDirectories: false,
                 attributes: nil)
 
@@ -115,18 +109,18 @@ private extension XcodeProject {
     }
 
     func createSpecFile() -> Result {
-        guard UBKit.validatePath(workingPath, isDirectory: true) else {
-            return .failure(UBKitError.invalidFolder(workingPath))
+        guard UBKit.validatePath(config.iOS.projectPath, isDirectory: true) else {
+            return .failure(UBKitError.invalidFolder(config.iOS.projectPath))
         }
 
         let contents = File.specFile(
-            projectName: projectName,
-            bundleIdentifier: bundleIdentifier,
-            unityVersion: unityVersion
+            projectName: config.iOS.projectName,
+            bundleIdentifier: config.iOS.bundleId,
+            unityVersion: config.unity.version
         )
 
         guard fileManager.createFile(
-            atPath: workingPath.appending(specFileName),
+            atPath: config.iOS.projectPath.appending(specFileName),
             contents: contents,
             attributes: nil) else {
                 return .failure(UBKitError.unableToCreateFile("Spec file"))
@@ -270,7 +264,7 @@ private extension XcodeProject {
     }
 
     func generateXcodeProject() -> Result {
-        let generator = XcodeGenerator(path: workingPath, fileName: specFileName)
+        let generator = XcodeGenerator(path: config.iOS.projectPath, fileName: specFileName)
         return generator.generateProject()
     }
 }
