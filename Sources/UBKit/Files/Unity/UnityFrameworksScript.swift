@@ -26,7 +26,7 @@ import Foundation
 
 extension File {
 
-    class func unityFrameworksScriptFile(projectName: String, iOSProjectPath: String) -> Data? {
+    class func unityFrameworksScriptFile(iOSProjectName: String, iOSProjectPath: String) -> Data? {
         let file = """
         using System.Collections;
         using System.IO;
@@ -39,7 +39,7 @@ extension File {
         public class XcodeFrameworks: MonoBehaviour {
 
             private const string iOSProjectRoot = \"\(iOSProjectPath)\";
-            private const string iOSProjectName = \"\(projectName)\";
+            private const string iOSProjectName = \"\(iOSProjectName)\";
             private const string PbxFilePath = iOSProjectName + ".xcodeproj/project.pbxproj";
 
             public static void Perform () {

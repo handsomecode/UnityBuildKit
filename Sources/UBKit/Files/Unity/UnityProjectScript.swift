@@ -26,7 +26,7 @@ import Foundation
 
 extension File {
 
-    class func unityProjectScriptFile(projectName: String, iOSProjectPath: String) -> Data? {
+    class func unityProjectScriptFile(iOSProjectName: String, iOSProjectPath: String) -> Data? {
         let file = """
         using System.Linq;
         using System.Collections.Generic;
@@ -40,7 +40,7 @@ extension File {
         public class XcodeRefresher {
 
             private const string iOSProjectRoot = \"\(iOSProjectPath)\";
-            private const string iOSProjectName = \"\(projectName)\";
+            private const string iOSProjectName = \"\(iOSProjectName)\";
             private const string ClassesProjectPath = "Vendor/UBK/Classes";
             private const string LibrariesProjectPath = "Vendor/UBK/Libraries";
             private const string PbxFilePath = iOSProjectName + ".xcodeproj/project.pbxproj";

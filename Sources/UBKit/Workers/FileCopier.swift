@@ -34,8 +34,6 @@ class FileCopier {
     }
 
     private let config: Config
-    private let workingPath: String
-    private let xcodeProjectPath: String
     private let xcodeProjectFilePath: String
 
     private lazy var fileManager = FileManager.default
@@ -49,9 +47,7 @@ class FileCopier {
 
     init(config: Config) {
         self.config = config
-        self.workingPath = config.unity.projectPath
-        self.xcodeProjectPath = config.iOS.projectPath
-        self.xcodeProjectFilePath = String(format: "%@%@%@", xcodeProjectPath, config.iOS.projectName, ".xcodeproj")
+        self.xcodeProjectFilePath = String(format: "%@%@%@", config.iOS.projectPath, config.iOS.projectName, ".xcodeproj")
     }
 
     func copyFiles() -> Result {
@@ -119,7 +115,7 @@ private extension FileCopier {
     }
 
     func changeUnityFiles() -> Result {
-        let mainFilePath = workingPath.appending(config.unity.projectName).appending("/ios_build/Classes/main.mm")
+        let mainFilePath = config.unity.projectPath.appending(config.unity.projectName).appending("/ios_build/Classes/main.mm")
         guard fileManager.fileExists(atPath: mainFilePath) else {
             return .failure(UBKitError.missingUnityFile("main.mm"))
         }
@@ -128,7 +124,7 @@ private extension FileCopier {
             return changeInitResult
         }
 
-        let appControllerFilePath = workingPath.appending(config.unity.projectName).appending("/ios_build/Classes/UnityAppController.h")
+        let appControllerFilePath = config.unity.projectPath.appending(config.unity.projectName).appending("/ios_build/Classes/UnityAppController.h")
         guard fileManager.fileExists(atPath: appControllerFilePath) else {
             return .failure(UBKitError.missingUnityFile("UnityAppController.h"))
         }
@@ -137,7 +133,7 @@ private extension FileCopier {
             return changeAppControllerResult
         }
 
-        let metalHelperFilePath = workingPath.appending(config.unity.projectName).appending("/ios_build/Classes/Unity/MetalHelper.mm")
+        let metalHelperFilePath = config.unity.projectPath.appending(config.unity.projectName).appending("/ios_build/Classes/Unity/MetalHelper.mm")
         guard fileManager.fileExists(atPath: metalHelperFilePath) else {
             return .failure(UBKitError.missingUnityFile("MetalHelper.mm"))
         }
@@ -151,7 +147,7 @@ private extension FileCopier {
     func addUnityFiles() -> Result {
         let semaphore = DispatchSemaphore(value: 0)
         var statusCode: Int32 = 999
-        let projectPath = workingPath.appending(config.unity.projectName).appending("/ios_build")
+        let projectPath = config.unity.projectPath.appending(config.unity.projectName).appending("/ios_build")
 
         shell.perform(
             config.unity.applicationPath,
@@ -182,7 +178,7 @@ private extension FileCopier {
     func addXcodeFrameworks() -> Result {
         let semaphore = DispatchSemaphore(value: 0)
         var statusCode: Int32 = 999
-        let projectPath = workingPath.appending(config.unity.projectName)
+        let projectPath = config.unity.projectPath.appending(config.unity.projectName)
 
         shell.perform(
             config.unity.applicationPath,
