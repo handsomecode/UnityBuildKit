@@ -106,10 +106,10 @@ private extension FileCopier {
             return .failure(UBKitError.invalidXcodeProject("Missing main target"))
         }
 
-        let frameworksBuildPhase = PBXFrameworksBuildPhase(reference: generateUUID(PBXFrameworksBuildPhase.self,
-                                                                                   "frameworks".appending(nameSalt)))
-        mainTarget.value.buildPhases.append(frameworksBuildPhase.reference)
-        project.pbxproj.objects.addObject(frameworksBuildPhase)
+        let frameworksBuildPhase = PBXFrameworksBuildPhase()
+        let frameworksBuildPhaseReference = project.pbxproj.objects.generateReference(frameworksBuildPhase, "frameworks".appending(nameSalt))
+        mainTarget.value.buildPhases.append(frameworksBuildPhaseReference)
+        project.pbxproj.objects.addObject(frameworksBuildPhase, reference: frameworksBuildPhaseReference)
 
         return .success
     }
@@ -273,26 +273,5 @@ private extension FileCopier {
         }
 
         return .success
-    }
-}
-
-/**
- The following private methods are credited to XcodeGenKit and
- are used with little to no modifications.
- */
-private extension FileCopier {
-
-    func generateUUID<T: PBXObject>(_ element: T.Type, _ id: String) -> String {
-        var uuid: String = ""
-        var counter: UInt = 0
-        let className: String = String(describing: T.self).replacingOccurrences(of: "PBX", with: "")
-        let classAcronym = className.filter({ String($0).lowercased() != String($0) })
-        let stringID = String(abs(id.hashValue).description.prefix(10 - classAcronym.utf8.count))
-        repeat {
-            counter += 1
-            uuid = "\(classAcronym)\(stringID)\(String(format: "%02d", counter))"
-        } while (uuids.contains(uuid))
-        uuids.insert(uuid)
-        return uuid
     }
 }
