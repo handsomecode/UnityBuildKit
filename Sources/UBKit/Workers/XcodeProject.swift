@@ -114,8 +114,9 @@ private extension XcodeProject {
         }
 
         let contents = File.specFile(
-            projectName: config.iOS.projectName,
+            iOSProjectName: config.iOS.projectName,
             bundleIdentifier: config.iOS.bundleId,
+            unityProjectName: config.unity.projectName,
             unityVersion: config.unity.version
         )
 
