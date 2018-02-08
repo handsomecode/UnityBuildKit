@@ -1,5 +1,5 @@
 TOOL_NAME = UnityBuildKit
-VERSION = 1.1.3
+VERSION = 1.1.4
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(TOOL_NAME)
