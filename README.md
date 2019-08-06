@@ -1,3 +1,5 @@
+_Note: Further work on UnityBuildKit has been discontinued due to the fact that Unity has created their [own functionality](https://blogs.unity3d.com/en/2019/06/17/add-features-powered-by-unity-to-native-mobile-apps/) for embedding Unity within iOS and Android projects in Unity 2019.3._
+
 <p align="center"> 
     <img src="Assets/ubk_logo.png">
 </p>
